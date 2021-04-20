@@ -13,12 +13,18 @@
     - [`npm start`](#npm-start)
     - [`npm run build`](#npm-run-build)
     - [`npm run serve`](#npm-run-serve)
+    - [`npm run lint`](#npm-run-lint)
 - [Git & Visual Studio Code](#git--visual-studio-code)
   - [Git Basics](#git-basics)
   - [Workflow](#workflow)
   - [Pulling & Pushing Commits](#pulling--pushing-commits)
   - [Committing your changes](#committing-your-changes)
   - [Resolving Merge Conflicts](#resolving-merge-conflicts)
+- [Tools](#tools)
+  - [Browser](#browser)
+  - [Visual Studio Code](#visual-studio-code)
+  - [Debugging](#debugging)
+  - [Linting](#linting)
 
 # Set-up
 
@@ -45,6 +51,8 @@ When choosing the NodeJS version, please pick the `LTS` version. The rest of the
 After having installed Git, it is useful to change the command line that Visual Studio Code uses to `bash` which was installed along with Git.
 
 To do this, open up Visual Studio Code. Then, by pressing `F1`, you can type in the following command: `Terminal: Select Default Profile`. You will then get a list to choose from, in which you can select `Git Bash`.
+
+There are also some [useful extensions](#visual-studio-code) listed in this file.
 
 ### Git Options
 
@@ -108,6 +116,8 @@ Any errors you might have made will appear in the terminal.
 
 To exit and go back to the command line type `Ctrl+C`.
 
+**If you press `F5` inside of Visual Studio Code, it will automatically open the app.**
+
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
@@ -125,6 +135,11 @@ If you make changes to the code after running `npm run build`, these will not au
 You will need to rerun `npm run build`.
 
 To exit and go back to the command line type `Ctrl+C`.
+
+### `npm run lint`
+
+[ESLint](#Linting) will be executed on all files to check for any warnings or errors.
+These will be shown in the terminal.
 
 # Git & Visual Studio Code
 
@@ -196,3 +211,28 @@ To resolve the conflict, VS Code gives you quick options to accept `current`, `i
 ![VSCode Merge](docs/VSCodeMerge.PNG?raw=true "VSCode Merge")
 
 After you have resolved the conflict, you can press the `+`-sign again and provide a message, just like a commit.
+
+# Tools
+
+## Browser
+
+It is strongly encouraged to use Google Chrome for developing a React app.
+There is a useful extension for Chrome called [React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi).
+It adds 2 new tabs to the Chrome Developer Tools (press F12 on a webpage) where you can see useful information about React and the components.
+
+## Visual Studio Code
+
+Here is a list of useful VS Code extensions for this project:
+ - [Debugger for Chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome): Debugging React in the browser
+ - [React Snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets): Useful snippets to quickly add often-used parts to a file.
+ - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint): Checks your code thoroughly for any mistakes.
+
+## Debugging
+
+Using the debugger for chrome extension, it is possible to debug apps running in the browser. By pressing `F5` within Visual Studio Code, a new chrome browser will launch with a debugger attached. You can then place breakpoints to debug.
+
+Placing breakpoints can be done by clicking next to a line number in any javascript file. Chrome will pause once it hits this breakpoint. Then you can look at all variables that are defined in the debug pane (Ctrl+Shift+D) in VS Code. You also have control to step forward over the code line by line using the controls at the top of the VS Code window.
+
+## Linting
+
+ESLint will make sure your code rougly follows a common style. Some common problems, like quotes, can be fixed using the light-bulb that appears in VS Code.
