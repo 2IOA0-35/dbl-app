@@ -85,7 +85,15 @@ You can now type the following command: `npm install`.
 
 If you get a message `bash: npm: command not found`, please try restarting VS Code. If that did not work, make sure you have installed [NodeJS](https://nodejs.org/) correctly.
 
-If the command completed succesfully, you should now have the application (and all of it's requirements, like React) installed.
+The command will take a bit of time, but at the end you should get an output that looks something like this:
+```bash
+added 2003 packages from 774 contributors and audited 2006 packages in 82.547s
+
+136 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+```
 
 # Starting the application
 
@@ -93,6 +101,7 @@ If the command completed succesfully, you should now have the application (and a
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The first time you run this command, you might get a Windows Firewall message. Please choose `allow`.
 
 The page will reload if you make edits.\
 Any errors you might have made will appear in the terminal.
@@ -140,7 +149,7 @@ When you are programming in this repository, you should use the following workfl
 
 **Never forget to commit and push after you are done!**
 
-![GitWorkflow](docs/GitWorkflow.PNG?raw=true "VSCode Taskbar")
+![GitWorkflow](docs/GitCommitPush.PNG?raw=true "Git Workflow")
 
 ## Pulling & Pushing Commits
 
@@ -148,7 +157,9 @@ Visual Studio Code has an overview of all commits that need pulling and pushing 
 
 If you click the sync-wheel it will pull and push what is available.
 
-![VSCode Taskbar](docs/VSCodeTaskbar.PNG?raw=true "Git Workflow")
+**Even when nothing is showing, it doesn't hurt to press the sync-wheel. Sometimes commits that need to be pulled do not show up, so always click the wheel before you start.**
+
+![VSCode Taskbar](docs/VSCodeTaskbar.PNG?raw=true "VSCode Taskbar")
 
 ## Committing your changes
 
