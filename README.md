@@ -25,6 +25,8 @@
   - [Visual Studio Code](#visual-studio-code)
   - [Debugging](#debugging)
   - [Linting](#linting)
+- [Resolving Issues](#resolving-issues)
+  - [Missing Dependencies](#missing-dependencies)
 
 # Set-up
 
@@ -117,6 +119,8 @@ Any errors you might have made will appear in the terminal.
 To exit and go back to the command line type `Ctrl+C`.
 
 **If you press `F5` inside of Visual Studio Code, it will automatically open the app.**
+
+If you get issues while compiling that you do not know, please look under [Resolving Issues](#resolving-issues).
 
 ### `npm run build`
 
@@ -236,3 +240,14 @@ Placing breakpoints can be done by clicking next to a line number in any javascr
 ## Linting
 
 ESLint will make sure your code rougly follows a common style. Some common problems, like quotes, can be fixed using the light-bulb that appears in VS Code.
+
+# Resolving Issues
+
+## Missing Dependencies
+
+When you get a message like:
+`Module not found: Can't resolve 'x' in ....`, it might be that new modules were added to the repository after you ran `npm install`.
+In this case, you can fix the problem by re-running `npm install`, which will install all missing modules.
+
+If problems remain, you can force a re-install of all modules by removing the node_modules directory: `rm -r node_modules`.
+Then, you can once again run `npm install`.

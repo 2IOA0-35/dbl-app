@@ -5,6 +5,8 @@
     "dependencies": {
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-router": "^5.2.0",
+        "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.3",
         "serve": "^11.3.2",
         "web-vitals": "^1.1.1"
@@ -43,9 +45,22 @@
             "react"
         ],
         "rules": {
-            "quotes": [ 1, "single", { "avoidEscape": true } ],
-            "jsx-quotes": [ 1, "prefer-single" ],
-            "indent": [ 1, 4 ]
+            "quotes": [
+                1,
+                "single",
+                {
+                    "avoidEscape": true
+                }
+            ],
+            "jsx-quotes": [
+                1,
+                "prefer-single"
+            ],
+            "indent": [
+                1,
+                4
+            ],
+            "semi": "warn"
         },
         "settings": {
             "react": {
