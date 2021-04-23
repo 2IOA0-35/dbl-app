@@ -1,38 +1,94 @@
-.App {
-    text-align: center;
+.blueBackground {
+    background-color: #001f3f;
+    color: white;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+.whiteBackground {
+    background-color: white;
+    color: #001f3f;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+html {
+    scroll-behavior: smooth;
 }
 
-.App-header {
-    background-color: #282c34;
+body {
+    font-family: "Roboto";
+    display: inline-block;
+    width: 100%;
+}
+
+.section {
+    width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: calc(10px + 2vmin);
+    text-align: center;
+}
+
+.section h1 {
+    font-size: 3rem;
+}
+
+.section p {
+    font-size: 1.5rem;
+}
+
+.section a {
+    color: aqua;
+    text-decoration: none;
+}
+
+.section a:hover{
+    text-decoration: underline;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.navigation .link {
+    background-color: none;
     color: white;
+    text-decoration: none;
+    font-weight: bold;
+
+    padding: 10px;
+    margin: 5px;
+    width: 150px;
+
+    border: 3px solid white;
+    border-radius: 5px;
+
+    transition: .2s ease;
 }
 
-.App-link {
-    color: #61dafb;
+.navigation .link:hover {
+    color: #001f3f;
+    background-color: white;
+    text-decoration: none;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.cardContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+    padding: 50px;
+    flex-basis: 0;
+}
+
+.card {
+    min-height: 500px;
+    margin-left: 30px;
+    margin-right: 30px;
+    padding: 20px;
+    border-radius: 20px;
+    flex: 1 1 0px;
 }
