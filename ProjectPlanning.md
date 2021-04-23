@@ -110,7 +110,7 @@ This document includes an exported list of the issues (tasks) and wishes present
 # Finished Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
-|#1.1: Set-up environment|-|priority: 1, size: small|
+|#1.1: Set-up environment|Everyone|priority: 1, size: small|
 |#1.2: Basic Routing Framework|Tom van Liempd|priority: 2, size: medium|
 |#1.5 Research Web Frameworks HTML, JS, React, CSS|Everyone|priority: 1, size: large|
 |#2.1: Research Visualisations|Aloys Riswick|priority: 1, size: large|
