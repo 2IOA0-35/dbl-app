@@ -2,41 +2,43 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from './pages/home';
 import About from './pages/about';
-
+import Visualize from './pages/visualize';
 
 function App() {
-
     return (
         <Router>
-            <div>
-                {/* Using the Link component, you can create 'buttons' 
+            {/* Using the Link component, you can create 'buttons' 
                 to different pagesthat the router can handle.
                 */}
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to='/'>Home</Link>
-                        </li>
-                        <li>
-                            <Link to='/about'>About</Link>
-                        </li>
-                    </ul>
-                </nav>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to='/'>Home</Link>
+                    </li>
+                    <li>
+                        <Link to='/about'>About</Link>
+                    </li>
+                    <li>
+                        <Link to='/vis'>Visualize</Link>
+                    </li>
+                </ul>
+            </nav>
 
-                {/* A <Switch> looks through its children <Route>s and
+            {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
-                <Switch>
-                    <Route path='/about'>
-                        <About />
-                    </Route>
-                    <Route path='/'>
-                        <Home />
-                    </Route>
-                </Switch>
-            </div>
+            <Switch>
+                <Route path='/about'>
+                    <About />
+                </Route>
+                <Route path='/vis'>
+                    <Visualize />
+                </Route>
+                <Route path='/'>
+                    <Home />
+                </Route>
+            </Switch>
         </Router>
     );
 }
 
 export default App;
-

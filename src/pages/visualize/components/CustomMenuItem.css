@@ -1,0 +1,18 @@
+.custom-menu-item {
+    line-height: 40px;
+    list-style-position: inside;
+    list-style-type: none;
+    margin-bottom: 8px;
+    width: calc(100% + 1px);
+    margin-top: 4px;
+    overflow: hidden;
+    padding: 0 48px;
+}
+
+.custom-menu-item:hover {
+    background-color: rgba(94, 143, 233, 0.03);
+}
+
+.custom-menu-item:hover .ant-slider-rail {
+    background-color: rgba(78, 78, 78, 0.2);
+}

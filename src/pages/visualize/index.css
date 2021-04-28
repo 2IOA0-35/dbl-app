@@ -1,0 +1,29 @@
+.vis-container {
+    height: calc(100vh - 64px); /* Fill Screen with visualization. Ant design header is 64px */
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #fafafa;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(161, 161, 161);
+    border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(122, 122, 122);
+}
+
+.ant-layout-content {
+    display: flex;
+    flex-direction: column;
+}
