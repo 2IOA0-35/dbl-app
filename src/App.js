@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from './pages/home';
 import About from './pages/about';
 
+
 function App() {
 
     return (
@@ -38,3 +39,4 @@ function App() {
 }
 
 export default App;
+
