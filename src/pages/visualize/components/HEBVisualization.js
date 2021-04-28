@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
-import { HETContext } from './HETContext';
+import { GlobalContext } from './GlobalContext';
 
-export default function HETOptions() {
-    const [ edgeSize, , nodeSize, , dynamicEdges, , dynamicNodes, , groupBy, , colorBy ] = useContext(HETContext);
+export default function HEBOptions() {
+    const [ getOptions ] = useContext(GlobalContext);
+
+    const visID = 'Hierarchical Edge Bundling';
+
+    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, groupBy, colorBy } = getOptions(visID);
 
     return (
-        // D3 visualization should go here
         <div>
             <p>Temporary to show that passing data works:</p>
             <p>

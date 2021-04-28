@@ -7,12 +7,12 @@ import { GlobalContext } from './GlobalContext';
 
 const { Option } = Select;
 
-export default function DFDOptions({ colList }) {
-    const visID = 'Disjoint Force-Directed';
+export default function HEBOptions({ colList }) {
+    const visID = 'Hierarchical Edge Bundling';
 
     const [ getOptions, setOptions ] = useContext(GlobalContext);
 
-    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, colorBy } = getOptions(visID);
+    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, groupBy, colorBy } = getOptions(visID);
 
     const columnOptions = [];
     for (let i = 0; i < colList.length; i++) {
@@ -21,6 +21,17 @@ export default function DFDOptions({ colList }) {
 
     return (
         <Fragment>
+            <CustomMenuItem title='Group items based on column:' height='2'>
+                <Select
+                    defaultValue={groupBy}
+                    style={{ width: '100%' }}
+                    onChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), groupBy: event });
+                    }}
+                >
+                    {columnOptions}
+                </Select>
+            </CustomMenuItem>
             <CustomMenuItem defaultValue={colorBy} title='Color nodes based on column:' height='2'>
                 <Select
                     style={{ width: '100%' }}
@@ -73,6 +84,6 @@ export default function DFDOptions({ colList }) {
     );
 }
 
-DFDOptions.propTypes = {
+HEBOptions.propTypes = {
     colList: PropTypes.array.isRequired
 };

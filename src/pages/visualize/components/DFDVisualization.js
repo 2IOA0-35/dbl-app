@@ -1,8 +1,12 @@
 import React, { useContext } from 'react';
-import { DFDContext } from './DFDContext';
+import { GlobalContext } from './GlobalContext';
 
 export default function DFDOptions() {
-    const [ edgeSize, , nodeSize, , dynamicEdges, , dynamicNodes, , colorBy ] = useContext(DFDContext);
+    const [ getOptions ] = useContext(GlobalContext);
+
+    const visID = 'Disjoint Force-Directed';
+
+    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, colorBy } = getOptions(visID);
 
     return (
         // D3 visualization should go here
