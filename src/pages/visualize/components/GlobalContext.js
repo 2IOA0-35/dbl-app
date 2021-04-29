@@ -33,8 +33,8 @@ export function GlobalProvider(props) {
         nodeSize: 5,
         dynamicEdges: false,
         dynamicNodes: false,
-        groupBy: '',
-        colorBy: ''
+        groupBy: null,
+        colorBy: null
     });
 
     const [ DFDOptions, setDFDOptions ] = useState({
@@ -42,7 +42,7 @@ export function GlobalProvider(props) {
         nodeSize: 5,
         dynamicEdges: false,
         dynamicNodes: false,
-        colorBy: ''
+        colorBy: null
     });
 
     const getOptions = (visID) => {
@@ -61,7 +61,7 @@ export function GlobalProvider(props) {
                 return;
 
             default:
-                return;
+                return {};
         }
     };
 

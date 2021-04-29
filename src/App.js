@@ -10,7 +10,8 @@ function App() {
             {/* Using the Link component, you can create 'buttons' 
                 to different pagesthat the router can handle.
                 */}
-            <nav>
+            {/* Temp max height to simulate ant design navbar that is 64px in height, can be removed */}
+            <nav style={{ maxHeight: '64px' }}>
                 <ul>
                     <li>
                         <Link to='/'>Home</Link>

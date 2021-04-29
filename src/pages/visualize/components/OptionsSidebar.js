@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import CustomMenuItem from './CustomMenuItem';
 import { GlobalContext } from './GlobalContext';
 import GeneralOptions from './GeneralOptions';
@@ -7,12 +7,15 @@ import DFDOptions from './DFDOptions';
 import { Link } from 'react-router-dom';
 import { SettingOutlined, SlidersOutlined, FileSearchOutlined } from '@ant-design/icons';
 import { Menu, Layout, Button } from 'antd';
+import './OptionsSidebar.css';
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 const fileName = 'enron.csv';
 
 export default function OptionsSidebar() {
+    const [ collapsed, setCollapsed ] = useState(false);
+
     const [ getOptions ] = useContext(GlobalContext);
 
     const contextID = 'Global';
@@ -39,7 +42,15 @@ export default function OptionsSidebar() {
     };
 
     return (
-        <Sider breakpoint='lg' collapsedWidth='0' width={400}>
+        <Sider
+            collapsible
+            collapsed={collapsed}
+            onCollapse={() => {
+                setCollapsed(!collapsed);
+            }}
+            breakpoint='lg'
+            width={400}
+        >
             <Menu
                 mode='inline'
                 defaultOpenKeys={[ 'sub1' ]}
@@ -47,16 +58,24 @@ export default function OptionsSidebar() {
                 selectable={0}
             >
                 {/* This shows the current file and a button that will take you to the 'upload file' window */}
-                <Menu.Item icon={<FileSearchOutlined />}>
-                    {fileName}
-                    <Button type='primary' style={{ float: 'right' }}>
+                <Menu.Item
+                    icon={<FileSearchOutlined />}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '4px'
+                    }}
+                >
+                    <span style={{ marginRight: '10px' }}>{fileName}</span>
+                    <Button type='primary'>
                         <Link to='/upload'>Edit</Link>
                     </Button>
                 </Menu.Item>
 
                 {/* These are general options that should be applicable to any graph. I might move them to a seperate component*/}
-                <SubMenu key='sub1' icon={<SettingOutlined />} title='General Options'>
-                    <GeneralOptions />
+                <SubMenu key='sub1' icon={<SettingOutlined />} title='General Options' className='color-5'>
+                    <GeneralOptions colList={columnList} />
                 </SubMenu>
 
                 {/* These are the options specifically for Graph1 */}

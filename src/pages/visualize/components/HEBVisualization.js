@@ -10,6 +10,7 @@ export default function HEBOptions() {
 
     return (
         <div>
+            <h1 style={{ margin: '10px 20px' }}>{visID}</h1>
             <p>Temporary to show that passing data works:</p>
             <p>
                 {edgeSize +

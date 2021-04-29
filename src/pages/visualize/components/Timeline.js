@@ -8,9 +8,8 @@ export default function Timeline() {
 
     const [ getOptions, setOptions ] = useContext(GlobalContext);
 
-    const { playbackSpeed, timeline, playing } = getOptions(contextID);
+    const { timeline, playing } = getOptions(contextID);
 
-    console.log(playbackSpeed, timeline, playing);
     return (
         <Row justify='center' style={{ padding: '20px 50px' }}>
             <Slider
