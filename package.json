@@ -61,7 +61,8 @@
             ],
             "indent": [
                 1,
-                4
+                4,
+                { "SwitchCase": 1 }
             ],
             "semi": "warn",
             "react/react-in-jsx-scope": 0
