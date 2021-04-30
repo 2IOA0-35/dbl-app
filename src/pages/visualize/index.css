@@ -1,6 +1,6 @@
 .vis-page-container {
     position: relative;
-    height: calc(100vh - 64px); /* Fill Screen with visualization. Ant design header is 64px */
+    height: calc(100vh - 48px); /* Fill Screen with visualization. Ant design header is 64px */
 }
 
 /* width */

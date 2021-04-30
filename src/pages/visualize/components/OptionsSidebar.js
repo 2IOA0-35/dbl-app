@@ -69,7 +69,7 @@ export default function OptionsSidebar() {
                 >
                     <span style={{ marginRight: '10px' }}>{fileName}</span>
                     <Button type='primary'>
-                        <Link to='/upload'>Edit</Link>
+                        <Link to='/dataUpload'>Edit</Link>
                     </Button>
                 </Menu.Item>
 

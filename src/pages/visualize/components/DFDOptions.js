@@ -34,7 +34,7 @@ export default function DFDOptions({ colList }) {
             <CustomMenuItem title='Default node size:' height='2'>
                 <Slider
                     defaultValue={nodeSize}
-                    onChange={(event) => {
+                    onAfterChange={(event) => {
                         setOptions(visID, { ...getOptions(visID), nodeSize: event });
                     }}
                 />
@@ -42,7 +42,7 @@ export default function DFDOptions({ colList }) {
             <CustomMenuItem title='Default edge size:' height='2'>
                 <Slider
                     defaultValue={edgeSize}
-                    onChange={(event) => {
+                    onAfterChange={(event) => {
                         setOptions(visID, { ...getOptions(visID), edgeSize: event });
                     }}
                 />
