@@ -1,0 +1,44 @@
+@import '~antd/dist/antd.css';
+
+.text {
+    text-align: center;
+    color: white;
+}
+
+.top    {
+    text-align: center;
+    color: white;
+    background-color: #001f3f;
+    min-height: 12vh;
+}
+
+.body {
+    background-color: #001f3f;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.body p1 {
+    color: white;
+    font-size: large;
+}
+.body p2 {
+    color: white;
+    font-size: large;
+}
+
+
+.body p3 {
+    color: white;
+    font-size: x-large;
+}
+
+
+br {line-height: 50vh;}
+
+
+
+
+

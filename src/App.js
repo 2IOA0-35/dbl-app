@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from './pages/home';
 import About from './pages/about';
-
+import DataUpload from './pages/DataUpload';
 
 function App() {
 
@@ -20,6 +20,9 @@ function App() {
                         <li>
                             <Link to='/about'>About</Link>
                         </li>
+                        <li>
+                          <Link to='/dataUpload'>Data Upload</Link>
+                        </li>
                     </ul>
                 </nav>
 
@@ -28,6 +31,9 @@ function App() {
                 <Switch>
                     <Route path='/about'>
                         <About />
+                    </Route>
+                    <Route path='/dataUpload'>
+                        <DataUpload />
                     </Route>
                     <Route path='/'>
                         <Home />
@@ -39,4 +45,3 @@ function App() {
 }
 
 export default App;
-
