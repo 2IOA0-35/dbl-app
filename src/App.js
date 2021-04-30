@@ -4,6 +4,8 @@ import Home from './pages/home';
 import About from './pages/about';
 import DataUpload from './pages/DataUpload';
 import Visualize from './pages/visualize';
+import { Menu } from 'antd';
+
 
 function App() {
     return (
@@ -12,40 +14,38 @@ function App() {
                 to different pagesthat the router can handle.
                 */}
             {/* Temp max height to simulate ant design navbar that is 64px in height, can be removed */}
-            <nav style={{ maxHeight: '64px' }}>
-                <ul>
-                    <li>
-                        <Link to='/'>Home</Link>
-                    </li>
-                    <li>
-                        <Link to='/about'>About</Link>
-                    </li>
-                    <li>
-                        <Link to='/vis'>Visualize</Link>
-                    </li>
-                    <li>
-                          <Link to='/dataUpload'>Data Upload</Link>
-                    </li>
-                </ul>
-            </nav>
+            <Menu mode="horizontal">
+                <Menu.Item key="home">
+                    <Link to='/'>Home</Link>
+                </Menu.Item>
+                <Menu.Item key="about">
+                    <Link to='/about'>About</Link>
+                </Menu.Item>
+                <Menu.Item key="visualize">
+                    <Link to='/vis'>Visualize</Link>
+                </Menu.Item>
+                <Menu.Item key="dataUpload">
+                    <Link to='/dataUpload'>Data Upload</Link>
+                </Menu.Item>
+            </Menu>
 
             {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
-                <Switch>
-                    <Route path='/about'>
-                        <About />
-                    </Route>
-                    <Route path='/dataUpload'>
-                        <DataUpload />
-                    </Route>
-                    <Route path='/vis'>
-                        <Visualize />
-                    </Route>
-                    <Route path='/'>
-                        <Home />
-                    </Route>
-                </Switch>
-        </Router>        
+            <Switch>
+                <Route path='/about'>
+                    <About />
+                </Route>
+                <Route path='/dataUpload'>
+                    <DataUpload />
+                </Route>
+                <Route path='/vis'>
+                    <Visualize />
+                </Route>
+                <Route path='/'>
+                    <Home />
+                </Route>
+            </Switch>
+        </Router>
     );
 }
 
