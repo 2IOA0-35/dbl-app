@@ -1,0 +1,38 @@
+.vis-page-container {
+    position: relative;
+    height: calc(100vh - 64px); /* Fill Screen with visualization. Ant design header is 64px */
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba(54, 54, 54, 0.048);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(161, 161, 161);
+    border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(122, 122, 122);
+}
+
+/* fixing ant design stupid-ness */
+.ant-layout-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-slider-rail {
+    background-color: rgba(124, 124, 124, 0.2);
+}
+.ant-slider:hover .ant-slider-rail {
+    background-color: rgba(61, 61, 61, 0.2);
+}

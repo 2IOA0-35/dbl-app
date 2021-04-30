@@ -1,0 +1,25 @@
+/* changed styling to fix render issue on menu collapse */
+.ant-layout-sider {
+    background: #fff;
+}
+
+/* changed styling to be more readable */
+.ant-menu-submenu-title {
+    background: rgba(0, 140, 255, 0.2);
+    height: 48px !important;
+    margin: 0px 0px -1px 0px !important; /* border hack */
+    line-height: 48px !important;
+}
+
+.ant-menu-sub.ant-menu-inline {
+    background-color: white;
+}
+
+.ant-layout-sider-trigger {
+    background: var(--antd-wave-shadow-color);
+}
+
+/* for some reason ant design is stupid and changes this in the collapsed state, causing the icon to not be vertically centered*/
+.ant-menu-item .anticon {
+    line-height: 0px !important;
+}
