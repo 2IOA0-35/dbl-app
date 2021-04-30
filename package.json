@@ -13,7 +13,8 @@
         "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.3",
         "serve": "^11.3.2",
-        "web-vitals": "^1.1.1"
+        "web-vitals": "^1.1.1",
+        "worker-loader": "^3.0.8"
     },
     "devDependencies": {
         "eslint": "^7.24.0",
@@ -63,10 +64,13 @@
             "indent": [
                 1,
                 4,
-                { "SwitchCase": 1 }
+                {
+                    "SwitchCase": 1
+                }
             ],
             "semi": "warn",
-            "react/react-in-jsx-scope": 0
+            "react/react-in-jsx-scope": 0,
+            "no-unused-vars": 1
         },
         "settings": {
             "react": {

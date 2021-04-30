@@ -6,11 +6,13 @@ import DataUpload from './pages/DataUpload';
 import Visualize from './pages/visualize';
 import { Menu } from 'antd';
 
+import { DataProvider } from './context/data';
 
 function App() {
     return (
-        <Router>
-            {/* Using the Link component, you can create 'buttons' 
+        <DataProvider>
+            <Router>
+                {/* Using the Link component, you can create 'buttons' 
                 to different pagesthat the router can handle.
                 */}
             {/* Temp max height to simulate ant design navbar that is 64px in height, can be removed */}
@@ -29,23 +31,24 @@ function App() {
                 </Menu.Item>
             </Menu>
 
-            {/* A <Switch> looks through its children <Route>s and
+                {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
-            <Switch>
-                <Route path='/about'>
-                    <About />
-                </Route>
-                <Route path='/dataUpload'>
-                    <DataUpload />
-                </Route>
-                <Route path='/vis'>
-                    <Visualize />
-                </Route>
-                <Route path='/'>
-                    <Home />
-                </Route>
-            </Switch>
-        </Router>
+                <Switch>
+                    <Route path='/about'>
+                        <About />
+                    </Route>
+                    <Route path='/dataUpload'>
+                        <DataUpload />
+                    </Route>
+                    <Route path='/vis'>
+                        <Visualize />
+                    </Route>
+                    <Route path='/'>
+                        <Home />
+                    </Route>
+                </Switch>
+            </Router>
+        </DataProvider>  
     );
 }
 

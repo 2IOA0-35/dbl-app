@@ -10,7 +10,8 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: rgba(54, 54, 54, 0.048);
+    /* background: rgba(54, 54, 54, 0.048); */
+    background: white;
 }
 
 /* Handle */

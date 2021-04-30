@@ -1,44 +1,51 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 .text {
-    text-align: center;
-    color: white;
+	text-align: center;
+
+	color: white;
 }
 
-.top    {
-    text-align: center;
-    color: white;
-    background-color: #001f3f;
-    min-height: 12vh;
+.top {
+	min-height: 12vh;
+
+	text-align: center;
+
+	color: white;
+	background-color: #001f3f;
 }
 
 .body {
-    background-color: #001f3f;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+	align-items: center;
+	justify-content: center;
+
+	min-height: 100vh;
+
+	text-align: center;
+
+	background-color: #001f3f;
 }
 
-.body p1 {
-    color: white;
-    font-size: large;
-}
-.body p2 {
-    color: white;
-    font-size: large;
+.body p {
+	font-size: large;
+
+	color: white;
 }
 
-
-.body p3 {
-    color: white;
-    font-size: x-large;
+br {
+	line-height: 50vh;
 }
 
+.data-upload .ant-upload-list-item:not(.ant-upload-list-item-error) .ant-upload-list-item-name {
+	color: white;
+}
 
-br {line-height: 50vh;}
+.data-upload .ant-upload-list-item:not(.ant-upload-list-item-error) .ant-upload-text-icon .anticon {
+	color: white;
+}
 
-
-
+.data-upload .ant-progress-text {
+	color: white;
+}
 
 
