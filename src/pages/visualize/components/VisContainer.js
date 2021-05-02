@@ -3,6 +3,7 @@ import { GlobalContext } from './GlobalContext';
 import { Row, Col } from 'antd';
 import HEBVisualization from './HEBVisualization';
 import DFDVisualization from './DFDVisualization';
+import SaveButton from './SaveButton';
 
 export default function VisContainer() {
     const [ getOptions ] = useContext(GlobalContext);
@@ -31,11 +32,24 @@ export default function VisContainer() {
     };
 
     return (
-        <Row style={{ flexGrow: '1' }}>
-            <Col span={graph2 !== 'None' ? 12 : 24}>{renderVisualizations(graph1)}</Col>
+        <Row
+            style={{
+                flexGrow: '1',
+                borderBottom: '1px solid rgba(124, 124, 124, 0.2)'
+            }}
+        >
+            <Col style={{ position: 'relative' }} span={graph2 !== 'None' ? 12 : 24} id='graph1'>
+                {renderVisualizations(graph1)}
+                <SaveButton id='graph1' />
+            </Col>
             {graph2 !== 'None' && (
-                <Col span={12} style={{ borderLeft: '2px solid gray' }}>
+                <Col
+                    span={12}
+                    style={{ borderLeft: '1px solid rgba(124, 124, 124, 0.2)', position: 'relative' }}
+                    id='graph2'
+                >
                     {renderVisualizations(graph2)}
+                    <SaveButton id='graph2' />
                 </Col>
             )}
         </Row>

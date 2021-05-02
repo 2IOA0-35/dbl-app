@@ -30,11 +30,9 @@ export function GlobalProvider(props) {
 
     const [ HEBOptions, setHEBOptions ] = useState({
         edgeSize: 1,
-        nodeSize: 5,
         dynamicEdges: false,
-        dynamicNodes: false,
-        groupBy: '',
-        colorBy: ''
+        groupBy: null,
+        colorBy: null
     });
 
     const [ DFDOptions, setDFDOptions ] = useState({
@@ -42,7 +40,7 @@ export function GlobalProvider(props) {
         nodeSize: 5,
         dynamicEdges: false,
         dynamicNodes: false,
-        colorBy: ''
+        colorBy: null
     });
 
     const getOptions = (visID) => {
@@ -54,14 +52,14 @@ export function GlobalProvider(props) {
             case 'Disjoint Force-Directed':
                 return DFDOptions;
             case 'Force-Directed Graph':
-                return;
+                return {};
             case 'Arc Diagram':
-                return;
+                return {};
             case '3D force directed graph':
-                return;
+                return {};
 
             default:
-                return;
+                return {};
         }
     };
 

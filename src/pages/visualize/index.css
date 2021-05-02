@@ -1,5 +1,6 @@
-.vis-container {
-    height: calc(100vh - 64px); /* Fill Screen with visualization. Ant design header is 64px */
+.vis-page-container {
+    position: relative;
+    height: calc(100vh - 48px); /* Fill Screen with visualization. Ant design header is 64px */
 }
 
 /* width */
@@ -9,7 +10,8 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #fafafa;
+    /* background: rgba(54, 54, 54, 0.048); */
+    background: white;
 }
 
 /* Handle */
@@ -23,7 +25,15 @@
     background: rgb(122, 122, 122);
 }
 
+/* fixing ant design stupid-ness */
 .ant-layout-content {
     display: flex;
     flex-direction: column;
+}
+
+.ant-slider-rail {
+    background-color: rgba(124, 124, 124, 0.2);
+}
+.ant-slider:hover .ant-slider-rail {
+    background-color: rgba(61, 61, 61, 0.2);
 }
