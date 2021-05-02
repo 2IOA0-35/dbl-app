@@ -4,6 +4,7 @@ import { Row, Col } from 'antd';
 import HEBVisualization from './HEBVisualization';
 import DFDVisualization from './DFDVisualization';
 import SaveButton from './SaveButton';
+import HEBVisualization2 from './HEBVisualization2';
 
 export default function VisContainer() {
     const [ getOptions ] = useContext(GlobalContext);
@@ -16,7 +17,8 @@ export default function VisContainer() {
     const renderVisualizations = (graph) => {
         switch (graph) {
             case 'Hierarchical Edge Bundling':
-                return <HEBVisualization />;
+                //return <HEBVisualization />;
+                return <HEBVisualization2 />;
             case 'Disjoint Force-Directed':
                 return <DFDVisualization />;
             case 'Force-Directed Graph':

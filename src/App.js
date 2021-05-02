@@ -15,21 +15,20 @@ function App() {
                 {/* Using the Link component, you can create 'buttons' 
                 to different pagesthat the router can handle.
                 */}
-            {/* Temp max height to simulate ant design navbar that is 64px in height, can be removed */}
-            <Menu mode="horizontal">
-                <Menu.Item key="home">
-                    <Link to='/'>Home</Link>
-                </Menu.Item>
-                <Menu.Item key="about">
-                    <Link to='/about'>About</Link>
-                </Menu.Item>
-                <Menu.Item key="visualize">
-                    <Link to='/vis'>Visualize</Link>
-                </Menu.Item>
-                <Menu.Item key="dataUpload">
-                    <Link to='/dataUpload'>Data Upload</Link>
-                </Menu.Item>
-            </Menu>
+                <Menu mode='horizontal'>
+                    <Menu.Item key='home'>
+                        <Link to='/'>Home</Link>
+                    </Menu.Item>
+                    <Menu.Item key='about'>
+                        <Link to='/about'>About</Link>
+                    </Menu.Item>
+                    <Menu.Item key='visualize'>
+                        <Link to='/vis'>Visualize</Link>
+                    </Menu.Item>
+                    <Menu.Item key='dataUpload'>
+                        <Link to='/dataUpload'>Data Upload</Link>
+                    </Menu.Item>
+                </Menu>
 
                 {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
@@ -48,7 +47,7 @@ function App() {
                     </Route>
                 </Switch>
             </Router>
-        </DataProvider>  
+        </DataProvider>
     );
 }
 

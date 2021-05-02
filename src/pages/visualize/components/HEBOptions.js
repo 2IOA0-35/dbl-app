@@ -12,7 +12,7 @@ export default function HEBOptions({ colList }) {
 
     const [ getOptions, setOptions ] = useContext(GlobalContext);
 
-    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, groupBy, colorBy } = getOptions(visID);
+    const { edgeSize, dynamicEdges, groupBy, colorBy } = getOptions(visID);
 
     const columnOptions = [];
     for (let i = 0; i < colList.length; i++) {
