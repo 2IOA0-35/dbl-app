@@ -1,179 +1,95 @@
 import React from 'react';
-import './home.css';
-import { Link } from 'react-router-dom';
-import Card from './components/Card';
-import PageHeader from './components/PageHeader';
+import { Layout } from 'antd';
+import { Typography } from 'antd';
+import { Divider } from 'antd';
+import { Button } from 'antd';
+import { Select } from 'antd';
+import { message } from 'antd';
+import { Link, useHistory } from 'react-router-dom';
+import { DataContext } from '../../context/data';
 
-export default function Home() {
+const { Option } = Select;
+const { Header, Footer, Content } = Layout;
+const { Title } = Typography;
+
+
+export default function home() {
+
+    //eslint-disable-next-line
+    let [ data, setData ] = React.useContext( DataContext );
+
+    let history = useHistory();
+
+    async function onChange( value ) {
+        message.loading({ content : 'Loading dataset...', key : 'Dataset-Load' } );
+
+        let data = null;
+        try {
+            switch( value ) {
+                case 'Enron': {
+                    data = ( await import( '../../data/enron.json' ) ).default;
+                    break;
+                }
+                case 'EnronSample': {
+                    data = ( await import( '../../data/enronSample.json' ) ).default;
+                    break;
+                }
+            }
+
+        } catch( e ) {
+            message.error( 'An error occured while loading the dataset.' );
+            console.error( 'Error while loading dataset: ', e );
+            return;
+        }
+        message.destroy('Dataset-Load');
+        setData( data );
+        message.success( 'Succesfully loaded the dataset.' );
+        history.push( '/vis' );
+    }
+
     return (
-        <>
-            <div className='section blueBackground'>
-                <h1>E-Mail Network Visualisations</h1>
-                <p>Welcome to our website.<br />Here you can visualize the network of sent emails in the company <a href='https://en.wikipedia.org/wiki/Enron' target='_blank' rel='noreferrer'>Enron</a>.</p>
-                <div className='navigation'>
-                    {/* Will  go to visualisation page */}
-                    <Link className='link' to='/'>Start visualizing!</Link>
-                    {/* Goes to other part of this page */}
-                    <a className='link' href='/#info'>More Info</a>
-                </div>
-            </div>
+        <Layout style={{ textAlign: 'center' }}>
+            <Header style={{ backgroundColor: "#373668", padding: 10 }}>
+                <Title level={2}><font color={'white'}>The Web-App </font> </Title>
+            </Header>
 
-            <div className='section whiteBackground' id='info'>
+            <Layout>
+                <Content style={{ background: 'white', width: "100%", height: "100%" }}>
 
-                <PageHeader
-                    title='About Us'
-                    intro='We are a team of enthousiastic students. Below you can read a bit more about each of the team members.'
-                />
+                    <Divider orientation="left">About the WebApp</Divider>
+                    <p>
+                        This webapp can visualize and display the emails that were sent to and from an employee of Enron.
+</p>
+                    <Divider> </Divider>
+                    
 
-                <div className='cardContainer'>
+                    <p>
+                        <Select
+                            style={{ width: 500 }}
+                            placeholder="Choose from a Sample DataSet"
+                            onChange={onChange}
+                        >
+                            <Option value="Enron">Enron (31.041 e-mails)</Option>
+                            <Option value="EnronSample">Enron Sample (17 e-mails)</Option>
+                            {/*<Option value="DataSet3">DS3</Option>*/}
+                        </Select>
+                    </p>
 
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='Anke'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        bgColor='#001f3f'
-                        textColor='white'
-                    />
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='Aloys'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        bgColor='#001f3f'
-                        textColor='white'
-                    />
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='Christine'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        bgColor='#001f3f'
-                        textColor='white'
-                    />
-                </div>
-                <div className='cardContainer'>
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='Hugo'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        bgColor='#001f3f'
-                        textColor='white'
-                    />
 
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='Kristopher'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        bgColor='#001f3f'
-                        textColor='white'
-                    />
+                    <p><Link to='/dataUpload'><Button size={'large'}>Upload a DataSet</Button></Link> </p>
+                    <p><Link to='/about'><Button size={'large'}>About</Button></Link>  </p>
 
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='Tom'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        bgColor='#001f3f'
-                        textColor='white'
-                    />
-                </div>
-            </div>
+                </Content>
 
-            <div className='section blueBackground'>
-                <PageHeader
-                    title='Information about visualisations'
-                    intro='Here you can get some more information about all the visualisations that are used in this project'
-                />
-                <div className='cardContainer'>
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='Force Directed Graph'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        textColor='#001f3f'
-                        bgColor='white'
-                    />
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='Hierarchical Edge Building'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        textColor='#001f3f'
-                        bgColor='white'
-                    />
-                </div>
-                <div className='cardContainer'>
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='Arc Diagram'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        textColor='#001f3f'
-                        bgColor='white'
-                    />
-                    <Card
-                        imgSrc='https://via.placeholder.com/250'
-                        title='3D Visualisation'
-                        text='Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Cras quis ipsum nec diam cursus imperdiet. 
-                        Donec congue efficitur magna nec lobortis.
-                        Phasellus tincidunt neque a lacus tempor facilisis. 
-                        Integer hendrerit nec est ac aliquam. Curabitur faucibus neque viverra, 
-                        feugiat magna id, vulputate tortor. 
-                        Sed pharetra odio vel elit sodales cursus.'
-                        textColor='#001f3f'
-                        bgColor='white'
-                    />
-                </div>
-            </div>
-        </>
+            </Layout>
+
+        </Layout>
+
     );
 }
+
+
+
+
+
+

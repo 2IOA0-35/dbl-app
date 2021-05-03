@@ -5,7 +5,6 @@ import About from './pages/about';
 import DataUpload from './pages/DataUpload';
 import Visualize from './pages/visualize';
 import { Menu } from 'antd';
-
 import { DataProvider } from './context/data';
 
 function App() {
