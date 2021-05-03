@@ -78,7 +78,7 @@ export default function GeneralOptions({ colList }) {
                 <Slider
                     range={{ draggableTrack: true }}
                     defaultValue={timeframe}
-                    onChange={(event) => {
+                    onAfterChange={(event) => {
                         setOptions(contextID, { ...getOptions(contextID), timeframe: event });
                     }}
                 />
@@ -87,7 +87,7 @@ export default function GeneralOptions({ colList }) {
                 <Slider
                     defaultValue={previousDays}
                     reverse
-                    onChange={(event) => {
+                    onAfterChange={(event) => {
                         setOptions(contextID, { ...getOptions(contextID), previousDays: event });
                     }}
                 />
@@ -95,7 +95,7 @@ export default function GeneralOptions({ colList }) {
             <CustomMenuItem title='Set a custom playback speed:' height='2'>
                 <Slider
                     defaultValue={playbackSpeed}
-                    onChange={(event) => {
+                    onAfterChange={(event) => {
                         setOptions(contextID, { ...getOptions(contextID), playbackSpeed: event });
                     }}
                 />

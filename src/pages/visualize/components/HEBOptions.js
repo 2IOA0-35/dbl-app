@@ -12,7 +12,7 @@ export default function HEBOptions({ colList }) {
 
     const [ getOptions, setOptions ] = useContext(GlobalContext);
 
-    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, groupBy, colorBy } = getOptions(visID);
+    const { edgeSize, dynamicEdges, groupBy, colorBy } = getOptions(visID);
 
     const columnOptions = [];
     for (let i = 0; i < colList.length; i++) {
@@ -42,30 +42,11 @@ export default function HEBOptions({ colList }) {
                     {columnOptions}
                 </Select>
             </CustomMenuItem>
-            <CustomMenuItem title='Default node size:' height='2'>
-                <Slider
-                    defaultValue={nodeSize}
-                    onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), nodeSize: event });
-                    }}
-                />
-            </CustomMenuItem>
             <CustomMenuItem title='Default edge size:' height='2'>
                 <Slider
                     defaultValue={edgeSize}
-                    onChange={(event) => {
+                    onAfterChange={(event) => {
                         setOptions(visID, { ...getOptions(visID), edgeSize: event });
-                    }}
-                />
-            </CustomMenuItem>
-            <CustomMenuItem title='Make nodes larger based on degree:' height='2'>
-                <br />
-                <Switch
-                    checkedChildren={<CheckOutlined />}
-                    unCheckedChildren={<CloseOutlined />}
-                    defaultChecked={dynamicNodes}
-                    onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), dynamicNodes: event });
                     }}
                 />
             </CustomMenuItem>

@@ -15,10 +15,9 @@ export default function Timeline() {
             <Slider
                 defaultValue={0}
                 style={{ width: '100%' }}
-                onChange={(event) => {
+                onAfterChange={(event) => {
                     setOptions(contextID, { ...getOptions(contextID), timeline: event, playing: false });
                 }}
-                value={timeline}
             />
             <Space size='middle'>
                 <Button

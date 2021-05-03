@@ -1,0 +1,34 @@
+.container {
+    background-color: #001f3f;
+    min-width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.left, .right {
+    width: 60%;
+    margin: 50px;
+}
+
+.left {
+    margin-left: 50px;
+    margin-right: auto;
+}
+
+.right {
+    margin-right: 50px;
+    margin-left: auto;
+}
+
+@media screen and (max-width: 1000px) {
+    .left, .right {
+        width: 80%;
+        margin: auto;
+        margin-top: 50px;
+    }
+
+    .container {
+        align-items: center;
+    }
+}
