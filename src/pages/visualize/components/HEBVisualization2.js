@@ -36,8 +36,8 @@ class HEBVisualization2 extends Component {
         // Switch between the three lines below to toggle between the example data and the enron sample.
 
         // const data = hierarchy(enronSample);
-        // const data = hierarchy(enron);
-        const data = hierarchyFlare(flare);
+        const data = hierarchy(enron);
+        // const data = hierarchyFlare(flare);
 
         /**
          * Designed to work with the enron dataset. 
@@ -199,12 +199,11 @@ class HEBVisualization2 extends Component {
             d3.selectAll(d.outgoing.map(([ , d ]) => d.text)).attr('fill', null).attr('font-weight', null);
         }
     }
+
     render() {
         return (
-            <svg
+            <div
                 ref={(node) => (this.node = node)}
-                width={500}
-                height={500}
                 style={{ position: 'absolute', top: 50, width: '100%', height: 'calc(100% - 50px)' }}
             />
         );

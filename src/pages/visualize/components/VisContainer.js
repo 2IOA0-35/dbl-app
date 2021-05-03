@@ -5,6 +5,7 @@ import HEBVisualization from './HEBVisualization';
 import DFDVisualization from './DFDVisualization';
 import SaveButton from './SaveButton';
 import HEBVisualization2 from './HEBVisualization2';
+import FDVisualization from './FDVisualization';
 
 export default function VisContainer() {
     const [ getOptions ] = useContext(GlobalContext);
@@ -22,7 +23,7 @@ export default function VisContainer() {
             case 'Disjoint Force-Directed':
                 return <DFDVisualization />;
             case 'Force-Directed Graph':
-                return <h1>Not yet implemented!</h1>;
+                return <FDVisualization />;
             case 'Arc Diagram':
                 return <h1>Not yet implemented!</h1>;
             case '3D force directed graph':

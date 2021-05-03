@@ -1,4 +1,5 @@
 import React, { useState, createContext } from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 
 export const GlobalContext = createContext();
@@ -7,9 +8,9 @@ export function GlobalProvider(props) {
     const [ globalOptions, setGlobalOptions ] = useState({
         column1: 'fromEmail',
         column2: 'toEmail',
-        graph1: 'Hierarchical Edge Bundling',
+        graph1: 'Force-Directed Graph',
         graph2: 'None',
-        timeframe: [ 20, 50 ],
+        timeframe: [ moment('19981112', 'YYYYMMDD'), moment('20020620', 'YYYYMMDD') ],
         previousDays: 10,
         timeline: 0,
         columnList: [

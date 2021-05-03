@@ -1,15 +1,18 @@
-import React, { Fragment, useContext } from 'react';
-import { Slider, Select } from 'antd';
+import React, { Fragment, useContext, useState } from 'react';
+import { Slider, Select, Space, DatePicker } from 'antd';
 import PropTypes from 'prop-types';
 import CustomMenuItem from './CustomMenuItem';
 import { GlobalContext } from './GlobalContext';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 export default function GeneralOptions({ colList }) {
     const [ getOptions, setOptions ] = useContext(GlobalContext);
 
     const contextID = 'Global';
+
+    const [ type, setType ] = useState('Date');
 
     const { column1, column2, graph1, graph2, timeframe, previousDays, playbackSpeed } = getOptions(contextID);
 
@@ -75,13 +78,25 @@ export default function GeneralOptions({ colList }) {
                 </Select>
             </CustomMenuItem>
             <CustomMenuItem title='Select a specific timeframe:' height='2'>
-                <Slider
-                    range={{ draggableTrack: true }}
-                    defaultValue={timeframe}
-                    onAfterChange={(event) => {
-                        setOptions(contextID, { ...getOptions(contextID), timeframe: event });
-                    }}
-                />
+                <Space>
+                    <Select value={type} onChange={setType}>
+                        <Option value='date'>Date</Option>
+                        <Option value='week'>Week</Option>
+                        <Option value='month'>Month</Option>
+                        <Option value='quarter'>Quarter</Option>
+                        <Option value='year'>Year</Option>
+                    </Select>
+                    <RangePicker
+                        picker={type}
+                        onChange={(event) => {
+                            setOptions(contextID, {
+                                ...getOptions(contextID),
+                                timeframe: [ event[0], event[1] ]
+                            });
+                        }}
+                        value={timeframe}
+                    />
+                </Space>
             </CustomMenuItem>
             <CustomMenuItem title='How many previous days are shown?' height='2'>
                 <Slider
