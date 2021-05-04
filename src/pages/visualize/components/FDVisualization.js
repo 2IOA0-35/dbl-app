@@ -8,20 +8,19 @@ import enronSample from './enronSample.json';
 import { hierarchy } from 'd3';
 
 export default function FDVisualization(container, linksData, nodesData) {
-    const [ getOptions ] = useContext(GlobalContext);
+    const [getOptions] = useContext(GlobalContext);
+    const isUpdate = useRef(false)
 
     const visID = 'Force-Directed';
     const contextID = 'Global';
-    const globalOptions = getOptions(contextID);
+    var globalOptions = getOptions(contextID);
 
-    const options = getOptions(visID);
-
-    var chart;
-
+    var data;
     var links;
     var nodes;
-    var link;
-    var node;
+    var svg;
+
+    const options = getOptions(visID);
 
     //  const [ state ] = useState({
     //      data: null
@@ -54,7 +53,7 @@ export default function FDVisualization(container, linksData, nodesData) {
                     employeeMap.set(toEmail);
                 }
                 if (!emailMap.has(`${fromEmail}${toEmail}`) && !emailMap.has(`${toEmail}${fromEmail}`)) {
-                    emailMap.set(`${fromEmail}${toEmail}`, [ fromEmail, toEmail ]);
+                    emailMap.set(`${fromEmail}${toEmail}`, [fromEmail, toEmail]);
                 }
             }
             // emailMap.get(fromEmail).children.push({ toEmail: toEmail, date: date });
@@ -80,6 +79,7 @@ export default function FDVisualization(container, linksData, nodesData) {
     // );
 
     useEffect(() => {
+        globalOptions = getOptions(contextID);
         //force graph simple just to see if it would work (it didn't)
         const drag = (simulation) => {
             function dragstarted(event) {
@@ -107,9 +107,12 @@ export default function FDVisualization(container, linksData, nodesData) {
         };
 
         const height = 600;
-        const data = hierarchy(enron);
+        data = hierarchy(enron);
         links = data.links.map((d) => Object.create(d));
         nodes = data.nodes.map((d) => Object.create(d));
+
+        //Removes old graph
+        d3.select(myRef.current).selectAll('*').remove();
 
         const simulation = d3
             .forceSimulation(nodes)
@@ -117,14 +120,14 @@ export default function FDVisualization(container, linksData, nodesData) {
             .force('charge', d3.forceManyBody())
             .force('center', d3.forceCenter(width / 2, height / 2));
 
-        const svg = d3
+        svg = d3
             .select(myRef.current)
             .append('svg')
-            .attr('viewBox', [ 0, 0, width, height ])
+            .attr('viewBox', [0, 0, width, height])
             .style('max-height', '100%')
             .style('max-width', '100%');
 
-        link = svg
+        const link = svg
             .append('g')
             .attr('stroke', '#999')
             .attr('stroke-opacity', 0.6)
@@ -156,7 +159,7 @@ export default function FDVisualization(container, linksData, nodesData) {
             node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
         });
         //invalidation.then(() => simulation.stop());
-    }, []);
+    }, [globalOptions]);
 
     return (
         // D3 visualization should go here
