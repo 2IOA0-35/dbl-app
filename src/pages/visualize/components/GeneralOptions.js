@@ -3,6 +3,7 @@ import { Slider, Select, Space, DatePicker } from 'antd';
 import PropTypes from 'prop-types';
 import CustomMenuItem from './CustomMenuItem';
 import { GlobalContext } from './GlobalContext';
+import moment from 'moment';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -100,6 +101,7 @@ export default function GeneralOptions({ colList }) {
             </CustomMenuItem>
             <CustomMenuItem title='How many previous days are shown?' height='2'>
                 <Slider
+                    max={moment.duration(timeframe[1].diff(timeframe[0])).asDays()}
                     defaultValue={previousDays}
                     reverse
                     onAfterChange={(event) => {

@@ -21,6 +21,9 @@ export default function InfoButton() {
         }
         switch (typeof value) {
             case 'object':
+                if (value._isAMomentObject) {
+                    return `${value._d}`;
+                }
                 return value.join(', ');
 
             case 'boolean':

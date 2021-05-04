@@ -12,7 +12,7 @@ export function GlobalProvider(props) {
         graph2: 'None',
         timeframe: [ moment('19981112', 'YYYYMMDD'), moment('20020620', 'YYYYMMDD') ],
         previousDays: 10,
-        timeline: 0,
+        timeline: moment('19981112', 'YYYYMMDD'),
         columnList: [
             'None',
             'date',
