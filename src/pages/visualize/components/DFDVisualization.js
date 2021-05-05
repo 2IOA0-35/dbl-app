@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 // import test from './graph.json';
 import enron from './enron.json';
 import moment from 'moment';
+import { element, node } from 'prop-types';
 // import enronSample from './enronSample.json';
 
 export default function DFDVisualization() {
@@ -50,20 +51,44 @@ export default function DFDVisualization() {
                 }
             }
         });
+        employeeMap.forEach((entry, key) => {
+            root.nodes.push({ id: key, degree:0 }); // added base degree of 0 to each node
+        });
         emailMap.forEach((entry) => {
             root.links.push({ source: entry[0], target: entry[1] });
         });
-        employeeMap.forEach((entry, key) => {
-            root.nodes.push({ id: key });
-        });
         return root;
+    }
+
+    //function to calculate degrees
+    function degrees () {
+        data.links.forEach(link =>{
+            data.nodes.forEach(node =>{
+                //update degree of the source
+                if(link.source === node.id){
+                    node.degree = node.degree +1;
+                }
+                //update degree of the target
+                if(link.target === node.id){
+                    node.degree = node.degree +1;
+                }
+                //if email sent to one's self then subtract one degree
+                if((link.source === link.target) && (link.source === node.id)){
+                    node.degree = node.degree -1;
+                }
+            })
+        });
     }
 
     useEffect(
         () => {
             data = hierarchy(enron);
+            degrees();
             links = data.links.map((d) => Object.create(d));
             nodes = data.nodes.map((d) => Object.create(d));
+             links.forEach(d => {
+                 console.log(d);
+             });
 
             //Removes old graph
             d3.select(myRef.current).selectAll('*').remove();
@@ -74,10 +99,10 @@ export default function DFDVisualization() {
 
             const simulation = d3
                 .forceSimulation(nodes)
-                .force('link', d3.forceLink(links).id((d) => d.id))
+                .force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length]))//distance linearly grows with nodes
                 .force('charge', d3.forceManyBody())
                 .force('x', d3.forceX())
-                .force('y', d3.forceY());
+                .force('y', d3.forceY());   
 
             function drag(simulation) {
                 function dragstarted(event, d) {
@@ -122,12 +147,16 @@ export default function DFDVisualization() {
                 .attr('stroke-width', 1.5)
                 .selectAll('circle')
                 .data(nodes)
+                //.
                 .join('circle')
-                .attr('r', 5)
+                .attr('r', (d) => d.degree*5)
                 .attr('fill', color)
                 .call(drag(simulation));
 
-            node.append('title').text((d) => d.id);
+                //returns email and degree on mouseover
+                node.append('title').text(function(d) {
+                    return `Email: `+d.id + `\nDegree: `+ d.degree ;
+                });
 
             simulation.on('tick', () => {
                 link

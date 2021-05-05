@@ -54,9 +54,28 @@ export default function FDVisualization() {
             root.links.push({ source: entry[0], target: entry[1] });
         });
         employeeMap.forEach((entry, key) => {
-            root.nodes.push({ id: key });
+            root.nodes.push({ id: key, degree: 0}); // added a base degree of 0 to each node
         });
         return root;
+    }
+    // function to calculate degrees
+    function degrees () {
+        data.links.forEach(link =>{
+            data.nodes.forEach(node =>{
+                //update degree of the source
+                if(link.source === node.id){
+                    node.degree = node.degree +1;
+                }
+                //update degree of the target
+                if(link.target === node.id){
+                    node.degree = node.degree +1;
+                }
+                //if email sent to one's self then subtract one degree
+                if((link.source === link.target) && (link.source === node.id)){
+                    node.degree = node.degree -1;
+                }
+            })
+        });
     }
     // useEffect(
     //     () => {
@@ -99,6 +118,7 @@ export default function FDVisualization() {
 
             const height = 600;
             data = hierarchy(enron);
+            degrees();
             links = data.links.map((d) => Object.create(d));
             nodes = data.nodes.map((d) => Object.create(d));
 
@@ -107,7 +127,7 @@ export default function FDVisualization() {
 
             const simulation = d3
                 .forceSimulation(nodes)
-                .force('link', d3.forceLink(links).id((d) => d.id))
+                .force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length])) // distance based on # of nodes
                 .force('charge', d3.forceManyBody())
                 .force('center', d3.forceCenter(width / 2, height / 2));
 
@@ -134,12 +154,17 @@ export default function FDVisualization() {
                 .selectAll('circle')
                 .data(nodes)
                 .join('circle')
-                .attr('r', 5)
+                .attr('r', (d) => d.degree*5)
                 .attr('fill', color)
                 .call(drag(simulation));
 
-            node.append('title').text((d) => d.id);
-
+            // on mouse over return email and number of degrees
+            node.append('title').text(function(d) {
+                return `Email: `+d.id + `\nDegree: `+ d.degree ;
+            });
+            // node.on("mosueover", function(d){
+            //     d3.select(this).select(text).text(d =>  return d.degree;)
+            // })
             simulation.on('tick', () => {
                 link
                     .attr('x1', (d) => d.source.x)
