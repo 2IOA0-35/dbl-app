@@ -51,7 +51,7 @@ export default function DFDVisualization() {
             }
         });
         employeeMap.forEach((entry, key) => {
-            root.nodes.push({ id: key, degree: 0, job: entry }); // added base degree of 0 to each node
+            root.nodes.push({ id: key, degree: 0, inDegree: 0, outDegree: 0, job: entry }); // added base degree of 0 to each node
         });
         emailMap.forEach((entry) => {
             root.links.push({ source: entry[0], target: entry[1] });
@@ -66,12 +66,14 @@ export default function DFDVisualization() {
                 //update degree of the source
                 if (link.source === node.id) {
                     node.degree = node.degree + 1;
+                    node.outDegree = node.outDegree + 1;
                 }
                 //update degree of the target
                 if (link.target === node.id) {
                     node.degree = node.degree + 1;
+                    node.inDegree = node.inDegree + 1;
                 }
-                //if email sent to one's self then subtract one degree
+                //if email sent to one's self then subtract one degree didn't implement anythings bout in/out regarding this
                 if (link.source === link.target && link.source === node.id) {
                     node.degree = node.degree - 1;
                 }
@@ -88,9 +90,6 @@ export default function DFDVisualization() {
             degrees();
             links = data.links.map((d) => Object.create(d));
             nodes = data.nodes.map((d) => Object.create(d));
-            // links.forEach((d) => {
-            //     console.log(d);
-            // });
 
             //Removes old graph
             d3.select(myRef.current).selectAll('*').remove();
@@ -99,15 +98,26 @@ export default function DFDVisualization() {
 
             const simulation = d3
                 .forceSimulation(nodes)
-                .force(
-                    'link',
-                    d3.forceLink(links).id((d) => d.id)
-                    //.distance([ 75 + 1.5 * data.nodes.length ])
-                ) //distance linearly grows with nodes
-                .force('charge', d3.forceManyBody().strength(-125))
+                // .force(
+                //     'link',
+                //     d3.forceLink(links).id((d) => d.id)
+                //     //.distance([ 75 + 1.5 * data.nodes.length ])
+                // ) //distance linearly grows with nodes
+                // .force('charge', d3.forceManyBody().strength(-125))
+                // .force('x', d3.forceX())
+                // .force('y', d3.forceY());
+
+                //force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length]))//distance linearly grows with nodes
+                .force('charge', d3.forceManyBody())
                 .force('x', d3.forceX())
                 .force('y', d3.forceY());
-
+            //if dynamic nodes is set then make the lines be dynamic
+            if (options.dynamicNodes) {
+                simulation.force('link', d3.forceLink(links).id((d) => d.id).distance([ 10 * data.nodes.length ]));
+            } else {
+                //otherwise keep it the same
+                simulation.force('link', d3.forceLink(links).id((d) => d.id));
+            }
             function drag(simulation) {
                 function dragstarted(event, d) {
                     if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -153,15 +163,22 @@ export default function DFDVisualization() {
                 .data(nodes)
                 //.
                 .join('circle')
-                .attr('r', (d) => 15 / globalOptions.previousDays * d.degree + 5)
+                //.attr('r', (d) => 15 / globalOptions.previousDays * d.degree + 5)
                 .attr('fill', (d) => {
                     return color(d.job);
                 })
                 .call(drag(simulation));
+            //if dynamicNodes set then make size dynamic
+            if (options.dynamicNodes) {
+                node.attr('r', (d) => d.degree * 5);
+            } else {
+                //otherwise keep default
+                node.attr('r', 5);
+            }
 
             //returns email and degree on mouseover
             node.append('title').text(function(d) {
-                return `Email: ${d.id} + \nDegree: ${d.degree} \nJob: ${d.job}`;
+                return `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`;
             });
 
             simulation.on('tick', () => {
