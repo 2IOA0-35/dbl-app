@@ -127,10 +127,16 @@ export default function FDVisualization() {
 
             const simulation = d3
                 .forceSimulation(nodes)
-                .force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length])) // distance based on # of nodes
+                //.force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length])) // distance based on # of nodes
                 .force('charge', d3.forceManyBody())
                 .force('center', d3.forceCenter(width / 2, height / 2));
-
+            //if dynamic nodes is set then make the lines be dynamic
+            if(options.dynamicNodes){
+                simulation.force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length]));
+            }
+            else{//otherwise keep it the same
+                simulation.force('link', d3.forceLink(links).id((d) => d.id));
+            }
             svg = d3
                 .select(myRef.current)
                 .append('svg')
@@ -154,10 +160,15 @@ export default function FDVisualization() {
                 .selectAll('circle')
                 .data(nodes)
                 .join('circle')
-                .attr('r', (d) => d.degree*5)
+                //.attr('r', (d) => d.degree*5)
                 .attr('fill', color)
                 .call(drag(simulation));
-
+            //if dynamicNodes set then make size dynamic
+            if(options.dynamicNodes){
+                node.attr('r', (d) => d.degree*5);
+            }else{//otherwise keep default
+                node.attr('r', 5)
+            }
             // on mouse over return email and number of degrees
             node.append('title').text(function(d) {
                 return `Email: `+d.id + `\nDegree: `+ d.degree ;
