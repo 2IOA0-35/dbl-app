@@ -7,11 +7,12 @@ import enron from './enron.json';
 // import enronSample from './enronSample.json';
 
 export default function FDVisualization() {
-    const [ getOptions ] = useContext(GlobalContext);
+    const [getOptions] = useContext(GlobalContext);
     const isUpdate = useRef(false);
 
     const visID = 'Force-Directed Graph';
     const contextID = 'Global';
+
     var globalOptions = getOptions(contextID);
 
     var data;
@@ -51,7 +52,7 @@ export default function FDVisualization() {
                     employeeMap.set(toEmail, toJobtitle);
                 }
                 if (!emailMap.has(`${fromEmail}${toEmail}`) && !emailMap.has(`${toEmail}${fromEmail}`)) {
-                    emailMap.set(`${fromEmail}${toEmail}`, [ fromEmail, toEmail ]);
+                    emailMap.set(`${fromEmail}${toEmail}`, [fromEmail, toEmail]);
                 }
             }
         });
@@ -100,140 +101,121 @@ export default function FDVisualization() {
 
     useEffect(
         () => {
-            if (!isUpdate.current) {
-                isUpdate.current = true;
-                const width = myRef.current.offsetWidth;
-                const height = myRef.current.offsetHeight;
+            isUpdate.current = true;
+            const width = myRef.current.offsetWidth;
+            const height = myRef.current.offsetHeight;
 
-                const drag = (simulation) => {
-                    function dragstarted(event) {
-                        if (!event.active) simulation.alphaTarget(0.3).restart();
-                        event.subject.fx = event.subject.x;
-                        event.subject.fy = event.subject.y;
-                    }
-
-                    function dragged(event) {
-                        event.subject.fx = event.x;
-                        event.subject.fy = event.y;
-                    }
-
-                    function dragended(event) {
-                        if (!event.active) simulation.alphaTarget(0);
-                        event.subject.fx = null;
-                        event.subject.fy = null;
-                    }
-
-                    return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended);
-                };
-
-                color = d3.scaleOrdinal(d3.schemeCategory10);
-
-                data = hierarchy(enron);
-                let maxDegree = degrees();
-                links = data.links.map((d) => Object.create(d));
-                nodes = data.nodes.map((d) => Object.create(d));
-
-                //Removes old graph
-                d3.select(myRef.current).selectAll('*').remove();
-
-                const box_force = () => {
-                    for (var i = 0, n = nodes.length; i < n; ++i) {
-                        var curr_node = nodes[i];
-                        var radius = curr_node.degree + 5;
-                        curr_node.x = Math.max(radius, Math.min(width - radius, curr_node.x));
-                        curr_node.y = Math.max(radius, Math.min(height - radius, curr_node.y));
-                    }
-                };
-
-                simulation = d3
-                    .forceSimulation(nodes)
-                    .force('charge', d3.forceManyBody().strength(nodes.length * -1))
-                    .force('center', d3.forceCenter(width / 2, height / 2))
-                    .force('box_force', box_force);
-
-                //if dynamic nodes is set then make the lines be dynamic
-                if (options.dynamicNodes) {
-                    simulation.force(
-                        'link',
-                        d3.forceLink(links).id((d) => d.id)
-                        //.distance([ 10 * data.nodes.length ])
-                    );
-                } else {
-                    //otherwise keep it the same
-                    simulation.force('link', d3.forceLink(links).id((d) => d.id));
+            const drag = (simulation) => {
+                function dragstarted(event) {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    event.subject.fx = event.subject.x;
+                    event.subject.fy = event.subject.y;
                 }
-                svg = d3
-                    .select(myRef.current)
-                    .append('svg')
-                    .attr('viewBox', [ 0, 0, width, height ])
-                    .style('height', '100%')
-                    .style('width', '100%');
 
-                link = svg
-                    .append('g')
-                    .attr('stroke', '#999')
-                    .attr('stroke-opacity', 0.6)
-                    .selectAll('line')
-                    .data(links)
-                    .join('line')
-                    .attr('stroke-width', (d) => Math.sqrt(d.value));
-
-                node = svg
-                    .append('g')
-                    .attr('stroke', '#fff')
-                    .attr('stroke-width', 1.5)
-                    .selectAll('circle')
-                    .data(nodes)
-                    .join('circle')
-                    .attr('fill', (d) => {
-                        return color(d.job);
-                    })
-                    .call(drag(simulation));
-                //if dynamicNodes set then make size dynamic
-                if (options.dynamicNodes) {
-                    node.attr('r', (d) => Math.max(d.degree / maxDegree * 20, 5));
-                } else {
-                    //otherwise keep default
-                    node.attr('r', 5);
+                function dragged(event) {
+                    event.subject.fx = event.x;
+                    event.subject.fy = event.y;
                 }
-                // on mouse over return email and number of degrees
-                node.append('title').text(function(d) {
-                    return `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`;
-                });
-                // node.on('mouseover', function(d) {
-                //     d3.select(this).select(text).text((d) => {
-                //         return d.degree;
-                //     });
-                // });
-                simulation.on('tick', () => {
-                    link
-                        .attr('x1', (d) => d.source.x)
-                        .attr('y1', (d) => d.source.y)
-                        .attr('x2', (d) => d.target.x)
-                        .attr('y2', (d) => d.target.y);
 
-                    node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
-                });
+                function dragended(event) {
+                    if (!event.active) simulation.alphaTarget(0);
+                    event.subject.fx = null;
+                    event.subject.fy = null;
+                }
+
+                return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended);
+            };
+
+            color = d3.scaleOrdinal(d3.schemeCategory10);
+
+            data = hierarchy(enron);
+            let maxDegree = degrees();
+            links = data.links.map((d) => Object.create(d));
+            nodes = data.nodes.map((d) => Object.create(d));
+
+            //Removes old graph
+            d3.select(myRef.current).selectAll('*').remove();
+
+            const box_force = () => {
+                for (var i = 0, n = nodes.length; i < n; ++i) {
+                    var curr_node = nodes[i];
+                    var radius = curr_node.degree + 5;
+                    curr_node.x = Math.max(radius, Math.min(width - radius, curr_node.x));
+                    curr_node.y = Math.max(radius, Math.min(height - radius, curr_node.y));
+                }
+            };
+
+            simulation = d3
+                .forceSimulation(nodes)
+                .force('charge', d3.forceManyBody().strength(nodes.length * -1))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('box_force', box_force);
+
+            //if dynamic nodes is set then make the lines be dynamic
+            if (options.dynamicNodes) {
+                simulation.force(
+                    'link',
+                    d3.forceLink(links).id((d) => d.id)
+                    //.distance([ 10 * data.nodes.length ])
+                );
             } else {
-                data = hierarchy(enron);
-                links = data.links.map((d) => Object.create(d));
-                nodes = data.nodes.map((d) => Object.create(d));
-                node = node.data(nodes, function(d) {
-                    return d.id;
-                });
-                node.exit.remove();
-
-                link = link.data(links, function(d) {
-                    return d.source.id + '-' + d.target.id;
-                });
-                link.exit().remove();
-
-                simulation.nodes(nodes);
-                simulation.force('link').links(links);
-                simulation.alpha(1).restart();
+                //otherwise keep it the same
+                simulation.force('link', d3.forceLink(links).id((d) => d.id));
             }
+            svg = d3
+                .select(myRef.current)
+                .append('svg')
+                .attr('viewBox', [0, 0, width, height])
+                .style('height', '100%')
+                .style('width', '100%');
+
+            link = svg
+                .append('g')
+                .attr('stroke', '#999')
+                .attr('stroke-opacity', 0.6)
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke-width', (d) => Math.sqrt(d.value));
+
+            node = svg
+                .append('g')
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 1.5)
+                .selectAll('circle')
+                .data(nodes)
+                .join('circle')
+                .attr('fill', (d) => {
+                    return color(d.job);
+                })
+                .call(drag(simulation));
+            //if dynamicNodes set then make size dynamic
+            if (options.dynamicNodes) {
+                node.attr('r', (d) => Math.max(d.degree / maxDegree * 20, 5));
+            } else {
+                //otherwise keep default
+                node.attr('r', 5);
+            }
+            // on mouse over return email and number of degrees
+            node.append('title').text(function (d) {
+                return `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`;
+            });
+            // node.on('mouseover', function(d) {
+            //     d3.select(this).select(text).text((d) => {
+            //         return d.degree;
+            //     });
+            // });
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', (d) => d.source.x)
+                    .attr('y1', (d) => d.source.y)
+                    .attr('x2', (d) => d.target.x)
+                    .attr('y2', (d) => d.target.y);
+
+                node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
+            });
         },
-        [ globalOptions, options ]
+        [globalOptions, options]
     );
 
     return (
