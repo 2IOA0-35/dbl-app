@@ -141,28 +141,23 @@ export default function FDVisualization() {
 
             const simulation = d3
                 .forceSimulation(nodes)
-<<<<<<< HEAD
-                .force(
-                    'link',
-                    d3.forceLink(links).id((d) => d.id)
-                    //.distance([ 75 + 1.5 * data.nodes.length ])
-                ) // distance based on # of nodes
+                // .force(
+                //     'link',
+                //     d3.forceLink(links).id((d) => d.id)
+                //     //.distance([ 75 + 1.5 * data.nodes.length ])
+                // ) // distance based on # of nodes
                 .force('charge', d3.forceManyBody().strength(-25))
                 .force('center', d3.forceCenter(width / 2, height / 2))
                 .force('box_force', box_force);
 
-=======
-                //.force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length])) // distance based on # of nodes
-                .force('charge', d3.forceManyBody())
-                .force('center', d3.forceCenter(width / 2, height / 2));
+            //.force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length])) // distance based on # of nodes
             //if dynamic nodes is set then make the lines be dynamic
-            if(options.dynamicNodes){
-                simulation.force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length]));
-            }
-            else{//otherwise keep it the same
+            if (options.dynamicNodes) {
+                simulation.force('link', d3.forceLink(links).id((d) => d.id).distance([ 10 * data.nodes.length ]));
+            } else {
+                //otherwise keep it the same
                 simulation.force('link', d3.forceLink(links).id((d) => d.id));
             }
->>>>>>> 9a93224b4573cbfc425755a3ccfa3828f869e3c6
             svg = d3
                 .select(myRef.current)
                 .append('svg')
@@ -186,21 +181,17 @@ export default function FDVisualization() {
                 .selectAll('circle')
                 .data(nodes)
                 .join('circle')
-<<<<<<< HEAD
-                .attr('r', (d) => 15 / globalOptions.previousDays * d.degree + 5)
+                //.attr('r', (d) => 15 / globalOptions.previousDays * d.degree + 5)
                 .attr('fill', (d) => {
                     return color(d.job);
                 })
-=======
-                //.attr('r', (d) => d.degree*5)
-                .attr('fill', color)
->>>>>>> 9a93224b4573cbfc425755a3ccfa3828f869e3c6
                 .call(drag(simulation));
             //if dynamicNodes set then make size dynamic
-            if(options.dynamicNodes){
-                node.attr('r', (d) => d.degree*5);
-            }else{//otherwise keep default
-                node.attr('r', 5)
+            if (options.dynamicNodes) {
+                node.attr('r', (d) => d.degree * 5);
+            } else {
+                //otherwise keep default
+                node.attr('r', 5);
             }
             // on mouse over return email and number of degrees
             node.append('title').text(function(d) {
