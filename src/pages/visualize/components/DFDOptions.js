@@ -12,7 +12,9 @@ export default function DFDOptions({ colList }) {
 
     const [ getOptions, setOptions ] = useContext(GlobalContext);
 
-    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, colorBy } = getOptions(visID);
+    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, colorBy, nodeScaleFactor, edgeScaleFactor } = getOptions(
+        visID
+    );
 
     const columnOptions = [];
     for (let i = 0; i < colList.length; i++) {
@@ -21,7 +23,7 @@ export default function DFDOptions({ colList }) {
 
     return (
         <Fragment>
-            <CustomMenuItem defaultValue={colorBy} title='Color nodes based on column:' height='2'>
+            {/* <CustomMenuItem defaultValue={colorBy} title='Color nodes based on column:' height='2'>
                 <Select
                     style={{ width: '100%' }}
                     onChange={(event) => {
@@ -30,9 +32,22 @@ export default function DFDOptions({ colList }) {
                 >
                     {columnOptions}
                 </Select>
+            </CustomMenuItem> */}
+            <CustomMenuItem defaultValue={colorBy} title='Color nodes based on job:' height='2'>
+                <br />
+                <Switch
+                    checkedChildren={<CheckOutlined />}
+                    unCheckedChildren={<CloseOutlined />}
+                    defaultChecked={colorBy}
+                    onChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), colorBy: event });
+                    }}
+                />
             </CustomMenuItem>
             <CustomMenuItem title='Default node size:' height='2'>
                 <Slider
+                    min={1}
+                    max={20}
                     defaultValue={nodeSize}
                     onAfterChange={(event) => {
                         setOptions(visID, { ...getOptions(visID), nodeSize: event });
@@ -41,13 +56,18 @@ export default function DFDOptions({ colList }) {
             </CustomMenuItem>
             <CustomMenuItem title='Default edge size:' height='2'>
                 <Slider
+                    max={200}
                     defaultValue={edgeSize}
                     onAfterChange={(event) => {
                         setOptions(visID, { ...getOptions(visID), edgeSize: event });
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Make nodes larger based on degree:' height='2'>
+            <CustomMenuItem
+                title='Make nodes larger based on degree:'
+                info='May be overwhelming with few nodes.'
+                height='2'
+            >
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}
@@ -58,7 +78,27 @@ export default function DFDOptions({ colList }) {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Make edges larger based on frequency:' height='2'>
+            {dynamicNodes && (
+                <CustomMenuItem
+                    title='Node scale factor:'
+                    info='By how much the radius of nodes with a high degree will be multiplied.'
+                    height='2'
+                >
+                    <Slider
+                        min={1}
+                        max={10}
+                        defaultValue={nodeScaleFactor}
+                        onAfterChange={(event) => {
+                            setOptions(visID, { ...getOptions(visID), nodeScaleFactor: event });
+                        }}
+                    />
+                </CustomMenuItem>
+            )}
+            <CustomMenuItem
+                title='Make edges larger based on frequency:'
+                info='More noticable with many links.'
+                height='2'
+            >
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}
@@ -69,6 +109,22 @@ export default function DFDOptions({ colList }) {
                     }}
                 />
             </CustomMenuItem>
+            {dynamicEdges && (
+                <CustomMenuItem
+                    title='Edge scale factor:'
+                    info='Controls how much the edge size will increase depending on the total amount of links.'
+                    height='2'
+                >
+                    <Slider
+                        min={1}
+                        max={20}
+                        defaultValue={edgeScaleFactor}
+                        onAfterChange={(event) => {
+                            setOptions(visID, { ...getOptions(visID), edgeScaleFactor: event });
+                        }}
+                    />
+                </CustomMenuItem>
+            )}
         </Fragment>
     );
 }

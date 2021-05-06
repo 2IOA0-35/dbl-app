@@ -40,6 +40,7 @@ export default function GeneralOptions({ colList }) {
         <Fragment>
             <CustomMenuItem title='Which two columns from the data are used?' height='3'>
                 <Select
+                    disabled
                     defaultValue={column1}
                     style={{ width: '100%' }}
                     onChange={(event) => {
@@ -49,6 +50,7 @@ export default function GeneralOptions({ colList }) {
                     {columnOptions}
                 </Select>
                 <Select
+                    disabled
                     defaultValue={column2}
                     style={{ width: '100%' }}
                     onChange={(event) => {
@@ -112,6 +114,7 @@ export default function GeneralOptions({ colList }) {
             </CustomMenuItem>
             <CustomMenuItem title='Set a custom playback speed:' height='2'>
                 <Slider
+                    disabled
                     defaultValue={playbackSpeed}
                     onAfterChange={(event) => {
                         setOptions(contextID, { ...getOptions(contextID), playbackSpeed: event });

@@ -19,6 +19,8 @@ export default function DFDVisualization() {
     var nodes;
     var svg;
 
+    var color;
+
     const options = getOptions(visID);
 
     const myRef = useRef();
@@ -95,24 +97,29 @@ export default function DFDVisualization() {
             //Removes old graph
             d3.select(myRef.current).selectAll('*').remove();
 
-            const color = d3.scaleOrdinal(d3.schemeCategory10);
+            color = () => {
+                return '#1890FF';
+            };
+            if (options.colorBy) {
+                color = d3.scaleOrdinal(d3.schemeCategory10);
+            }
 
             const simulation = d3
                 .forceSimulation(nodes)
-                .force('charge', d3.forceManyBody().strength(nodes.length * -1))
                 .force('x', d3.forceX())
-                .force('y', d3.forceY());
+                .force('y', d3.forceY())
+                .force('link', d3.forceLink(links).id((d) => d.id));
             //if dynamic nodes is set then make the lines be dynamic
-            if (options.dynamicNodes) {
+            if (options.dynamicEdges) {
                 simulation.force(
-                    'link',
-                    d3.forceLink(links).id((d) => d.id)
-                    //.distance([ 10 * data.nodes.length ])
+                    'charge',
+                    d3.forceManyBody().strength(links.length * -0.01 * options.edgeScaleFactor - options.edgeSize)
                 );
             } else {
                 //otherwise keep it the same
-                simulation.force('link', d3.forceLink(links).id((d) => d.id));
+                simulation.force('charge', d3.forceManyBody().strength(-options.edgeSize));
             }
+
             function drag(simulation) {
                 function dragstarted(event, d) {
                     if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -164,10 +171,10 @@ export default function DFDVisualization() {
                 .call(drag(simulation));
             //if dynamicNodes set then make size dynamic
             if (options.dynamicNodes) {
-                node.attr('r', (d) => Math.max(d.degree / maxDegree * 20, 5));
+                node.attr('r', (d) => (1 + d.degree * options.nodeScaleFactor / maxDegree) * options.nodeSize);
             } else {
                 //otherwise keep default
-                node.attr('r', 5);
+                node.attr('r', options.nodeSize);
             }
 
             //returns email and degree on mouseover

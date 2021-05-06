@@ -7,7 +7,7 @@ import enron from './enron.json';
 // import enronSample from './enronSample.json';
 
 export default function FDVisualization() {
-    const [getOptions] = useContext(GlobalContext);
+    const [ getOptions ] = useContext(GlobalContext);
     const isUpdate = useRef(false);
 
     const visID = 'Force-Directed Graph';
@@ -52,7 +52,7 @@ export default function FDVisualization() {
                     employeeMap.set(toEmail, toJobtitle);
                 }
                 if (!emailMap.has(`${fromEmail}${toEmail}`) && !emailMap.has(`${toEmail}${fromEmail}`)) {
-                    emailMap.set(`${fromEmail}${toEmail}`, [fromEmail, toEmail]);
+                    emailMap.set(`${fromEmail}${toEmail}`, [ fromEmail, toEmail ]);
                 }
             }
         });
@@ -126,7 +126,12 @@ export default function FDVisualization() {
                 return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended);
             };
 
-            color = d3.scaleOrdinal(d3.schemeCategory10);
+            color = () => {
+                return '#1890FF';
+            };
+            if (options.colorBy) {
+                color = d3.scaleOrdinal(d3.schemeCategory10);
+            }
 
             data = hierarchy(enron);
             let maxDegree = degrees();
@@ -147,25 +152,24 @@ export default function FDVisualization() {
 
             simulation = d3
                 .forceSimulation(nodes)
-                .force('charge', d3.forceManyBody().strength(nodes.length * -1))
                 .force('center', d3.forceCenter(width / 2, height / 2))
-                .force('box_force', box_force);
+                .force('box_force', box_force)
+                .force('link', d3.forceLink(links).id((d) => d.id));
 
             //if dynamic nodes is set then make the lines be dynamic
-            if (options.dynamicNodes) {
+            if (options.dynamicEdges) {
                 simulation.force(
-                    'link',
-                    d3.forceLink(links).id((d) => d.id)
-                    //.distance([ 10 * data.nodes.length ])
+                    'charge',
+                    d3.forceManyBody().strength(links.length * -0.01 * options.edgeScaleFactor - options.edgeSize)
                 );
             } else {
                 //otherwise keep it the same
-                simulation.force('link', d3.forceLink(links).id((d) => d.id));
+                simulation.force('charge', d3.forceManyBody().strength(-options.edgeSize));
             }
             svg = d3
                 .select(myRef.current)
                 .append('svg')
-                .attr('viewBox', [0, 0, width, height])
+                .attr('viewBox', [ 0, 0, width, height ])
                 .style('height', '100%')
                 .style('width', '100%');
 
@@ -191,13 +195,13 @@ export default function FDVisualization() {
                 .call(drag(simulation));
             //if dynamicNodes set then make size dynamic
             if (options.dynamicNodes) {
-                node.attr('r', (d) => Math.max(d.degree / maxDegree * 20, 5));
+                node.attr('r', (d) => (1 + d.degree * options.nodeScaleFactor / maxDegree) * options.nodeSize);
             } else {
                 //otherwise keep default
-                node.attr('r', 5);
+                node.attr('r', options.nodeSize);
             }
             // on mouse over return email and number of degrees
-            node.append('title').text(function (d) {
+            node.append('title').text(function(d) {
                 return `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`;
             });
             // node.on('mouseover', function(d) {
@@ -215,7 +219,7 @@ export default function FDVisualization() {
                 node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
             });
         },
-        [globalOptions, options]
+        [ globalOptions, options ]
     );
 
     return (

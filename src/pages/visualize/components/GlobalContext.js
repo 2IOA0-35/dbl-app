@@ -37,19 +37,23 @@ export function GlobalProvider(props) {
     });
 
     const [ DFDOptions, setDFDOptions ] = useState({
-        edgeSize: 1,
+        edgeSize: 50,
         nodeSize: 5,
-        dynamicEdges: false,
+        dynamicEdges: true,
         dynamicNodes: true,
-        colorBy: null
+        colorBy: true,
+        nodeScaleFactor: 3,
+        edgeScaleFactor: 5
     });
 
     const [ FDOptions, setFDOptions ] = useState({
-        edgeSize: 1,
+        edgeSize: 20,
         nodeSize: 5,
-        dynamicEdges: false,
+        dynamicEdges: true,
         dynamicNodes: true,
-        colorBy: null
+        colorBy: true,
+        nodeScaleFactor: 3,
+        edgeScaleFactor: 5
     });
 
     const getOptions = (visID) => {
