@@ -32,8 +32,6 @@ export default function DFDVisualization() {
         // last date: 2002-06-20
         const startDate = new Date(moment(globalOptions.timeline).subtract(globalOptions.previousDays, 'days'));
         const endDate = new Date(globalOptions.timeline);
-        // const startDate = new Date(globalOptions.timeframe[0]);
-        // const endDate = new Date(globalOptions.timeframe[1]);
 
         data.forEach((data) => {
             const { fromEmail, toEmail, date, fromJobtitle, toJobtitle } = data;
@@ -61,6 +59,7 @@ export default function DFDVisualization() {
 
     //function to calculate degrees
     function degrees() {
+        let maxDegree = 0;
         data.links.forEach((link) => {
             data.nodes.forEach((node) => {
                 //update degree of the source
@@ -77,8 +76,10 @@ export default function DFDVisualization() {
                 if (link.source === link.target && link.source === node.id) {
                     node.degree = node.degree - 1;
                 }
+                maxDegree = node.degree > maxDegree ? node.degree : maxDegree;
             });
         });
+        return maxDegree;
     }
 
     useEffect(
@@ -87,7 +88,7 @@ export default function DFDVisualization() {
             const height = myRef.current.offsetHeight;
 
             data = hierarchy(enron);
-            degrees();
+            let maxDegree = degrees();
             links = data.links.map((d) => Object.create(d));
             nodes = data.nodes.map((d) => Object.create(d));
 
@@ -98,22 +99,16 @@ export default function DFDVisualization() {
 
             const simulation = d3
                 .forceSimulation(nodes)
-                // .force(
-                //     'link',
-                //     d3.forceLink(links).id((d) => d.id)
-                //     //.distance([ 75 + 1.5 * data.nodes.length ])
-                // ) //distance linearly grows with nodes
-                // .force('charge', d3.forceManyBody().strength(-125))
-                // .force('x', d3.forceX())
-                // .force('y', d3.forceY());
-
-                //force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length]))//distance linearly grows with nodes
-                .force('charge', d3.forceManyBody())
+                .force('charge', d3.forceManyBody().strength(nodes.length * -1))
                 .force('x', d3.forceX())
                 .force('y', d3.forceY());
             //if dynamic nodes is set then make the lines be dynamic
             if (options.dynamicNodes) {
-                simulation.force('link', d3.forceLink(links).id((d) => d.id).distance([ 10 * data.nodes.length ]));
+                simulation.force(
+                    'link',
+                    d3.forceLink(links).id((d) => d.id)
+                    //.distance([ 10 * data.nodes.length ])
+                );
             } else {
                 //otherwise keep it the same
                 simulation.force('link', d3.forceLink(links).id((d) => d.id));
@@ -163,14 +158,13 @@ export default function DFDVisualization() {
                 .data(nodes)
                 //.
                 .join('circle')
-                //.attr('r', (d) => 15 / globalOptions.previousDays * d.degree + 5)
                 .attr('fill', (d) => {
                     return color(d.job);
                 })
                 .call(drag(simulation));
             //if dynamicNodes set then make size dynamic
             if (options.dynamicNodes) {
-                node.attr('r', (d) => d.degree * 5);
+                node.attr('r', (d) => Math.max(d.degree / maxDegree * 20, 5));
             } else {
                 //otherwise keep default
                 node.attr('r', 5);
@@ -191,7 +185,7 @@ export default function DFDVisualization() {
                 node.attr('cx', (d) => d.x).attr('cy', (d) => d.y);
             });
         },
-        [ globalOptions ]
+        [ globalOptions, options ]
     );
 
     return (

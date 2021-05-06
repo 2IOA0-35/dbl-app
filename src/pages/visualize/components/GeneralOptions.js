@@ -102,6 +102,7 @@ export default function GeneralOptions({ colList }) {
             <CustomMenuItem title='How many previous days are shown?' height='2'>
                 <Slider
                     max={moment.duration(timeframe[1].diff(timeframe[0])).asDays()}
+                    min={1}
                     defaultValue={previousDays}
                     reverse
                     onAfterChange={(event) => {

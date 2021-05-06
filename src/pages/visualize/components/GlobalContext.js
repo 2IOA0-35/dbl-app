@@ -40,7 +40,15 @@ export function GlobalProvider(props) {
         edgeSize: 1,
         nodeSize: 5,
         dynamicEdges: false,
-        dynamicNodes: false,
+        dynamicNodes: true,
+        colorBy: null
+    });
+
+    const [ FDOptions, setFDOptions ] = useState({
+        edgeSize: 1,
+        nodeSize: 5,
+        dynamicEdges: false,
+        dynamicNodes: true,
         colorBy: null
     });
 
@@ -53,7 +61,7 @@ export function GlobalProvider(props) {
             case 'Disjoint Force-Directed':
                 return DFDOptions;
             case 'Force-Directed Graph':
-                return {};
+                return FDOptions;
             case 'Arc Diagram':
                 return {};
             case '3D force directed graph':
@@ -76,6 +84,7 @@ export function GlobalProvider(props) {
                 setDFDOptions(options);
                 break;
             case 'Force-Directed Graph':
+                setFDOptions(options);
                 break;
             case 'Arc Diagram':
                 break;
