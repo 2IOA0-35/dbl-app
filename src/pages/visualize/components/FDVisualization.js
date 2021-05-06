@@ -21,7 +21,6 @@ export default function FDVisualization() {
     const options = getOptions(visID);
 
     const myRef = useRef();
-    const width = 900;
 
     function hierarchy(data) {
         let root = { links: [], nodes: [] };
@@ -36,14 +35,14 @@ export default function FDVisualization() {
         // const endDate = new Date(globalOptions.timeframe[1]);
 
         data.forEach((data) => {
-            const { fromEmail, toEmail, date } = data;
+            const { fromEmail, toEmail, date, fromJobtitle, toJobtitle } = data;
             const emailDate = moment(date);
             if (emailDate >= startDate && emailDate <= endDate) {
                 if (!employeeMap.has(fromEmail)) {
-                    employeeMap.set(fromEmail);
+                    employeeMap.set(fromEmail, fromJobtitle);
                 }
                 if (!employeeMap.has(toEmail)) {
-                    employeeMap.set(toEmail);
+                    employeeMap.set(toEmail, toJobtitle);
                 }
                 if (!emailMap.has(`${fromEmail}${toEmail}`) && !emailMap.has(`${toEmail}${fromEmail}`)) {
                     emailMap.set(`${fromEmail}${toEmail}`, [ fromEmail, toEmail ]);
@@ -54,27 +53,27 @@ export default function FDVisualization() {
             root.links.push({ source: entry[0], target: entry[1] });
         });
         employeeMap.forEach((entry, key) => {
-            root.nodes.push({ id: key, degree: 0}); // added a base degree of 0 to each node
+            root.nodes.push({ id: key, degree: 0, job: entry }); // added a base degree of 0 to each node
         });
         return root;
     }
     // function to calculate degrees
-    function degrees () {
-        data.links.forEach(link =>{
-            data.nodes.forEach(node =>{
+    function degrees() {
+        data.links.forEach((link) => {
+            data.nodes.forEach((node) => {
                 //update degree of the source
-                if(link.source === node.id){
-                    node.degree = node.degree +1;
+                if (link.source === node.id) {
+                    node.degree = node.degree + 1;
                 }
                 //update degree of the target
-                if(link.target === node.id){
-                    node.degree = node.degree +1;
+                if (link.target === node.id) {
+                    node.degree = node.degree + 1;
                 }
                 //if email sent to one's self then subtract one degree
-                if((link.source === link.target) && (link.source === node.id)){
-                    node.degree = node.degree -1;
+                if (link.source === link.target && link.source === node.id) {
+                    node.degree = node.degree - 1;
                 }
-            })
+            });
         });
     }
     // useEffect(
@@ -90,7 +89,11 @@ export default function FDVisualization() {
 
     useEffect(
         () => {
-            globalOptions = getOptions(contextID);
+            //globalOptions = getOptions(contextID);
+
+            const width = myRef.current.offsetWidth;
+            const height = myRef.current.offsetHeight;
+
             const drag = (simulation) => {
                 function dragstarted(event) {
                     if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -111,25 +114,41 @@ export default function FDVisualization() {
 
                 return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended);
             };
-            const color = () => {
-                const scale = d3.scaleOrdinal(d3.schemeCategory10);
-                return (d) => scale(d.group);
-            };
+            // const color = (d) => {
+            //     const scale = d3.scaleOrdinal(d3.schemeCategory10);
+            //     return scale(d.job);
+            // };
 
-            const height = 600;
+            const color = d3.scaleOrdinal(d3.schemeCategory10);
+
             data = hierarchy(enron);
             degrees();
             links = data.links.map((d) => Object.create(d));
             nodes = data.nodes.map((d) => Object.create(d));
+            console.log(data);
 
             //Removes old graph
             d3.select(myRef.current).selectAll('*').remove();
 
+            function box_force() {
+                for (var i = 0, n = nodes.length; i < n; ++i) {
+                    var curr_node = nodes[i];
+                    var radius = curr_node.degree + 5;
+                    curr_node.x = Math.max(radius, Math.min(width - radius, curr_node.x));
+                    curr_node.y = Math.max(radius, Math.min(height - radius, curr_node.y));
+                }
+            }
+
             const simulation = d3
                 .forceSimulation(nodes)
-                .force('link', d3.forceLink(links).id((d) => d.id).distance([10*data.nodes.length])) // distance based on # of nodes
-                .force('charge', d3.forceManyBody())
-                .force('center', d3.forceCenter(width / 2, height / 2));
+                .force(
+                    'link',
+                    d3.forceLink(links).id((d) => d.id)
+                    //.distance([ 75 + 1.5 * data.nodes.length ])
+                ) // distance based on # of nodes
+                .force('charge', d3.forceManyBody().strength(-25))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('box_force', box_force);
 
             svg = d3
                 .select(myRef.current)
@@ -154,13 +173,15 @@ export default function FDVisualization() {
                 .selectAll('circle')
                 .data(nodes)
                 .join('circle')
-                .attr('r', (d) => d.degree*5)
-                .attr('fill', color)
+                .attr('r', (d) => 15 / globalOptions.previousDays * d.degree + 5)
+                .attr('fill', (d) => {
+                    return color(d.job);
+                })
                 .call(drag(simulation));
 
             // on mouse over return email and number of degrees
             node.append('title').text(function(d) {
-                return `Email: `+d.id + `\nDegree: `+ d.degree ;
+                return `Email: ${d.id} + \nDegree: ${d.degree} \nJob: ${d.job}`;
             });
             // node.on("mosueover", function(d){
             //     d3.select(this).select(text).text(d =>  return d.degree;)

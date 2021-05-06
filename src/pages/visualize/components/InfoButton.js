@@ -16,22 +16,10 @@ export default function InfoButton() {
     const dataGraph2 = [];
 
     const parseValue = (value) => {
-        if (value == null) {
-            return 'null';
+        if (Array.isArray(value)) {
+            return `${value.join(', ')}`;
         }
-        switch (typeof value) {
-            case 'object':
-                if (value._isAMomentObject) {
-                    return `${value._d}`;
-                }
-                return value.join(', ');
-
-            case 'boolean':
-                return value ? 'true' : 'false';
-
-            default:
-                return value;
-        }
+        return `${value}`;
     };
 
     for (const [ key, value ] of Object.entries(values)) {

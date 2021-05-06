@@ -5,7 +5,7 @@ import GeneralOptions from './GeneralOptions';
 import HEBOptions from './HEBOptions';
 import DFDOptions from './DFDOptions';
 import { Link } from 'react-router-dom';
-import { SettingOutlined, SlidersOutlined, FileSearchOutlined } from '@ant-design/icons';
+import { SettingOutlined, SlidersOutlined, FileSearchOutlined, ReadOutlined } from '@ant-design/icons';
 import { Menu, Layout, Button } from 'antd';
 import './OptionsSidebar.css';
 
@@ -35,6 +35,8 @@ export default function OptionsSidebar() {
             case 'Arc Diagram':
                 return <CustomMenuItem title='Not yet implemented!' height='1' />;
             case '3D force directed graph':
+                return <CustomMenuItem title='Not yet implemented!' height='1' />;
+            case 'Manual':
                 return <CustomMenuItem title='Not yet implemented!' height='1' />;
 
             default:
@@ -87,6 +89,11 @@ export default function OptionsSidebar() {
                 {/* Disabled by default, active when two graphs are shown simultaniously */}
                 <SubMenu key='sub3' icon={<SlidersOutlined />} title='Options For Graph #2'>
                     {renderOptions(graph2)}
+                </SubMenu>
+
+                {/* Might change to button (Menu.Item) that opens a Modal */}
+                <SubMenu key='sub4' icon={<ReadOutlined />} title='User Manual'>
+                    {renderOptions('Manual')}
                 </SubMenu>
             </Menu>
         </Sider>
