@@ -20,7 +20,7 @@ The project will be created using React for the web frontend. For now, a server 
 
 ## Visualisations
 
-Our primary focus for visualisations for the first sprint will include:
+Our primary focus for visualisations for the first sprint included:
  - [Hierarchical Edge Bundling](https://observablehq.com/@d3/hierarchical-edge-bundling)
  - [Disjoint Foce-Directed Graph](https://observablehq.com/@d3/disjoint-force-directed-graph)
 
@@ -93,16 +93,7 @@ This document includes an exported list of the issues (tasks) and wishes present
 <div style="page-break-after: always;"></div>
 
 # Planned Tasks
-|Issue|Assignee|Labels|
-|----|----|----|
-|#1.8: Implement About Page Layout|Hugo van Schalm|priority: 2, size: medium|
-|#1.10: Update the Home Page|Christine Jacob|priority: 3, size: medium|
-|#1.11: Site Navigation|Anke Staal|priority: 2, size: medium|
-|#2.3: Implement visualisations|Kristopher Schlett, Aloys Riswick|priority: 2, size: large|
-|#5.1: Abstract & Introduction, Related work|-|priority: 3, size: small|
-|#5.2: Visualization & interaction techniques, Use case / data-set findings / application example |-|priority: 2, size: medium|
-|#5.3: Discussion and limitations, Conclusion and future work|-|priority: 3, size: small|
-|#7.3: Submit to Tutor|-|priority: 1, size: small|
+*None*
 
 <div style="page-break-after: always;"></div>
 
@@ -116,10 +107,17 @@ This document includes an exported list of the issues (tasks) and wishes present
 |#1.5 Research Web Frameworks HTML, JS, React, CSS|Everyone|priority: 1, size: large|
 |#1.6: Create a home page|Hugo van Schalm|priority: 3, size: medium|
 |#1.7: Implement Visualisation Page Layout|Aloys Riswick|priority: 1, size: medium|
+|#1.8: Implement About Page Layout|Hugo van Schalm|priority: 2, size: medium|
 |#1.9: Implement Data Upload Page Layout|Kristopher Schlett|priority: 2, size: medium|
+|#1.10: Update the Home Page|Christine Jacob|priority: 3, size: medium|
+|#1.11: Site Navigation|Anke Staal|priority: 2, size: medium|
 |#2.1: Research Visualisations|Aloys Riswick|priority: 1, size: large|
 |#2.2: Choose library/libraries|Aloys Riswick|priority: 1, size: medium|
+|#2.3: Implement visualisations|Kristopher Schlett, Aloys Riswick, Hugo van Schalm|priority: 2, size: large|
 |#3.1: Create a Data Parser|Tom van Liempd|priority: 1, size: medium|
 |#3.2: Integrate the upload and parsing of the dataset|Tom van Liempd|priority: 1, size: medium|
+|#5.1: Abstract & Introduction, Related work|Anke Staal|priority: 3, size: small|
+|#5.2: Visualization & interaction techniques, Use case / data-set findings / application example|Christine Jacob, Tom van Liempd|priority: 2, size: medium|
 |#7.1: Submit to Tutor|Tom van Liempd|priority: 1, size: small|
 |#7.2: Submit to Tutor|Tom van Liempd|priority: 1, size: small|
+|#7.3: Submit to Tutor|Tom van Liempd|priority: 1, size: small|
