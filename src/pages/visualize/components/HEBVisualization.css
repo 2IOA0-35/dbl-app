@@ -1,0 +1,42 @@
+path.arc {
+    cursor: move;
+    fill: #fff;
+}
+
+.node {
+    font-size: 10px;
+}
+
+.node:hover {
+    fill: black;
+}
+
+.link {
+    fill: none;
+    stroke: rgb(68, 68, 68);
+    stroke-opacity: .4;
+    pointer-events: none;
+    stroke-width: 1px;
+}
+
+.link-source,
+.link-target {
+    stroke-opacity: 1;
+    stroke-width: 2px;
+}
+
+.node-target {
+    fill: #e67e29 !important;
+}
+
+.link-source {
+    stroke: #e67e29;
+}
+
+.node-source {
+    fill: #1890ff;
+}
+
+.link-target {
+    stroke: #1890ff;
+}

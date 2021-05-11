@@ -179,7 +179,7 @@ export default function DFDVisualization() {
 
             //returns email and degree on mouseover
             node.append('title').text(function(d) {
-                return `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`;
+                return `Email: ${d.id} \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`;
             });
 
             simulation.on('tick', () => {

@@ -202,7 +202,7 @@ export default function FDVisualization() {
             }
             // on mouse over return email and number of degrees
             node.append('title').text(function(d) {
-                return `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`;
+                return `Email: ${d.id} \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`;
             });
             // node.on('mouseover', function(d) {
             //     d3.select(this).select(text).text((d) => {
@@ -225,7 +225,6 @@ export default function FDVisualization() {
     return (
         // D3 visualization should go here
         <div>
-            {console.log('render')}
             <h1 style={{ margin: '10px 20px' }}>{visID}</h1>
             <div ref={myRef} style={{ position: 'absolute', top: 50, width: '100%', height: 'calc(100% - 50px)' }} />
         </div>

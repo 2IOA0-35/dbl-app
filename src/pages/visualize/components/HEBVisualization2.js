@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 import flare from './flare.json';
 import enron from './enron.json';
 import enronSample from './enronSample.json';
+import './HEBVisualization.css';
 
 /**
  * This file exists because I wanted to try the alternative method of implementing a d3 graph
@@ -36,8 +37,8 @@ class HEBVisualization2 extends Component {
         // Switch between the three lines below to toggle between the example data and the enron sample.
 
         // const data = hierarchy(enronSample);
-        const data = hierarchy(enron);
-        // const data = hierarchyFlare(flare);
+        //const data = hierarchy(enron);
+        const data = hierarchyFlare(flare);
 
         /**
          * Designed to work with the enron dataset. 
@@ -62,7 +63,7 @@ class HEBVisualization2 extends Component {
             });
             // console.log('emailmap', map, 'jobmap', jobMap);
             emailMap.forEach((entry, key) => {
-                jobMap.get(entry.fromJobtitle).children.push({ name: key, children: entry.children });
+                jobMap.get(entry.fromJobtitle).children.push({ name: key, children: { imports: entry.children } });
             });
             jobMap.forEach((entry, key) => {
                 root.children.push({ name: key, children: entry.children });
@@ -91,21 +92,34 @@ class HEBVisualization2 extends Component {
         }
 
         // The hierarchy function works as intended:
-        console.log(data);
+        console.log('d3 hierarchy', d3.hierarchy(data));
 
         // TODO: fix this mess. flare used "imports".
         // I have made each email a seperate array with date, instead of putting all toEmails in a single array
         // This is because I wanted to include the time.
         // the point is, is that the format is slightly different and this function will need to be altered.
-        function bilink(root) {
+        function bilinkEnron(root) {
             const map = new Map(root.leaves().map((d) => [ id(d), d ]));
-            for (const d of root.leaves())
-                (d.incoming = []), (d.outgoing = d.data.imports.map((i) => [ d, map.get(i) ]));
+            console.log(map);
+            for (const d of root.leaves()) {
+                (d.incoming = []),
+                    (d.outgoing = d.data.children.imports.map((i) => [ d.data.name, map.get(id(i.toEmail)) ]));
+                console.log(d.outgoing[0]);
+            }
             for (const d of root.leaves()) {
                 for (const o of d.outgoing) {
                     o[1].incoming.push(o);
                 }
             }
+            return root;
+        }
+
+        function bilink(root) {
+            const map = new Map(root.leaves().map((d) => [ id(d), d ]));
+            for (const d of root.leaves())
+                (d.incoming = []), (d.outgoing = d.data.imports.map((i) => [ d, map.get(i) ]));
+            for (const d of root.leaves()) for (const o of d.outgoing) o[1].incoming.push(o);
+            console.log(root);
             return root;
         }
 
@@ -142,8 +156,7 @@ class HEBVisualization2 extends Component {
         // TODO: check if use of 'name' here causes a conflict
         svg
             .append('g')
-            .attr('font-family', 'sans-serif')
-            .attr('font-size', 10)
+            .classed('node', true)
             .selectAll('g')
             .data(root.leaves())
             .join('g')
@@ -169,34 +182,35 @@ class HEBVisualization2 extends Component {
 
         const link = svg
             .append('g')
-            .attr('stroke', colornone)
-            .attr('stroke-width', 1)
-            .attr('fill', 'none')
+            .classed('link', true)
+            // .attr('stroke', colornone)
+            // .attr('stroke-width', 1)
+            // .attr('fill', 'none')
             .selectAll('path')
             .data(root.leaves().flatMap((leaf) => leaf.outgoing))
             .join('path')
-            .style('mix-blend-mode', 'multiply')
+            //.style('mix-blend-mode', 'multiply')
             .attr('d', ([ i, o ]) => line(i.path(o)))
             .each(function(d) {
                 d.path = this;
             });
 
         function overed(event, d) {
-            link.style('mix-blend-mode', null);
+            // link.style('mix-blend-mode', null);
             d3.select(this).attr('font-weight', 'bold');
-            d3.selectAll(d.incoming.map((d) => d.path)).attr('stroke', colorin).raise();
-            d3.selectAll(d.incoming.map(([ d ]) => d.text)).attr('fill', colorin).attr('font-weight', 'bold');
-            d3.selectAll(d.outgoing.map((d) => d.path)).attr('stroke', colorout).raise();
-            d3.selectAll(d.outgoing.map(([ , d ]) => d.text)).attr('fill', colorout).attr('font-weight', 'bold');
+            d3.selectAll(d.incoming.map((d) => d.path)).classed('link-target', true).raise();
+            d3.selectAll(d.incoming.map(([ d ]) => d.text)).classed('node-source', true);
+            d3.selectAll(d.outgoing.map((d) => d.path)).classed('link-source', true).raise();
+            d3.selectAll(d.outgoing.map(([ , d ]) => d.text)).classed('node-target', true);
         }
 
         function outed(event, d) {
-            link.style('mix-blend-mode', 'multiply');
+            // link.style('mix-blend-mode', 'multiply');
             d3.select(this).attr('font-weight', null);
-            d3.selectAll(d.incoming.map((d) => d.path)).attr('stroke', null);
-            d3.selectAll(d.incoming.map(([ d ]) => d.text)).attr('fill', null).attr('font-weight', null);
-            d3.selectAll(d.outgoing.map((d) => d.path)).attr('stroke', null);
-            d3.selectAll(d.outgoing.map(([ , d ]) => d.text)).attr('fill', null).attr('font-weight', null);
+            d3.selectAll(d.incoming.map((d) => d.path)).classed('link-target', false).raise();
+            d3.selectAll(d.incoming.map(([ d ]) => d.text)).classed('node-source', false);
+            d3.selectAll(d.outgoing.map((d) => d.path)).classed('link-source', false).raise();
+            d3.selectAll(d.outgoing.map(([ , d ]) => d.text)).classed('node-target', false);
         }
     }
 
