@@ -41,7 +41,7 @@ export default function Timeline() {
     }, [ timeline ] );
 
     return (
-        <Row justify='center' style={{ padding: '20px 100px' }}>
+        <Row justify='center' style={{ padding: '20px 50px' }}>
             <Slider
                 marks={marks}
                 max={maxDate}

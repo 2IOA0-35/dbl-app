@@ -27,8 +27,7 @@ export default function OptionsSidebar() {
     const renderOptions = (graph) => {
         switch (graph) {
             case 'Hierarchical Edge Bundling':
-                //return <HEBOptions colList={columnList} />;
-                return <CustomMenuItem title='Not yet implemented!' height='1' />;
+                return <HEBOptions colList={columnList} />;
             case 'Disjoint Force-Directed':
                 return <DFDOptions colList={columnList} />;
             case 'Force-Directed Graph':

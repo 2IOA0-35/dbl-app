@@ -151,22 +151,7 @@ export default function HEBVisualization() {
 
     return (
         <div>
-            {console.log('render')}
             <h1 style={{ margin: '10px 20px' }}>{visID}</h1>
-            {/* <p>Temporary to show that passing data works:</p>
-            <p>
-                {edgeSize +
-                    ' - ' +
-                    nodeSize +
-                    ' - ' +
-                    dynamicEdges +
-                    ' - ' +
-                    dynamicNodes +
-                    ' - ' +
-                    groupBy +
-                    ' - ' +
-                    colorBy}
-            </p> */}
             <div ref={myRef} style={{ position: 'absolute', top: 50, width: '100%', height: 'calc(100% - 50px)' }} />
         </div>
     );
