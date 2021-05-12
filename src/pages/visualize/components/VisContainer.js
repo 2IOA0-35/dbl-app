@@ -18,7 +18,8 @@ export default function VisContainer() {
     const renderVisualizations = (graph) => {
         switch (graph) {
             case 'Hierarchical Edge Bundling':
-                return <HEBVisualization2 />;
+                // return <HEBVisualization2 />;
+                return <HEBVisualization />;
             // return <h1>Not yet implemented!</h1>;
             case 'Disjoint Force-Directed':
                 return <DFDVisualization />;
