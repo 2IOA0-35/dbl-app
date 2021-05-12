@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import moment from 'moment';
 import { GlobalContext } from './GlobalContext';
 import * as d3 from 'd3';
-import enron from './enron.json';
+import { DataContext } from '../../../context/data';
 
 const VIS_ID = 'Force-Directed Graph';
 const CONTEXT_ID = 'Global';
@@ -22,13 +22,7 @@ export default function FDVisualization() {
         update: null,
     } );
 
-    let [ dataset ] = useState(
-        /**
-         * Dataset to use
-         * @type {{fromEmail, toEmail, date, fromJobtitle, toJobtitle}[]}
-         */
-        enron
-    );
+    let [ dataset ] = React.useContext( DataContext );
 
     let [ formattedData, setFormattedData ] = useState(
         /**

@@ -5,15 +5,23 @@ import flare from './flare.json';
 import enron from './enron.json';
 import './HEBVisualization.css';
 import moment from 'moment';
+import { DataContext } from '../../../context/data';
+import { message } from 'antd';
 
 const VIS_ID     = 'Hierarchical Edge Bundling';
 const CONTEXT_ID = 'Global';
+
+/**
+ * Threshold of the maximum amount of e-mails allowed before fastRender is enabled.
+ */
+const FAST_RENDER_THRESHOLD = 15000;
 
 export default function HEBVisualization() {
 
     //const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, groupBy, colorBy } = getOptions(visID);
 
     const [ getOptions ] = useContext( GlobalContext );
+
 
     const globalOptions = getOptions( CONTEXT_ID );
 
@@ -24,13 +32,8 @@ export default function HEBVisualization() {
         update: null,
     } );
 
-    let [ dataset ] = useState(
-        /**
-         * Dataset to use
-         * @type {{fromEmail, toEmail, date, fromJobtitle, toJobtitle}[]}
-         */
-        enron
-    );
+    
+    let [ dataset ] = React.useContext( DataContext );
 
     let [ formattedData, setFormattedData ] = useState(
         /**
@@ -77,11 +80,11 @@ export default function HEBVisualization() {
 
             root = tree( root );
 
-            let nodes = node.selectAll('g')
-                .data(root.leaves());
+            node.selectAll( 'g' ).selectAll( 'text' ).remove();
 
-            nodes.enter()
-                .append( 'g' )
+            node.selectAll('g')
+                .data(root.leaves())
+                .join( 'g' )
                 .attr('transform', (d) => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y},0)` )
                 .append('text')
                 .attr('dy', '0.31em')
@@ -97,15 +100,25 @@ export default function HEBVisualization() {
                 .call((text) =>
                     text.append('title').text(
                         (d) => `${d.data.name} (${d.data.jobtitle})
-                            ${d.outgoing?.length} outgoing
-                            ${d.incoming?.length} incoming`
+${d.outgoing?.length} outgoing
+${d.incoming?.length} incoming`
                     )
                 );
+                        
+            let links = root.leaves().flatMap((leaf) => leaf.outgoing);
+            let enableFastRender = links.length > FAST_RENDER_THRESHOLD;
 
-            nodes.exit().remove();
+            if( !enableFastRender && svg.classed( 'fastRender' ) ) {
+                message.info( 'Fast rendering mode disabled.' );
+            } else if( enableFastRender && !svg.classed( 'fastRender' ) ) {
+                message.info( 'Fast rendering mode enabled.' );
+            }
+
+            console.log( links.length, enableFastRender );
+            svg.classed( 'fastRender', enableFastRender );
 
             link.selectAll('path')
-                .data(root.leaves().flatMap((leaf) => leaf.outgoing))
+                .data(links)
                 .join('path')
                 //.style('mix-blend-mode', 'multiply')
                 .attr('d', ([ i, o ]) => line(i.path(o)) )
@@ -143,6 +156,9 @@ export default function HEBVisualization() {
     }, [] );
 
     useEffect( () => {
+
+        if( !dataset )
+            return;
 
         //Will be populated with the dataset converted to hierarchical structure
         let root = { name: 'data', children: [] };
@@ -193,7 +209,10 @@ export default function HEBVisualization() {
 
             for ( const d of root.leaves() ) {
                 d.incoming = [];
-                d.outgoing = d.data.children.mails.map( ( i ) => [d, map.get( i.toEmail )] );
+                d.outgoing = d.data?.children?.mails?.map( ( i ) => [d, map.get( i.toEmail )] );
+
+                if( !d.outgoing )
+                    d.outgoing = [];
             }
 
             for ( const d of root.leaves() ) {
