@@ -15,7 +15,7 @@ export default function HEBVisualization() {
     const myRef = useRef();
 
     useEffect(() => {
-        const data = hierarchyFlare(flare);
+        const data = hierarchy(enron);
 
         /**
          * Designed to work with the enron dataset. 
@@ -29,12 +29,15 @@ export default function HEBVisualization() {
             const emailMap = new Map();
             const jobMap = new Map();
             data.forEach((data) => {
-                const { fromJobtitle, fromEmail, toEmail, date } = data;
+                const { fromJobtitle, fromEmail, toEmail, toJobtitle, date } = data;
                 if (!jobMap.has(fromJobtitle)) {
                     jobMap.set(fromJobtitle, { children: [] });
                 }
                 if (!emailMap.get(fromEmail)) {
                     emailMap.set(fromEmail, { children: [], fromJobtitle: fromJobtitle });
+                }
+                if (!emailMap.get(toEmail)) {
+                    emailMap.set(toEmail, { children: [], fromJobtitle: toJobtitle });
                 }
                 emailMap.get(fromEmail).children.push({ toEmail: toEmail, date: date });
             });
@@ -76,13 +79,13 @@ export default function HEBVisualization() {
         // This is because I wanted to include the time.
         // the point is, is that the format is slightly different and this function will need to be altered.
         function bilinkEnron(root) {
-            const map = new Map(root.leaves().map((d) => [ id(d), d ]));
-            console.log(map);
+            const map = new Map(root.leaves().map((d) => [ d.data.name, d ]));
+
             for (const d of root.leaves()) {
-                (d.incoming = []),
-                    (d.outgoing = d.data.children.imports.map((i) => [ d.data.name, map.get(id(i.toEmail)) ]));
-                console.log(d.outgoing[0]);
+                d.incoming = [];
+                d.outgoing = d.data.children.imports.map( ( i ) => [ d, map.get( i.toEmail ) ]);
             }
+
             for (const d of root.leaves()) {
                 for (const o of d.outgoing) {
                     o[1].incoming.push(o);
@@ -112,7 +115,7 @@ export default function HEBVisualization() {
 
         // TODO: check if use of 'name' here causes a conflict
         const root = tree(
-            bilink(
+            bilinkEnron(
                 d3
                     .hierarchy(data)
                     .sort((a, b) => d3.ascending(a.height, b.height) || d3.ascending(a.data.name, b.data.name))
@@ -164,7 +167,7 @@ export default function HEBVisualization() {
             .data(root.leaves().flatMap((leaf) => leaf.outgoing))
             .join('path')
             //.style('mix-blend-mode', 'multiply')
-            .attr('d', ([ i, o ]) => line(i.path(o)))
+            .attr('d', ([ i, o ]) => line(i.path(o)) )
             .each(function(d) {
                 d.path = this;
             });
