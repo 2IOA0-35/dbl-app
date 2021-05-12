@@ -20,11 +20,6 @@ export default function FDVisualization() {
          * @type {( nodes, links, maxDegree, options ) => void}
          */
         update: null,
-
-        /**
-         * @type {( width, height ) => void}
-         */
-        resize: null,
     } );
 
     let [ dataset ] = useState(

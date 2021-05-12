@@ -21,17 +21,6 @@ export default function HEBOptions({ colList }) {
 
     return (
         <Fragment>
-            <CustomMenuItem title='Group items based on column:' height='2'>
-                <Select
-                    defaultValue={groupBy}
-                    style={{ width: '100%' }}
-                    onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), groupBy: event });
-                    }}
-                >
-                    {columnOptions}
-                </Select>
-            </CustomMenuItem>
             <CustomMenuItem defaultValue={colorBy} title='Color nodes based on column:' height='2'>
                 <Select
                     style={{ width: '100%' }}

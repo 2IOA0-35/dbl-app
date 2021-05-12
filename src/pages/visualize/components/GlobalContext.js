@@ -8,7 +8,7 @@ export function GlobalProvider(props) {
     const [ globalOptions, setGlobalOptions ] = useState({
         column1: 'fromEmail',
         column2: 'toEmail',
-        graph1: 'Force-Directed Graph',
+        graph1: 'Hierarchical Edge Bundling',
         graph2: 'None',
         timeframe: [ moment('19981112', 'YYYYMMDD'), moment('20020620', 'YYYYMMDD') ],
         previousDays: 10,
@@ -32,7 +32,6 @@ export function GlobalProvider(props) {
     const [ HEBOptions, setHEBOptions ] = useState({
         edgeSize: 1,
         dynamicEdges: false,
-        groupBy: null,
         colorBy: null
     });
 
