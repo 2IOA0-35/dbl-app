@@ -13,10 +13,10 @@ path.arc {
 
 .link {
     fill: none;
-    stroke: rgb(68, 68, 68);
+    stroke: #444444;
     stroke-opacity: .4;
     pointer-events: none;
-    stroke-width: 1px;
+    stroke-linecap: round;
 }
 
 .link-source,
@@ -44,4 +44,8 @@ path.arc {
 svg.fastRender {
     shape-rendering: optimizeSpeed;
     text-rendering: optimizeSpeed;
+}
+
+.capitalize {
+    text-transform: capitalize;
 }

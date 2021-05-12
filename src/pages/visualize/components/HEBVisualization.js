@@ -7,6 +7,7 @@ import './HEBVisualization.css';
 import moment from 'moment';
 import { DataContext } from '../../../context/data';
 import { message } from 'antd';
+import ColumnGroup from 'antd/lib/table/ColumnGroup';
 
 const VIS_ID     = 'Hierarchical Edge Bundling';
 const CONTEXT_ID = 'Global';
@@ -46,13 +47,14 @@ export default function HEBVisualization() {
         null
     );
 
+    const options = getOptions( VIS_ID );
+
     const visBox = useRef();
 
     useEffect(() => {
 
         const width = 850;
         const radius = width / 2;
-        const line = d3.lineRadial().curve(d3.curveBundle.beta(0.85)).radius((d) => d.y).angle((d) => d.x);
         const tree = d3.cluster().size([ 2 * Math.PI, radius - 100 ]);
 
         const root = d3.hierarchy( { name: '', children: [] } );
@@ -65,8 +67,8 @@ export default function HEBVisualization() {
             .select(visBox.current)
             .append('svg')
             .attr('viewBox', [ -width / 2, -width / 2, width, width ])
-            .style('max-height', '100%')
-            .style('max-width', '100%');
+            .style('height', '100%')
+            .style('width', '100%');
 
         const node = svg
             .append('g')
@@ -76,9 +78,13 @@ export default function HEBVisualization() {
             .append('g')
             .classed('link', true);
 
-        let update = ( root ) => {
+        let jobColors = d3.scaleOrdinal( d3.schemeCategory10 );
+
+        let update = ( root, options ) => {
 
             root = tree( root );
+
+            let line = d3.lineRadial().curve(d3.curveBundle.beta(options.bundlingFactor)).radius((d) => d.y).angle((d) => d.x);
 
             node.selectAll( 'g' ).selectAll( 'text' ).remove();
 
@@ -91,7 +97,22 @@ export default function HEBVisualization() {
                 .attr('x', (d) => (d.x < Math.PI ? 6 : -6))
                 .attr('text-anchor', (d) => (d.x < Math.PI ? 'start' : 'end'))
                 .attr('transform', (d) => (d.x >= Math.PI ? 'rotate(180)' : null))
-                .text((d) => d.data.name)
+                .text((d) => {
+                    if ( options.convertEmail )
+                        return d.data.name.replace('.', ' ').substr(
+                            0, d.data.name.indexOf('@'));
+                    return d.data.name;
+                })
+                .attr( 'fill', (d) => {
+                    switch (options.colorNodeBy) {
+                        case 'Sentiment':
+                            break;
+                        case "Sender's Jobtitle":
+                            return jobColors(d.data.jobtitle);
+                        default:
+                            return 'black';
+                    }
+                })
                 .each(function(d) {
                     d.text = this;
                 })
@@ -109,25 +130,49 @@ ${d.incoming?.length} incoming`
             let enableFastRender = links.length > FAST_RENDER_THRESHOLD;
 
             if( !enableFastRender && svg.classed( 'fastRender' ) ) {
-                message.info( 'Fast rendering mode disabled.' );
+                message.info( 'Fast rendering mode disabled.', 5 );
             } else if( enableFastRender && !svg.classed( 'fastRender' ) ) {
-                message.info( 'Fast rendering mode enabled.' );
+                message.info( 'Fast rendering mode enabled.', 5 );
             }
 
-            console.log( links.length, enableFastRender );
-            svg.classed( 'fastRender', enableFastRender );
+            //console.log( links.length, enableFastRender );
+            svg.classed( 'fastRender', enableFastRender )
+                .classed( 'capitalize', options.convertEmail );
 
             link.selectAll('path')
                 .data(links)
                 .join('path')
+                .attr('stroke-width', options.edgeThickness + 'px')
                 //.style('mix-blend-mode', 'multiply')
                 .attr('d', ([ i, o ]) => line(i.path(o)) )
+                .attr('stroke', (d) => {
+                    switch (options.colorEdgeBy) {
+                        case 'Sentiment':
+                            var sentiment = 0;
+                            var devider = 0
+                            d[0].data.children.mails.forEach( (mail) => {
+                                if ( d[1].data.name == mail.toEmail ) {
+                                    // console.log(mail.sentiment)
+                                    sentiment += mail.sentiment;
+                                    devider++;
+                                }
+                            });
+                            // console.log('avg sentiment', (sentiment / devider + 1) / 2);
+                            return d3.interpolateCool((sentiment / devider + 1) / 2);
+                        case "Sender's Jobtitle":
+                            return jobColors(d[0].data.jobtitle);
+                        case "Receiver's Jobtitle":
+                            return jobColors(d[1].data.jobtitle);
+                        default:
+                            return '#444';
+                    }
+                })
                 .each(function(d) {
                     d.path = this;
                 });
         };
 
-        update( root );
+        update( root, options );
 
         function overed(event, d) {
             // link.style('mix-blend-mode', null);
@@ -171,7 +216,7 @@ ${d.incoming?.length} incoming`
 
         dataset.forEach( ( data ) => {
 
-            let { fromJobtitle, fromEmail, toEmail, toJobtitle, date } = data;
+            let { fromJobtitle, fromEmail, toEmail, toJobtitle, date, sentiment } = data;
 
             if ( !jobMap.has( fromJobtitle ) )
                 jobMap.set( fromJobtitle, { children: [] } );
@@ -188,7 +233,7 @@ ${d.incoming?.length} incoming`
             if( date < startDate || date > endDate )
                 return;
 
-            emailMap.get( fromEmail ).children.push( { toEmail: toEmail, date: date } );
+            emailMap.get( fromEmail ).children.push( { toEmail: toEmail, date: date, sentiment: sentiment } );
 
         } );
         
@@ -232,7 +277,7 @@ ${d.incoming?.length} incoming`
 
         setFormattedData( data );
 
-    }, [ dataset, globalOptions ] );
+    }, [ dataset, globalOptions, options ] );
 
     useEffect( () => {
 
@@ -240,7 +285,7 @@ ${d.incoming?.length} incoming`
         if( !formattedData || !visualisation )
             return;
 
-        visualisation.update( formattedData );
+        visualisation.update( formattedData, options );
 
     }, [ formattedData, visualisation ] );
 

@@ -30,9 +30,11 @@ export function GlobalProvider(props) {
     });
 
     const [ HEBOptions, setHEBOptions ] = useState({
-        edgeSize: 1,
-        dynamicEdges: false,
-        colorBy: null
+        edgeThickness: 1,
+        convertEmail: true,
+        colorEdgeBy: 'None',
+        colorNodeBy: 'None',
+        bundlingFactor: 0.85
     });
 
     const [ DFDOptions, setDFDOptions ] = useState({

@@ -1,6 +1,6 @@
-import React, { Fragment, useContext } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Slider, Select, Switch, Badge } from 'antd';
+import { Slider, Select, Switch } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import CustomMenuItem from './CustomMenuItem';
 import { GlobalContext } from './GlobalContext';
@@ -22,17 +22,7 @@ export default function FDOptions({ colList }) {
     }
 
     return (
-        <Fragment>
-            {/* <CustomMenuItem defaultValue={colorBy} title='Color nodes based on column:' height='2'>
-                <Select
-                    style={{ width: '100%' }}
-                    onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), colorBy: event });
-                    }}
-                >
-                    {columnOptions}
-                </Select>
-            </CustomMenuItem> */}
+        <div>
             <CustomMenuItem defaultValue={colorBy} title='Color nodes based on job:' height='2'>
                 <br />
                 <Switch
@@ -125,7 +115,7 @@ export default function FDOptions({ colList }) {
                     />
                 </CustomMenuItem>
             )}
-        </Fragment>
+        </div>
     );
 }
 

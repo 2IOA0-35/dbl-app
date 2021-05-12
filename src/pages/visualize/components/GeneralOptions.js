@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Slider, Select, Space, DatePicker } from 'antd';
 import PropTypes from 'prop-types';
 import CustomMenuItem from './CustomMenuItem';
@@ -37,7 +37,7 @@ export default function GeneralOptions({ colList }) {
     }
 
     return (
-        <Fragment>
+        <div>
             <CustomMenuItem title='Which two columns from the data are used?' height='3'>
                 <Select
                     disabled
@@ -121,7 +121,7 @@ export default function GeneralOptions({ colList }) {
                     }}
                 />
             </CustomMenuItem>
-        </Fragment>
+        </div>
     );
 }
 
