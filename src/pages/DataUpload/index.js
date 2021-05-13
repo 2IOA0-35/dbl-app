@@ -9,7 +9,7 @@ import { DataContext } from '../../context/data';
 
 export default function DataUpload() {
 
-    //eslint-disable-next-line
+    // eslint-disable-next-line
     let [ data, setData ] = React.useContext( DataContext );
 
     const upload = async ( { onProgress, onError, onSuccess, file } ) => {
@@ -27,7 +27,7 @@ export default function DataUpload() {
             setData( data );
 
             onSuccess( `Succesfully parsed ${data.length} rows.` );
-        } catch( e ) {
+        } catch ( e ) {
             console.error( e );
 
             setData( null );

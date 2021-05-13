@@ -15,23 +15,23 @@ const { Sider } = Layout;
 const fileName = 'enron.csv';
 
 export default function OptionsSidebar() {
-    const [ collapsed, setCollapsed ] = useState(false);
+    const [ collapsed, setCollapsed ] = useState( false );
 
-    const [ getOptions ] = useContext(GlobalContext);
+    const [ getOptions ] = useContext( GlobalContext );
 
     const contextID = 'Global';
 
-    const { graph1, graph2, columnList } = getOptions(contextID);
+    const { graph1, graph2, columnList } = getOptions( contextID );
 
     // Will render the appropriate option panel depending on the selected graph
-    const renderOptions = (graph) => {
-        switch (graph) {
+    const renderOptions = ( graph ) => {
+        switch ( graph ) {
             case 'Hierarchical Edge Bundling':
-                return <HEBOptions colList={columnList} />;
+                return <HEBOptions />;
             case 'Disjoint Force-Directed':
-                return <DFDOptions colList={columnList} />;
+                return <DFDOptions />;
             case 'Force-Directed Graph':
-                return <FDOptions colList={columnList} />;
+                return <FDOptions />;
             case 'Arc Diagram':
                 return <CustomMenuItem title='Not yet implemented!' height='1' />;
             case '3D force directed graph':
@@ -49,7 +49,7 @@ export default function OptionsSidebar() {
             collapsible
             collapsed={collapsed}
             onCollapse={() => {
-                setCollapsed(!collapsed);
+                setCollapsed( !collapsed );
             }}
             breakpoint='lg'
             width={400}
@@ -83,17 +83,19 @@ export default function OptionsSidebar() {
 
                 {/* These are the options specifically for Graph1 */}
                 <SubMenu key='sub2' icon={<SlidersOutlined />} title='Options For Graph #1'>
-                    {renderOptions(graph1)}
+                    {renderOptions( graph1 )}
                 </SubMenu>
 
                 {/* Disabled by default, active when two graphs are shown simultaniously */}
-                <SubMenu key='sub3' icon={<SlidersOutlined />} title='Options For Graph #2'>
-                    {renderOptions(graph2)}
-                </SubMenu>
+                {graph2 != 'None' && (
+                    <SubMenu key='sub3' icon={<SlidersOutlined />} title='Options For Graph #2'>
+                        {renderOptions( graph2 )}
+                    </SubMenu>
+                )}
 
                 {/* Might change to button (Menu.Item) that opens a Modal */}
                 <SubMenu key='sub4' icon={<ReadOutlined />} title='User Manual'>
-                    {renderOptions('Manual')}
+                    {renderOptions( 'Manual' )}
                 </SubMenu>
             </Menu>
         </Sider>

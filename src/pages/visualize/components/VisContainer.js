@@ -8,17 +8,17 @@ import FDVisualization from './FDVisualization';
 import { DataContext } from '../../../context/data';
 
 export default function VisContainer() {
-    const [ getOptions ] = useContext(GlobalContext);
+    const [ getOptions ] = useContext( GlobalContext );
 
     const contextID = 'Global';
 
-    const { graph1, graph2 } = getOptions(contextID);
-    
+    const { graph1, graph2 } = getOptions( contextID );
+
     let [ dataset ] = React.useContext( DataContext );
 
     // Will render the appropriate visualization depending on the selected graph
-    const renderVisualizations = (graph) => {
-        switch (graph) {
+    const renderVisualizations = ( graph ) => {
+        switch ( graph ) {
             case 'Hierarchical Edge Bundling':
                 return <HEBVisualization />;
             case 'Disjoint Force-Directed':
@@ -35,20 +35,22 @@ export default function VisContainer() {
         }
     };
 
-    if( !dataset )
-        return <Row
-            style={{
-                flexGrow: '1',
-                borderBottom: '1px solid rgba(124, 124, 124, 0.2)',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}
-        >
-            <Result
-                status='warning'
-                title='No dataset has been selected.'
-            />
-        </Row>;
+    if ( !dataset )
+        return (
+            <Row
+                style={{
+                    flexGrow: '1',
+                    borderBottom: '1px solid rgba(124, 124, 124, 0.2)',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <Result
+                    status='warning'
+                    title='No dataset has been selected.'
+                />
+            </Row>
+        );
 
     return (
         <Row
@@ -58,7 +60,7 @@ export default function VisContainer() {
             }}
         >
             <Col style={{ position: 'relative' }} span={graph2 !== 'None' ? 12 : 24} id='graph1'>
-                {renderVisualizations(graph1)}
+                {renderVisualizations( graph1 )}
                 <SaveButton id='graph1' />
             </Col>
             {graph2 !== 'None' && (
@@ -67,7 +69,7 @@ export default function VisContainer() {
                     style={{ borderLeft: '1px solid rgba(124, 124, 124, 0.2)', position: 'relative' }}
                     id='graph2'
                 >
-                    {renderVisualizations(graph2)}
+                    {renderVisualizations( graph2 )}
                     <SaveButton id='graph2' />
                 </Col>
             )}

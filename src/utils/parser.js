@@ -24,7 +24,7 @@ export default function parse( csvString, progress ) {
         var parser = new Parser();
 
         parser.onmessage = ( e ) => {
-            switch( e.data.type ) {
+            switch ( e.data.type ) {
                 case 'PROGRESS': {
                     progress( e.data.percent );
                     break;
@@ -68,9 +68,10 @@ export function readFile( file, progress ) {
             resolve( event.target.result );
         } );
 
-        if( progress )
+        if ( progress )
             reader.addEventListener( 'progress', ( event ) => {
                 var percentLoaded = Math.round( ( event.loaded / event.total ) * 100 );
+
                 progress( percentLoaded );
             } );
 

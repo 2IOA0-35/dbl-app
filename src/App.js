@@ -11,7 +11,7 @@ function App() {
     return (
         <DataProvider>
             <Router>
-                {/* Using the Link component, you can create 'buttons' 
+                {/* Using the Link component, you can create 'buttons'
                 to different pagesthat the router can handle.
                 */}
                 <Menu mode='horizontal'>

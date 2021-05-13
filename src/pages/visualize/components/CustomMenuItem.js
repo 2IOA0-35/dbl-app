@@ -4,7 +4,7 @@ import './CustomMenuItem.css';
 import { Badge, Popover, Space } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 
-export default function CustomMenuItem({ title, children, height, info }) {
+export default function CustomMenuItem( { title, children, height, info } ) {
     height *= 40;
 
     return (

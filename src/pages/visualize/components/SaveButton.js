@@ -5,23 +5,24 @@ import domtoimage from 'dom-to-image';
 import { SaveFilled, QuestionCircleOutlined } from '@ant-design/icons';
 import './SaveButton.css';
 
-export default function SaveButton({ id }) {
-    const filter = (node) => {
+export default function SaveButton( { id } ) {
+    const filter = ( node ) => {
         return node.tagName !== 'BUTTON';
     };
 
     const save = () => {
-        domtoimage.toPng(document.getElementById(id), { filter: filter }).then(function(dataUrl) {
-            var link = document.createElement('a');
+        domtoimage.toPng( document.getElementById( id ), { filter: filter } ).then( function( dataUrl ) {
+            var link = document.createElement( 'a' );
+
             link.download = 'vis.png';
             link.href = dataUrl;
             link.click();
-        });
-        message.success('Image downloaded');
+        } );
+        message.success( 'Image downloaded' );
     };
 
     const cancel = () => {
-        message.error('Canceled download');
+        message.error( 'Canceled download' );
     };
 
     return (

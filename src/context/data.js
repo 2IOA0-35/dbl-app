@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 export const DataContext = createContext();
 
 export function DataProvider( props ) {
-    
+
     let [ data, setData ] = useState(
         /**
          * Dataset
@@ -33,7 +33,7 @@ export function DataProvider( props ) {
          *  sentiment: number
          * }[]}
          */
-        undefined,
+        undefined
     );
 
     return <DataContext.Provider value={[ data, setData ]}>{props.children}</DataContext.Provider>;

@@ -1,25 +1,17 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
-import { Slider, Select, Switch } from 'antd';
+import { Slider, Switch } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import CustomMenuItem from './CustomMenuItem';
 import { GlobalContext } from './GlobalContext';
 
-const { Option } = Select;
-
-export default function FDOptions({ colList }) {
+export default function FDOptions() {
     const visID = 'Force-Directed Graph';
 
-    const [ getOptions, setOptions ] = useContext(GlobalContext);
+    const [ getOptions, setOptions ] = useContext( GlobalContext );
 
     const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, colorBy, nodeScaleFactor, edgeScaleFactor } = getOptions(
         visID
     );
-
-    const columnOptions = [];
-    for (let i = 0; i < colList.length; i++) {
-        columnOptions.push(<Option key={colList[i]}>{colList[i]}</Option>);
-    }
 
     return (
         <div>
@@ -29,8 +21,8 @@ export default function FDOptions({ colList }) {
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
                     defaultChecked={colorBy}
-                    onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), colorBy: event });
+                    onChange={( event ) => {
+                        setOptions( visID, { ...getOptions( visID ), colorBy: event } );
                     }}
                 />
             </CustomMenuItem>
@@ -39,8 +31,8 @@ export default function FDOptions({ colList }) {
                     min={1}
                     max={20}
                     defaultValue={nodeSize}
-                    onAfterChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), nodeSize: event });
+                    onAfterChange={( event ) => {
+                        setOptions( visID, { ...getOptions( visID ), nodeSize: event } );
                     }}
                 />
             </CustomMenuItem>
@@ -48,8 +40,8 @@ export default function FDOptions({ colList }) {
                 <Slider
                     max={200}
                     defaultValue={edgeSize}
-                    onAfterChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), edgeSize: event });
+                    onAfterChange={( event ) => {
+                        setOptions( visID, { ...getOptions( visID ), edgeSize: event } );
                     }}
                 />
             </CustomMenuItem>
@@ -63,8 +55,8 @@ export default function FDOptions({ colList }) {
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
                     defaultChecked={dynamicNodes}
-                    onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), dynamicNodes: event });
+                    onChange={( event ) => {
+                        setOptions( visID, { ...getOptions( visID ), dynamicNodes: event } );
                     }}
                 />
             </CustomMenuItem>
@@ -78,8 +70,8 @@ export default function FDOptions({ colList }) {
                         min={1}
                         max={10}
                         defaultValue={nodeScaleFactor}
-                        onAfterChange={(event) => {
-                            setOptions(visID, { ...getOptions(visID), nodeScaleFactor: event });
+                        onAfterChange={( event ) => {
+                            setOptions( visID, { ...getOptions( visID ), nodeScaleFactor: event } );
                         }}
                     />
                 </CustomMenuItem>
@@ -94,8 +86,8 @@ export default function FDOptions({ colList }) {
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
                     defaultChecked={dynamicEdges}
-                    onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), dynamicEdges: event });
+                    onChange={( event ) => {
+                        setOptions( visID, { ...getOptions( visID ), dynamicEdges: event } );
                     }}
                 />
             </CustomMenuItem>
@@ -109,8 +101,8 @@ export default function FDOptions({ colList }) {
                         min={1}
                         max={20}
                         defaultValue={edgeScaleFactor}
-                        onAfterChange={(event) => {
-                            setOptions(visID, { ...getOptions(visID), edgeScaleFactor: event });
+                        onAfterChange={( event ) => {
+                            setOptions( visID, { ...getOptions( visID ), edgeScaleFactor: event } );
                         }}
                     />
                 </CustomMenuItem>
@@ -118,7 +110,3 @@ export default function FDOptions({ colList }) {
         </div>
     );
 }
-
-FDOptions.propTypes = {
-    colList: PropTypes.array.isRequired
-};
