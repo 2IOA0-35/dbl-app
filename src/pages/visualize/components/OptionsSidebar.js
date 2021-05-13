@@ -4,6 +4,7 @@ import { GlobalContext } from './GlobalContext';
 import GeneralOptions from './GeneralOptions';
 import HEBOptions from './HEBOptions';
 import DFDOptions from './DFDOptions';
+import FDOptions from './FDOptions';
 import { Link } from 'react-router-dom';
 import { SettingOutlined, SlidersOutlined, FileSearchOutlined, ReadOutlined } from '@ant-design/icons';
 import { Menu, Layout, Button } from 'antd';
@@ -26,12 +27,11 @@ export default function OptionsSidebar() {
     const renderOptions = (graph) => {
         switch (graph) {
             case 'Hierarchical Edge Bundling':
-                //return <HEBOptions colList={columnList} />;
-                return <CustomMenuItem title='Not yet implemented!' height='1' />;
+                return <HEBOptions colList={columnList} />;
             case 'Disjoint Force-Directed':
                 return <DFDOptions colList={columnList} />;
             case 'Force-Directed Graph':
-                return <CustomMenuItem title='Not yet implemented!' height='1' />;
+                return <FDOptions colList={columnList} />;
             case 'Arc Diagram':
                 return <CustomMenuItem title='Not yet implemented!' height='1' />;
             case '3D force directed graph':

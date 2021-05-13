@@ -8,7 +8,7 @@ export function GlobalProvider(props) {
     const [ globalOptions, setGlobalOptions ] = useState({
         column1: 'fromEmail',
         column2: 'toEmail',
-        graph1: 'Force-Directed Graph',
+        graph1: 'Hierarchical Edge Bundling',
         graph2: 'None',
         timeframe: [ moment('19981112', 'YYYYMMDD'), moment('20020620', 'YYYYMMDD') ],
         previousDays: 10,
@@ -30,18 +30,31 @@ export function GlobalProvider(props) {
     });
 
     const [ HEBOptions, setHEBOptions ] = useState({
-        edgeSize: 1,
-        dynamicEdges: false,
-        groupBy: null,
-        colorBy: null
+        edgeThickness: 1,
+        convertEmail: true,
+        colorEdgeBy: 'None',
+        colorNodeBy: 'None',
+        bundlingFactor: 0.85
     });
 
     const [ DFDOptions, setDFDOptions ] = useState({
-        edgeSize: 1,
+        edgeSize: 50,
         nodeSize: 5,
-        dynamicEdges: false,
-        dynamicNodes: false,
-        colorBy: null
+        dynamicEdges: true,
+        dynamicNodes: true,
+        colorBy: true,
+        nodeScaleFactor: 3,
+        edgeScaleFactor: 5
+    });
+
+    const [ FDOptions, setFDOptions ] = useState({
+        edgeSize: 20,
+        nodeSize: 5,
+        dynamicEdges: true,
+        dynamicNodes: true,
+        colorBy: true,
+        nodeScaleFactor: 3,
+        edgeScaleFactor: 5
     });
 
     const getOptions = (visID) => {
@@ -53,7 +66,7 @@ export function GlobalProvider(props) {
             case 'Disjoint Force-Directed':
                 return DFDOptions;
             case 'Force-Directed Graph':
-                return {};
+                return FDOptions;
             case 'Arc Diagram':
                 return {};
             case '3D force directed graph':
@@ -76,6 +89,7 @@ export function GlobalProvider(props) {
                 setDFDOptions(options);
                 break;
             case 'Force-Directed Graph':
+                setFDOptions(options);
                 break;
             case 'Arc Diagram':
                 break;

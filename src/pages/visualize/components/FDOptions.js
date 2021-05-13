@@ -7,8 +7,8 @@ import { GlobalContext } from './GlobalContext';
 
 const { Option } = Select;
 
-export default function DFDOptions({ colList }) {
-    const visID = 'Disjoint Force-Directed';
+export default function FDOptions({ colList }) {
+    const visID = 'Force-Directed Graph';
 
     const [ getOptions, setOptions ] = useContext(GlobalContext);
 
@@ -119,6 +119,6 @@ export default function DFDOptions({ colList }) {
     );
 }
 
-DFDOptions.propTypes = {
+FDOptions.propTypes = {
     colList: PropTypes.array.isRequired
 };

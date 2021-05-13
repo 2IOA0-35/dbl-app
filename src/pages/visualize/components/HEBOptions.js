@@ -1,5 +1,4 @@
-import React, { Fragment, useContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import { Slider, Select, Switch } from 'antd';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import CustomMenuItem from './CustomMenuItem';
@@ -7,12 +6,19 @@ import { GlobalContext } from './GlobalContext';
 
 const { Option } = Select;
 
-export default function HEBOptions({ colList }) {
+export default function HEBOptions() {
     const visID = 'Hierarchical Edge Bundling';
 
     const [ getOptions, setOptions ] = useContext(GlobalContext);
 
-    const { edgeSize, dynamicEdges, groupBy, colorBy } = getOptions(visID);
+    const { edgeThickness, convertEmail, colorEdgeBy, colorNodeBy, bundlingFactor } = getOptions(visID);
+
+    const colList = [
+        'None',
+        'Sentiment',
+        "Sender's Jobtitle",
+        "Receiver's Jobtitle"
+    ];
 
     const columnOptions = [];
     for (let i = 0; i < colList.length; i++) {
@@ -20,51 +26,61 @@ export default function HEBOptions({ colList }) {
     }
 
     return (
-        <Fragment>
-            <CustomMenuItem title='Group items based on column:' height='2'>
+        <div>
+            <CustomMenuItem defaultValue={colorEdgeBy} title='Color edges based on:' height='2'>
                 <Select
-                    defaultValue={groupBy}
                     style={{ width: '100%' }}
+                    defaultValue={colorEdgeBy}
                     onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), groupBy: event });
+                        setOptions(visID, { ...getOptions(visID), colorEdgeBy: event });
                     }}
                 >
                     {columnOptions}
                 </Select>
             </CustomMenuItem>
-            <CustomMenuItem defaultValue={colorBy} title='Color nodes based on column:' height='2'>
+            <CustomMenuItem defaultValue={colorNodeBy} title='Color nodes based on:' height='2'>
                 <Select
                     style={{ width: '100%' }}
+                    defaultValue={colorNodeBy}
                     onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), colorBy: event });
+                        setOptions(visID, { ...getOptions(visID), colorNodeBy: event });
                     }}
                 >
-                    {columnOptions}
+                    {columnOptions.slice(0, -1)}
                 </Select>
             </CustomMenuItem>
-            <CustomMenuItem title='Default edge size:' height='2'>
+            <CustomMenuItem title='Default edge thickness:' height='2'>
                 <Slider
-                    defaultValue={edgeSize}
+                    min={1}
+                    max={10}
+                    defaultValue={edgeThickness}
                     onAfterChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), edgeSize: event });
+                        setOptions(visID, { ...getOptions(visID), edgeThickness: event });
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Make edges larger based on frequency:' height='2'>
+            <CustomMenuItem title='Edge bundling factor:' info='Determines how strongly the edges are bundled together.'height='2'>
+                <Slider
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    defaultValue={bundlingFactor}
+                    onAfterChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), bundlingFactor: event });
+                    }}
+                />
+            </CustomMenuItem>
+            <CustomMenuItem title='Convert E-Mail to name:' info="Will try to extract a person's name from their E-Mail address." height='2'>
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
-                    defaultChecked={dynamicEdges}
+                    defaultChecked={convertEmail}
                     onChange={(event) => {
-                        setOptions(visID, { ...getOptions(visID), dynamicEdges: event });
+                        setOptions(visID, { ...getOptions(visID), convertEmail: event });
                     }}
                 />
             </CustomMenuItem>
-        </Fragment>
+        </div>
     );
 }
-
-HEBOptions.propTypes = {
-    colList: PropTypes.array.isRequired
-};

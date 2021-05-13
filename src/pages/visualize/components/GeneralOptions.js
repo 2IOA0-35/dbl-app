@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Slider, Select, Space, DatePicker } from 'antd';
 import PropTypes from 'prop-types';
 import CustomMenuItem from './CustomMenuItem';
@@ -37,9 +37,10 @@ export default function GeneralOptions({ colList }) {
     }
 
     return (
-        <Fragment>
+        <div>
             <CustomMenuItem title='Which two columns from the data are used?' height='3'>
                 <Select
+                    disabled
                     defaultValue={column1}
                     style={{ width: '100%' }}
                     onChange={(event) => {
@@ -49,6 +50,7 @@ export default function GeneralOptions({ colList }) {
                     {columnOptions}
                 </Select>
                 <Select
+                    disabled
                     defaultValue={column2}
                     style={{ width: '100%' }}
                     onChange={(event) => {
@@ -102,6 +104,7 @@ export default function GeneralOptions({ colList }) {
             <CustomMenuItem title='How many previous days are shown?' height='2'>
                 <Slider
                     max={moment.duration(timeframe[1].diff(timeframe[0])).asDays()}
+                    min={1}
                     defaultValue={previousDays}
                     reverse
                     onAfterChange={(event) => {
@@ -111,13 +114,14 @@ export default function GeneralOptions({ colList }) {
             </CustomMenuItem>
             <CustomMenuItem title='Set a custom playback speed:' height='2'>
                 <Slider
+                    disabled
                     defaultValue={playbackSpeed}
                     onAfterChange={(event) => {
                         setOptions(contextID, { ...getOptions(contextID), playbackSpeed: event });
                     }}
                 />
             </CustomMenuItem>
-        </Fragment>
+        </div>
     );
 }
 

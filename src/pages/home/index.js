@@ -33,6 +33,12 @@ export default function home() {
                     break;
                 }
             }
+
+            data = data.map( ( item ) => ( {
+                ...item,
+                date: new Date( item.date ),
+            } ) );
+
         } catch (e) {
             message.error('An error occured while loading the dataset.');
             console.error('Error while loading dataset: ', e);
