@@ -12,7 +12,7 @@ export default function Timeline() {
 
     const [ getOptions, setOptions ] = useContext( GlobalContext );
 
-    const { timeline, playing, timeframe } = getOptions( contextID );
+    const { timeline, playing, timeframe, playbackSpeed } = getOptions( contextID );
 
     const maxDate = Math.floor( moment.duration( timeframe[1].diff( timeframe[0] ) ).asDays() );
 
@@ -40,13 +40,32 @@ export default function Timeline() {
         };
     }, [ timeline ] );
 
+
+    // useEffect that will trigger going to the next day when we are playing
+    useEffect( () => {
+
+        if( !playing || playbackSpeed == 0 )
+            return;
+
+        let interval = setTimeout( () => {
+            let value = moment( timeline ).add( 1, 'days' );
+
+            setValue( value );
+
+            setOptions( contextID, { ...getOptions( contextID ), timeline: value } );
+        }, 500 / playbackSpeed );
+
+        return () => clearTimeout( interval );
+
+    }, [ playing, timeline, playbackSpeed ] );
+
     return (
         <Row justify='center' style={{ padding: '20px 50px' }}>
             <Slider
                 marks={marks}
                 max={maxDate}
                 value={moment( value ).diff( timeframe[0], 'days' )}
-                tooltipVisible={cooldown ? true : undefined}
+                tooltipVisible={cooldown || playing ? true : undefined}
                 style={{ width: '100%' }}
                 onChange={( event ) => {
                     let timeline = moment( timeframe[0] ).add( event, 'days' );
@@ -91,7 +110,9 @@ export default function Timeline() {
                     }}
                     icon={<StepBackwardOutlined />}
                 />
-                <Button type='primary' onClick={() => {}} icon={playing ? <PauseOutlined /> : <CaretRightOutlined />} />
+                <Button type='primary' onClick={() => {
+                    setOptions( contextID, { ...getOptions( contextID ), playing : !playing})
+                }} icon={playing ? <PauseOutlined /> : <CaretRightOutlined />} />
 
                 <Button
                     type='primary'

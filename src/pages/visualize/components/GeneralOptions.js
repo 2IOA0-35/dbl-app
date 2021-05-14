@@ -116,7 +116,9 @@ export default function GeneralOptions( { colList } ) {
             </CustomMenuItem>
             <CustomMenuItem title='Set a custom playback speed:' height='2'>
                 <Slider
-                    disabled
+                    min={0}
+                    max={4}
+                    step={0.1}
                     defaultValue={playbackSpeed}
                     onAfterChange={( event ) => {
                         setOptions( contextID, { ...getOptions( contextID ), playbackSpeed: event } );
