@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "antd": "^4.15.3",
+        "craco-less": "^1.17.1",
         "d3": "^6.7.0",
         "dom-to-image": "^2.6.0",
         "moment": "^2.29.1",
@@ -22,8 +23,8 @@
         "eslint-plugin-react": "^7.23.2"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
+        "start": "craco start",
+        "build": "craco build",
         "serve": "serve -s build",
         "lint": "eslint ."
     },

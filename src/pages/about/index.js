@@ -7,11 +7,11 @@ const { Title, Text } = Typography;
 export default function About() {
     return (
         <div className='container'>
-            <Title style={{ padding: '20px', width: '100%', textAlign: 'center', color: 'white' }}>
+            <Title style={{ padding: '20px', width: '100%', textAlign: 'center' }}>
                 About the visualisations
             </Title>
             <Card
-                className='left'
+                className='left card'
                 title='Hierarchical Edge Bundling'
                 cover={
                     <img
@@ -38,7 +38,7 @@ export default function About() {
             </Card>
 
             <Card
-                className='right'
+                className='right card'
                 title='Disjoint Force-Directed Graph'
                 cover={
                     <img
@@ -71,7 +71,7 @@ export default function About() {
 
             <Card
                 title='The D3 library'
-                className='left'
+                className='left card'
                 extra={
                     <a href='https://d3js.org' target='_blank' rel='noreferrer'>
                         Source
@@ -93,27 +93,27 @@ export default function About() {
 
             <Title style={{ padding: '20px', width: '100%', textAlign: 'center', color: 'white' }}>About us</Title>
 
-            <Card title='Christine Jacob' className='right'>
+            <Card title='Christine Jacob' className='right card'>
                 <Text>Here you can put a bit of text about yourself.</Text>
             </Card>
 
-            <Card title='Tom van Liempd' className='left'>
+            <Card title='Tom van Liempd' className='left card'>
                 <Text>Here you can put a bit of text about yourself.</Text>
             </Card>
 
-            <Card title='Aloys Riswick' className='right'>
+            <Card title='Aloys Riswick' className='right card'>
                 <Text>Here you can put a bit of text about yourself.</Text>
             </Card>
 
-            <Card title='Hugo van Schalm' className='left'>
+            <Card title='Hugo van Schalm' className='left card'>
                 <Text>Here you can put a bit of text about yourself.</Text>
             </Card>
 
-            <Card title='Kristopher Schlett' className='right'>
+            <Card title='Kristopher Schlett' className='right card'>
                 <Text>Here you can put a bit of text about yourself.</Text>
             </Card>
 
-            <Card title='Anke Staal' className='left'>
+            <Card title='Anke Staal' className='left card'>
                 <Text>Here you can put a bit of text about yourself.</Text>
             </Card>
         </div>
