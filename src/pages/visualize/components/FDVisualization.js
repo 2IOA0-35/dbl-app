@@ -194,7 +194,7 @@ export default function FDVisualization() {
                     if ( options.colorBy )
                         return jobColors( d.job );
 
-                    return '#1890FF';
+                    return '#067f5b';
                 } )
                 .call( d3.drag().on( 'start', dragstarted ).on( 'drag', dragged ).on( 'end', dragended ) )
                 .append( 'title' )

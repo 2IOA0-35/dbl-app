@@ -36,7 +36,9 @@ export function DataProvider( props ) {
         undefined
     );
 
-    return <DataContext.Provider value={[ data, setData ]}>{props.children}</DataContext.Provider>;
+    let [ fileName, setFileName ] = useState( '' );
+
+    return <DataContext.Provider value={[ data, setData, fileName, setFileName ]}>{props.children}</DataContext.Provider>;
 }
 
 DataProvider.propTypes = {

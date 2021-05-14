@@ -77,7 +77,7 @@ export default function DFDOptions() {
             )}
             <CustomMenuItem
                 title='Make edges larger based on frequency:'
-                info='More noticable with many links.'
+                info='More noticeable with many links.'
                 height='2'
             >
                 <br />

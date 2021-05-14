@@ -9,9 +9,8 @@ export default function FDOptions() {
 
     const [ getOptions, setOptions ] = useContext( GlobalContext );
 
-    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, colorBy, nodeScaleFactor, edgeScaleFactor } = getOptions(
-        visID
-    );
+    const { edgeSize, nodeSize, dynamicEdges, dynamicNodes, colorBy, nodeScaleFactor, edgeScaleFactor } =
+        getOptions( visID );
 
     return (
         <div>
@@ -78,7 +77,7 @@ export default function FDOptions() {
             )}
             <CustomMenuItem
                 title='Make edges larger based on frequency:'
-                info='More noticable with many links.'
+                info='More noticeable with many links.'
                 height='2'
             >
                 <br />

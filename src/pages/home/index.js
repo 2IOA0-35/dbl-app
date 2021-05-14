@@ -9,7 +9,7 @@ const { Title, Text } = Typography;
 
 export default function home() {
     // eslint-disable-next-line
-    let [ data, setData ] = React.useContext(DataContext);
+    let [ data, setData, filename, setFileName ] = React.useContext( DataContext );
 
     let history = useHistory();
 
@@ -21,10 +21,12 @@ export default function home() {
         try {
             switch ( value ) {
                 case 'Enron': {
+                    setFileName( 'enron.csv' );
                     data = ( await import( '../../data/enron.json' ) ).default;
                     break;
                 }
                 case 'EnronSample': {
+                    setFileName( 'enronSample.csv' );
                     data = ( await import( '../../data/enronSample.json' ) ).default;
                     break;
                 }
@@ -36,14 +38,14 @@ export default function home() {
             } ) );
 
         } catch ( e ) {
-            message.error( 'An error occured while loading the dataset.' );
+            message.error( 'An error occurred while loading the dataset.' );
             console.error( 'Error while loading dataset: ', e );
 
             return;
         }
         message.destroy( 'Dataset-Load' );
         setData( data );
-        message.success( 'Succesfully loaded the dataset.' );
+        message.success( 'Successfully loaded the dataset.' );
         history.push( '/vis' );
     }
 
@@ -54,7 +56,7 @@ export default function home() {
             </Title>
 
             <Card
-                /*title='Hierarchical Edge Bundling'*/
+                /* title='Hierarchical Edge Bundling' */
                 className='card'
                 style={{ width: '80%' }}
             >
@@ -91,7 +93,7 @@ export default function home() {
                 </Text>
             </Card>
 
-            {/*<Layout>
+            {/* <Layout>
                 <Content style={{ background: 'white', width: '100%', height: '100%' }}>
                     <Divider orientation='left'>About the WebApp</Divider>
                     <p>

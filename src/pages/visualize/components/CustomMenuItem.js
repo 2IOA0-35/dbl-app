@@ -13,7 +13,7 @@ export default function CustomMenuItem( { title, children, height, info } ) {
                 {title}
                 {info && (
                     <Popover content={info} title='Info' placement='right'>
-                        <Badge count={<InfoCircleOutlined style={{ color: '#1890FF' }} />} />
+                        <Badge count={<InfoCircleOutlined style={{ color: '#067f5b' }} />} />
                     </Popover>
                 )}
             </Space>

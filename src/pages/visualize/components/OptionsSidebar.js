@@ -8,15 +8,17 @@ import FDOptions from './FDOptions';
 import { Link } from 'react-router-dom';
 import { SettingOutlined, SlidersOutlined, FileSearchOutlined, ReadOutlined } from '@ant-design/icons';
 import { Menu, Layout, Button } from 'antd';
+import { DataContext } from '../../../context/data';
 import './OptionsSidebar.css';
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
-const fileName = 'enron.csv';
 
 export default function OptionsSidebar() {
     const [ collapsed, setCollapsed ] = useState( false );
-
+    
+    let [ data, setData, filename, setFileName ] = React.useContext( DataContext );
+    
     const [ getOptions ] = useContext( GlobalContext );
 
     const contextID = 'Global';
@@ -70,13 +72,13 @@ export default function OptionsSidebar() {
                         marginBottom: '4px'
                     }}
                 >
-                    <span style={{ marginRight: '10px' }}>{fileName}</span>
+                    <span style={{ marginRight: '10px' }}>{filename}</span>
                     <Button type='primary'>
                         <Link to='/dataUpload'>Edit</Link>
                     </Button>
                 </Menu.Item>
 
-                {/* These are general options that should be applicable to any graph. I might move them to a seperate component*/}
+                {/* These are general options that should be applicable to any graph */}
                 <SubMenu key='sub1' icon={<SettingOutlined />} title='General Options' className='color-5'>
                     <GeneralOptions colList={columnList} />
                 </SubMenu>
@@ -86,7 +88,7 @@ export default function OptionsSidebar() {
                     {renderOptions( graph1 )}
                 </SubMenu>
 
-                {/* Disabled by default, active when two graphs are shown simultaniously */}
+                {/* Disabled by default, active when two graphs are shown simultaneously */}
                 {graph2 != 'None' && (
                     <SubMenu key='sub3' icon={<SlidersOutlined />} title='Options For Graph #2'>
                         {renderOptions( graph2 )}

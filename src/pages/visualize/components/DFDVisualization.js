@@ -22,11 +22,10 @@ export default function FDVisualization() {
         update: null
     } );
 
-    //Variables used for infobox display
+    // Variables used for infobox display
     var currentNode;
     var checked=false;
     var recentID;
-
 
     let [ dataset ] = React.useContext( DataContext );
 
@@ -82,17 +81,16 @@ export default function FDVisualization() {
             .attr( 'stroke', '#fff' )
             .attr( 'stroke-width', 1.5 );
             
-            
-        //infobox for onclick
-        var infobox = d3.select(visBox.current)
-            .append('div')
-            .style('top', '5.34px')
-            .style('left', '20.15px' )
-            .style('opacity',0)
-            .style('position', 'absolute')
-            .style('background-color', 'white') 
-            .style('border-radius', '10px')          
-            .style('padding', "10px");
+        // infobox for onclick
+        var infobox = d3.select( visBox.current )
+            .append( 'div' )
+            .style( 'top', '5.34px' )
+            .style( 'left', '20.15px' )
+            .style( 'opacity',0 )
+            .style( 'position', 'absolute' )
+            .style( 'background-color', 'white' )
+            .style( 'border-radius', '10px' )
+            .style( 'padding', '10px' );
 
         // Initialize forces & simulation
         let manyBodyForce = d3.forceManyBody();
@@ -176,77 +174,76 @@ export default function FDVisualization() {
             node.selectAll( 'circle' ).data( nodes ).join( 'circle' );
 
             // Remove all title elements such that they can be recreated with correct info
-            // (This is a kindof inefficient way of doing things, but this will probably get replaced by a pop-up when a node is clicked or something)
+            // (This is a kind of inefficient way of doing things, but this will probably get replaced by a pop-up when a node is clicked or something)
             node.selectAll( 'circle' ).selectAll( 'title' ).remove();
 
-            //On click show infobox for node
-            node.selectAll( 'circle' ).on("click", function(d,i){
-                    if(!checked){
+            // On click show infobox for node
+            node.selectAll( 'circle' ).on( 'click', function( d,i ) {
+                if ( !checked ) {
                     checked = true;
                     recentID = i.id;
-                    currentNode = d3.select(this)
-                    d3.select(this).style('stroke', 'red');
+                    currentNode = d3.select( this );
+                    d3.select( this ).style( 'stroke', 'red' );
                     infobox
-                    .html("Node ID: " + i.id + "<br>Emails Sent: " +i.outDegree 
-                    + "<br>Email Received: " + i.inDegree + "<br>Position: " + i.job)
-                    .transition().duration(500)
-                    .style("opacity", 1);
-                }
-                else if(checked){
-                     if(recentID === i.id){
-                        d3.select(this).style('stroke', 'white');
-                        recentID = "";
+                        .html( 'Node ID: ' + i.id + '<br>Emails Sent: ' +i.outDegree
+                    + '<br>Email Received: ' + i.inDegree + '<br>Position: ' + i.job )
+                        .transition().duration( 500 )
+                        .style( 'opacity', 1 );
+                } else if ( checked ) {
+                    if ( recentID === i.id ) {
+                        d3.select( this ).style( 'stroke', 'white' );
+                        recentID = '';
                         infobox
-                        .transition()
-                        .duration(500)
-                        .style('opacity', 0);
-                    } else{
-                        node.selectAll( 'circle' ).style('stroke', (d)=>{
+                            .transition()
+                            .duration( 500 )
+                            .style( 'opacity', 0 );
+                    } else {
+                        node.selectAll( 'circle' ).style( 'stroke', ( d ) => {
                             return 'white';
-                        })
+                        } );
                         recentID=i.id;
-                        currentNode = d3.select(this)
-                        currentNode.style('stroke', 'red');
-                        infobox    
-                        .html("Node ID: " + i.id + "<br>Emails Sent: " +i.outDegree 
-                        + "<br>Email Received: " + i.inDegree + "<br>Position: " + i.job)
-                        .transition()
-                        .duration(500)
-                        .style('opacity', 1);
-                    }    
-                }                 
-            });
-                
-            
+                        currentNode = d3.select( this );
+                        currentNode.style( 'stroke', 'red' );
+                        infobox
+                            .html( 'Node ID: ' + i.id + '<br>Emails Sent: ' +i.outDegree
+                        + '<br>Email Received: ' + i.inDegree + '<br>Position: ' + i.job )
+                            .transition()
+                            .duration( 500 )
+                            .style( 'opacity', 1 );
+                    }
+                }
+            } );
 
-            //Apply attributes to all nodes
-            var currentNodePresent=false;//this is to check if prev. selected node is present in current drawing.
+            // Apply attributes to all nodes
+            var currentNodePresent=false;// this is to check if prev. selected node is present in current drawing.
+
             // Apply attributes to all nodes
             node.selectAll( 'circle' )
                 .attr( 'fill', ( d ) => {
                     if ( options.colorBy )
                         return jobColors( d.job );
 
-                    return '#1890FF';
+                    return '#067f5b';
                 } )
-                .style('stroke', (d)=>{
-                    if(recentID!=d.id){
-                        if(!currentNodePresent){
-                            infobox.style('opacity',0);
+                .style( 'stroke', ( d ) => {
+                    if ( recentID!=d.id ) {
+                        if ( !currentNodePresent ) {
+                            infobox.style( 'opacity',0 );
                         }
+
                         return 'white';
                     }
                     currentNodePresent = true;
                     infobox
-                    .style('opacity', 1)
-                    .html("Node ID: " + d.id + "<br>Emails Sent: " +d.outDegree 
-                    + "<br>Email Received: " + d.inDegree + "<br>Position: " + d.job);
+                        .style( 'opacity', 1 )
+                        .html( 'Node ID: ' + d.id + '<br>Emails Sent: ' +d.outDegree
+                    + '<br>Email Received: ' + d.inDegree + '<br>Position: ' + d.job );
+
                     return 'red';
                 } )
                 .call( d3.drag().on( 'start', dragstarted ).on( 'drag', dragged ).on( 'end', dragended ) )
                 .append( 'title' )
                 .text( ( d ) => `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}` );
-                
             
             // if dynamicNodes set then make size dynamic
             if ( options.dynamicNodes ) {
@@ -258,8 +255,7 @@ export default function FDVisualization() {
 
             // Restart the simulation by 'reheating' it with a higher alpha.
             simulation.alpha( 0.3 ).alphaTarget( 0 ).alphaDecay( 1 - 0.001 ^ ( 1 / 1000 ) ).restart();
-        };      
-
+        };
 
         // Initialize nodes and links with an empty list.
         update( [], [], 0, options );

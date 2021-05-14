@@ -12,7 +12,7 @@ function App() {
         <DataProvider>
             <Router>
                 {/* Using the Link component, you can create 'buttons'
-                to different pagesthat the router can handle.
+                to different pages that the router can handle.
                 */}
                 <Menu mode='horizontal'>
                     <Menu.Item key='home'>
