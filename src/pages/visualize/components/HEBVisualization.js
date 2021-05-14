@@ -104,20 +104,21 @@ export default function HEBVisualization() {
 
             let colorNode = ( d ) => {
                 switch ( options.colorNodeBy ) {
-                    case 'Average Sentiment':
-                        var sentiment = 0;
-                        var devider = d.data.children.mails?.length;
+                    case 'Average Sentiment': {
+                        let sentiment = 0;
+                        var divider = d.data.children.mails?.length;
     
                         d.data.children.mails?.forEach( ( mail ) => {
                             sentiment += mail.sentiment;
                         } );
 
-                        sentiment /= devider;
+                        sentiment /= divider;
                         
                         // Using sigmoid function for better distribution because most values are around 0.5
                         return sentimentColors( sentiment );
-                    case 'Minimum Sentiment':
-                        var sentiment = 2;
+                    }
+                    case 'Minimum Sentiment': {
+                        let sentiment = 2;
     
                         d.data.children.mails?.forEach( ( mail ) => {
                             if ( mail.sentiment < sentiment ) {
@@ -129,8 +130,9 @@ export default function HEBVisualization() {
     
                         // Using sigmoid function for better distribution because most values are around 0.5
                         return sentimentColors( sentiment );
-                    case 'Maximum Sentiment':
-                        var sentiment = -2;
+                    }
+                    case 'Maximum Sentiment': {
+                        let sentiment = -2;
     
                         d.data.children.mails?.forEach( ( mail ) => {
                             if ( mail.sentiment > sentiment ) {
@@ -142,6 +144,7 @@ export default function HEBVisualization() {
     
                         // Using sigmoid function for better distribution because most values are around 0.5
                         return sentimentColors( sentiment );
+                    }
                     case "Sender's Jobtitle":
                         return jobColors( d.data.jobtitle );
                     default:
@@ -153,16 +156,16 @@ export default function HEBVisualization() {
                 switch ( options.colorEdgeBy ) {
                     case 'Sentiment':
                         var sentiment = 0;
-                        var devider = 0;
+                        var divider = 0;
 
                         d[0].data.children.mails.forEach( ( mail ) => {
                             if ( d[1].data.name == mail.toEmail ) {
                                 sentiment += mail.sentiment;
-                                devider++;
+                                divider++;
                             }
                         } );
 
-                        sentiment /= devider;
+                        sentiment /= divider;
 
                         // Using sigmoid function for better distribution because most values are around 0.5
                         return sentimentColors( sentiment );
