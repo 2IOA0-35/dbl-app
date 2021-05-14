@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 /* eslint-disable react/react-in-jsx-scope */
-const PageHeader = ({ title, intro }) => {
+const PageHeader = ( { title, intro } ) => {
     return (
         <div>
             <h1>{title}</h1>

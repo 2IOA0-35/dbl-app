@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 
 export const GlobalContext = createContext();
 
-export function GlobalProvider(props) {
-    const [ globalOptions, setGlobalOptions ] = useState({
+export function GlobalProvider( props ) {
+    const [ globalOptions, setGlobalOptions ] = useState( {
         column1: 'fromEmail',
         column2: 'toEmail',
         graph1: 'Hierarchical Edge Bundling',
         graph2: 'None',
-        timeframe: [ moment('19981112', 'YYYYMMDD'), moment('20020620', 'YYYYMMDD') ],
+        timeframe: [ moment( '19981112', 'YYYYMMDD' ), moment( '20020620', 'YYYYMMDD' ) ],
         previousDays: 10,
-        timeline: moment('19981112', 'YYYYMMDD'),
+        timeline: moment( '19981112', 'YYYYMMDD' ),
         columnList: [
             'None',
             'date',
@@ -27,17 +27,19 @@ export function GlobalProvider(props) {
         ],
         playbackSpeed: 1,
         playing: false
-    });
+    } );
 
-    const [ HEBOptions, setHEBOptions ] = useState({
+    const [ HEBOptions, setHEBOptions ] = useState( {
         edgeThickness: 1,
         convertEmail: true,
         colorEdgeBy: 'None',
         colorNodeBy: 'None',
-        bundlingFactor: 0.85
-    });
+        bundlingFactor: 0.85,
+        colorRange: 'Viridis',
+        colorFactor: 25
+    } );
 
-    const [ DFDOptions, setDFDOptions ] = useState({
+    const [ DFDOptions, setDFDOptions ] = useState( {
         edgeSize: 50,
         nodeSize: 5,
         dynamicEdges: true,
@@ -45,9 +47,9 @@ export function GlobalProvider(props) {
         colorBy: true,
         nodeScaleFactor: 3,
         edgeScaleFactor: 5
-    });
+    } );
 
-    const [ FDOptions, setFDOptions ] = useState({
+    const [ FDOptions, setFDOptions ] = useState( {
         edgeSize: 20,
         nodeSize: 5,
         dynamicEdges: true,
@@ -55,10 +57,10 @@ export function GlobalProvider(props) {
         colorBy: true,
         nodeScaleFactor: 3,
         edgeScaleFactor: 5
-    });
+    } );
 
-    const getOptions = (visID) => {
-        switch (visID) {
+    const getOptions = ( visID ) => {
+        switch ( visID ) {
             case 'Global':
                 return globalOptions;
             case 'Hierarchical Edge Bundling':
@@ -77,19 +79,19 @@ export function GlobalProvider(props) {
         }
     };
 
-    const setOptions = (visID, options) => {
-        switch (visID) {
+    const setOptions = ( visID, options ) => {
+        switch ( visID ) {
             case 'Global':
-                setGlobalOptions(options);
+                setGlobalOptions( options );
                 break;
             case 'Hierarchical Edge Bundling':
-                setHEBOptions(options);
+                setHEBOptions( options );
                 break;
             case 'Disjoint Force-Directed':
-                setDFDOptions(options);
+                setDFDOptions( options );
                 break;
             case 'Force-Directed Graph':
-                setFDOptions(options);
+                setFDOptions( options );
                 break;
             case 'Arc Diagram':
                 break;

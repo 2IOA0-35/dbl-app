@@ -7,30 +7,31 @@ import './InfoButton.css';
 export default function InfoButton() {
     const contextID = 'Global';
 
-    const [ getOptions ] = useContext(GlobalContext);
+    const [ getOptions ] = useContext( GlobalContext );
 
-    const values = getOptions(contextID);
+    const values = getOptions( contextID );
 
     const dataGlobal = [];
     const dataGraph1 = [];
     const dataGraph2 = [];
 
-    const parseValue = (value) => {
-        if (Array.isArray(value)) {
-            return `${value.join(', ')}`;
+    const parseValue = ( value ) => {
+        if ( Array.isArray( value ) ) {
+            return `${value.join( ', ' )}`;
         }
+        
         return `${value}`;
     };
 
-    for (const [ key, value ] of Object.entries(values)) {
-        dataGlobal.push({ key: key, variable: key, value: parseValue(value) });
+    for ( const [ key, value ] of Object.entries( values ) ) {
+        dataGlobal.push( { key: key, variable: key, value: parseValue( value ) } );
     }
-    for (const [ key, value ] of Object.entries(getOptions(values.graph1))) {
-        dataGraph1.push({ key: key, variable: key, value: parseValue(value) });
+    for ( const [ key, value ] of Object.entries( getOptions( values.graph1 ) ) ) {
+        dataGraph1.push( { key: key, variable: key, value: parseValue( value ) } );
     }
 
-    for (const [ key, value ] of Object.entries(getOptions(values.graph2))) {
-        dataGraph2.push({ key: key, variable: key, value: parseValue(value) });
+    for ( const [ key, value ] of Object.entries( getOptions( values.graph2 ) ) ) {
+        dataGraph2.push( { key: key, variable: key, value: parseValue( value ) } );
     }
 
     const columns = [

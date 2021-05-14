@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 /* eslint-disable react/react-in-jsx-scope */
-const Card = ({ imgSrc, title, text, bgColor, textColor }) => {
+const Card = ( { imgSrc, title, text, bgColor, textColor } ) => {
     return (
         <div className='card' style={{ backgroundColor: bgColor, color: textColor }}>
             <img src={imgSrc} alt={title}/>

@@ -9,45 +9,47 @@ import { Link, useHistory } from 'react-router-dom';
 import { DataContext } from '../../context/data';
 
 const { Option } = Select;
-const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 const { Title } = Typography;
 
 export default function home() {
-    //eslint-disable-next-line
+    // eslint-disable-next-line
     let [ data, setData ] = React.useContext(DataContext);
 
     let history = useHistory();
 
-    async function onChange(value) {
-        message.loading({ content: 'Loading dataset...', key: 'Dataset-Load' });
+    async function onChange( value ) {
+        message.loading( { content: 'Loading dataset...', key: 'Dataset-Load' } );
 
         let data = null;
+
         try {
-            switch (value) {
+            switch ( value ) {
                 case 'Enron': {
-                    data = (await import('../../data/enron.json')).default;
+                    data = ( await import( '../../data/enron.json' ) ).default;
                     break;
                 }
                 case 'EnronSample': {
-                    data = (await import('../../data/enronSample.json')).default;
+                    data = ( await import( '../../data/enronSample.json' ) ).default;
                     break;
                 }
             }
 
             data = data.map( ( item ) => ( {
                 ...item,
-                date: new Date( item.date ),
+                date: new Date( item.date )
             } ) );
 
-        } catch (e) {
-            message.error('An error occured while loading the dataset.');
-            console.error('Error while loading dataset: ', e);
+        } catch ( e ) {
+            message.error( 'An error occured while loading the dataset.' );
+            console.error( 'Error while loading dataset: ', e );
+
             return;
         }
-        message.destroy('Dataset-Load');
-        setData(data);
-        message.success('Succesfully loaded the dataset.');
-        history.push('/vis');
+        message.destroy( 'Dataset-Load' );
+        setData( data );
+        message.success( 'Succesfully loaded the dataset.' );
+        history.push( '/vis' );
     }
 
     return (
@@ -71,7 +73,7 @@ export default function home() {
                         <Select style={{ width: 500 }} placeholder='Choose from a Sample DataSet' onChange={onChange}>
                             <Option value='Enron'>Enron (31.041 e-mails)</Option>
                             <Option value='EnronSample'>Enron Sample (17 e-mails)</Option>
-                            {/*<Option value="DataSet3">DS3</Option>*/}
+                            {/* <Option value="DataSet3">DS3</Option> */}
                         </Select>
                     </p>
 

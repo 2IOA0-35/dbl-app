@@ -8,14 +8,14 @@ import moment from 'moment';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-export default function GeneralOptions({ colList }) {
-    const [ getOptions, setOptions ] = useContext(GlobalContext);
+export default function GeneralOptions( { colList } ) {
+    const [ getOptions, setOptions ] = useContext( GlobalContext );
 
     const contextID = 'Global';
 
-    const [ type, setType ] = useState('Date');
+    const [ type, setType ] = useState( 'Date' );
 
-    const { column1, column2, graph1, graph2, timeframe, previousDays, playbackSpeed } = getOptions(contextID);
+    const { column1, column2, graph1, graph2, timeframe, previousDays, playbackSpeed } = getOptions( contextID );
 
     const dataGraphs = [
         'None',
@@ -26,14 +26,16 @@ export default function GeneralOptions({ colList }) {
         '3D force directed graph'
     ];
     const graphOptions = [];
-    for (let i = 0; i < dataGraphs.length; i++) {
-        graphOptions.push(<Option key={dataGraphs[i]}>{dataGraphs[i]}</Option>);
+
+    for ( let i = 0; i < dataGraphs.length; i++ ) {
+        graphOptions.push( <Option key={dataGraphs[i]}>{dataGraphs[i]}</Option> );
     }
 
     // could be retrieved from 'columnList' in global context, but for consistency I used a 'colList' prop
     const columnOptions = [];
-    for (let i = 0; i < colList.length; i++) {
-        columnOptions.push(<Option key={colList[i]}>{colList[i]}</Option>);
+
+    for ( let i = 0; i < colList.length; i++ ) {
+        columnOptions.push( <Option key={colList[i]}>{colList[i]}</Option> );
     }
 
     return (
@@ -43,8 +45,8 @@ export default function GeneralOptions({ colList }) {
                     disabled
                     defaultValue={column1}
                     style={{ width: '100%' }}
-                    onChange={(event) => {
-                        setOptions(contextID, { ...getOptions(contextID), column1: event });
+                    onChange={( event ) => {
+                        setOptions( contextID, { ...getOptions( contextID ), column1: event } );
                     }}
                 >
                     {columnOptions}
@@ -53,8 +55,8 @@ export default function GeneralOptions({ colList }) {
                     disabled
                     defaultValue={column2}
                     style={{ width: '100%' }}
-                    onChange={(event) => {
-                        setOptions(contextID, { ...getOptions(contextID), column2: event });
+                    onChange={( event ) => {
+                        setOptions( contextID, { ...getOptions( contextID ), column2: event } );
                     }}
                 >
                     {columnOptions}
@@ -64,17 +66,17 @@ export default function GeneralOptions({ colList }) {
                 <Select
                     defaultValue={graph1}
                     style={{ width: '100%' }}
-                    onChange={(event) => {
-                        setOptions(contextID, { ...getOptions(contextID), graph1: event });
+                    onChange={( event ) => {
+                        setOptions( contextID, { ...getOptions( contextID ), graph1: event } );
                     }}
                 >
-                    {graphOptions.slice(1)}
+                    {graphOptions.slice( 1 )}
                 </Select>
                 <Select
                     defaultValue={graph2}
                     style={{ width: '100%' }}
-                    onChange={(event) => {
-                        setOptions(contextID, { ...getOptions(contextID), graph2: event });
+                    onChange={( event ) => {
+                        setOptions( contextID, { ...getOptions( contextID ), graph2: event } );
                     }}
                 >
                     {graphOptions}
@@ -91,11 +93,11 @@ export default function GeneralOptions({ colList }) {
                     </Select>
                     <RangePicker
                         picker={type}
-                        onChange={(event) => {
-                            setOptions(contextID, {
-                                ...getOptions(contextID),
+                        onChange={( event ) => {
+                            setOptions( contextID, {
+                                ...getOptions( contextID ),
                                 timeframe: [ event[0], event[1] ]
-                            });
+                            } );
                         }}
                         value={timeframe}
                     />
@@ -103,12 +105,12 @@ export default function GeneralOptions({ colList }) {
             </CustomMenuItem>
             <CustomMenuItem title='How many previous days are shown?' height='2'>
                 <Slider
-                    max={moment.duration(timeframe[1].diff(timeframe[0])).asDays()}
+                    max={moment.duration( timeframe[1].diff( timeframe[0] ) ).asDays()}
                     min={1}
                     defaultValue={previousDays}
                     reverse
-                    onAfterChange={(event) => {
-                        setOptions(contextID, { ...getOptions(contextID), previousDays: event });
+                    onAfterChange={( event ) => {
+                        setOptions( contextID, { ...getOptions( contextID ), previousDays: event } );
                     }}
                 />
             </CustomMenuItem>
@@ -116,8 +118,8 @@ export default function GeneralOptions({ colList }) {
                 <Slider
                     disabled
                     defaultValue={playbackSpeed}
-                    onAfterChange={(event) => {
-                        setOptions(contextID, { ...getOptions(contextID), playbackSpeed: event });
+                    onAfterChange={( event ) => {
+                        setOptions( contextID, { ...getOptions( contextID ), playbackSpeed: event } );
                     }}
                 />
             </CustomMenuItem>
