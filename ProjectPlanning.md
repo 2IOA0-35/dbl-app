@@ -4,8 +4,8 @@
   - [Languages](#languages)
   - [Visualisations](#visualisations)
   - [Structure](#structure)
-  - [Sprint Planning](#sprint-planning)
   - [Team Agreements](#team-agreements)
+- [Sprint Planning](#sprint-planning)
 - [Wishes](#wishes)
 - [Planned Tasks](#planned-tasks)
 - [Finished Tasks](#finished-tasks)
@@ -14,13 +14,15 @@
 
 # Project Description
 
+The webapp is available at [dbl.riswick.net](https://dbl.riswick.net), which gets updated with the latest version on a regular basis.
+
 ## Languages
 
 The project will be created using React for the web frontend. For now, a server backend seems unnecessary, and will therefore not be focussed on in the first sprint.
 
 ## Visualisations
 
-Our primary focus for visualisations for the first sprint included:
+Our aim is to include the following two visualisations in the webapp:
  - [Hierarchical Edge Bundling](https://observablehq.com/@d3/hierarchical-edge-bundling)
  - [Disjoint Foce-Directed Graph](https://observablehq.com/@d3/disjoint-force-directed-graph)
 
@@ -30,15 +32,6 @@ D3 will be used for creating visualisations.
 
 The project code will be stored in GitHub. Also, all wishes and tasks are available on a project board inside the repository.
 This document includes an exported list of the issues (tasks) and wishes present in GitHub.
-
-## Sprint Planning
-
- - Sprint 1: 21-04-2021  -  07-05-2021\
-   **Goal**: A basic & functional website with basic visualisations and a first draft of the report.
-
- - Sprint 2: 10-05-2021  -  21-05-2021
- - Sprint 3: 24-05-2021  -  04-06-2021
- - Sprint 4: 07-06-2021  -  18-06-2021
 
 ## Team Agreements
 
@@ -51,20 +44,34 @@ This document includes an exported list of the issues (tasks) and wishes present
 
 <div style="page-break-after: always;"></div>
 
+# Sprint Planning
+
+ - Sprint 1: 21-04-2021  -  07-05-2021\
+   **Goal**: A basic & functional website with basic visualisations and a first draft of the report.
+
+ - Sprint 2: 10-05-2021  -  21-05-2021
+   **Goal**: A basic version of the second visualisation, improvements for the first visualisation, integrating the site pages and completing the interim report.
+
+ - Sprint 3: 24-05-2021  -  04-06-2021
+ - Sprint 4: 07-06-2021  -  18-06-2021
+
+
+<div style="page-break-after: always;"></div>
+
 # Wishes
 
  - **#1: Basic Website**\
    Basic Website that has a usable interface and basic systems that can be added to (such as routing and multiple pages).
    Content is not necessary, just the basic systems up and running.
 
-   Priority: 1,
+   Priority: 2,
    Size: ~4-8 hours
  - **#2: Visualisations**\
    Choose at least 2 visualisations to implement and get a basic version working on the app.
 
    Priority: 1,
-   Size: ~10-15 hours
- - **#3: Make Dataset Upload Tool**\
+   Size: ~15 hours
+ - *(Finished)* **#3: Make Dataset Upload Tool**\
    Create a first basic version of a data upload tool, to provide data for the visualisations.
 
    Priority: 4,
@@ -72,9 +79,9 @@ This document includes an exported list of the issues (tasks) and wishes present
  - **#4: Dynamic Visualisations**\
    Visualisations should be interactable. You should be able to highlight, zoom in and out.
 
-   Priority: 3,
+   Priority: 2,
    Size: ~8-12 hours
- - **#5: First Draft Report**\
+ - *(Finished)* **#5: First Draft Report**\
    Create a preliminary version of the report (which should be handed in at the end of Sprint 2).
 
    Priority: 2,
@@ -82,42 +89,44 @@ This document includes an exported list of the issues (tasks) and wishes present
  - **#6: First Draft Video**\
    Create a preliminary version (or sketch) of the video (which should be handed in at the end of Sprint 4). 
 
-   Priority: 5,
-   Size: ~3-5 hours
+   Priority: 3,
+   Size: ~3 hours
  - **#7: Deliver Planning, Timesheets, Minutes**\
    Send the project planning, the timesheets and the meeting minutes to the tutor at the end of each week.
 
    Priority: 1,
    Size: 1 hour
+ - **#8: Create Interim Report**\
+   Complete the interim report (which should be handed in at the end of the sprint).
+
+   Priority: 1
+   Size: ~15 hours
 
 <div style="page-break-after: always;"></div>
 
 # Planned Tasks
-*None*
-
-<div style="page-break-after: always;"></div>
+|Issue|Assignee|Labels|
+|----|----|----|
+|#1.12: Create a uniform style|Christine Jacob, Tom van Liempd|priority: 3, size: small|
+|#1.13: Improve the home page|-|priority: 4, size: medium|
+|#1.14: Improve the navigation|-|priority: 5, size: small|
+|#2.5: Implement the play button|Christine Jacob, Tom van Liempd|priority: 3, size: medium|
+|#2.6: Improve Timeline Functionality|-|priority: 4, size: medium|
+|#2.7: Add a Legend|Hugo van Schalm|priority: 5, size: medium|
+|#4.3: Add zooming & panning|-|priority: 3, size: medium|
+|#8.3: Visualization|Hugo van Schalm|priority: 1, size: large|
+|#8.4: Interaction techniques|Kristopher Schlett|priority: 1, size: large|
 
 # Finished Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
-|#1.1: Set-up environment|Everyone|priority: 1, size: small|
-|#1.2: Basic Routing Framework|Tom van Liempd|priority: 2, size: medium|
-|#1.3: Choosing a Layout|Christine Jacob|priority: 2, size: small|
-|#1.4: Add Component Library|Kristopher Schlett|priority: 2, size: medium|
-|#1.5 Research Web Frameworks HTML, JS, React, CSS|Everyone|priority: 1, size: large|
-|#1.6: Create a home page|Hugo van Schalm|priority: 3, size: medium|
-|#1.7: Implement Visualisation Page Layout|Aloys Riswick|priority: 1, size: medium|
-|#1.8: Implement About Page Layout|Hugo van Schalm|priority: 2, size: medium|
-|#1.9: Implement Data Upload Page Layout|Kristopher Schlett|priority: 2, size: medium|
-|#1.10: Update the Home Page|Christine Jacob|priority: 3, size: medium|
-|#1.11: Site Navigation|Anke Staal|priority: 2, size: medium|
-|#2.1: Research Visualisations|Aloys Riswick|priority: 1, size: large|
-|#2.2: Choose library/libraries|Aloys Riswick|priority: 1, size: medium|
-|#2.3: Implement visualisations|Kristopher Schlett, Aloys Riswick, Hugo van Schalm|priority: 2, size: large|
-|#3.1: Create a Data Parser|Tom van Liempd|priority: 1, size: medium|
-|#3.2: Integrate the upload and parsing of the dataset|Tom van Liempd|priority: 1, size: medium|
-|#5.1: Abstract & Introduction, Related work|Anke Staal|priority: 3, size: small|
-|#5.2: Visualization & interaction techniques, Use case / data-set findings / application example|Christine Jacob, Tom van Liempd|priority: 2, size: medium|
-|#7.1: Submit to Tutor|Tom van Liempd|priority: 1, size: small|
-|#7.2: Submit to Tutor|Tom van Liempd|priority: 1, size: small|
-|#7.3: Submit to Tutor|Tom van Liempd|priority: 1, size: small|
+|#1.15: Improve the data-upload page|Anke Staal, Aloys Riswick|priority: 3, size: large|
+|#2.4: Optimize rerendering Force-Directed Graph|Tom van Liempd|priority: 1, size: large| 
+|#2.8: Look into performance optimisations for HEB|Aloys Riswick|priority: 1, size: large|
+|#2.9: HEB Dataset Formatting|Tom van Liempd|priority: 2, size: medium|
+|#2.10: HEB Crash Improvements|Aloys Riswick|priority: 2, size: large|
+|#2.11: Link HEB Options to Visualizaition|Aloys Riswick|priority: 3, size: medium|       
+|#4.1: Research Interaction Techniques|Kristopher Schlett|priority: 2, size: small|
+|#4.2: Show node information on click|Kristopher Schlett|priority: 3, size: medium|
+|#8.1: Abstract & Introduction|Christine Jacob|priority: 1, size: large|
+|#8.2: Related work|Anke Staal|priority: 1, size: large|
