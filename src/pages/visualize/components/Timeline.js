@@ -44,7 +44,7 @@ export default function Timeline() {
     // useEffect that will trigger going to the next day when we are playing
     useEffect( () => {
 
-        if( !playing || playbackSpeed == 0 )
+        if ( !playing || playbackSpeed == 0 )
             return;
 
         let interval = setTimeout( () => {
@@ -111,7 +111,7 @@ export default function Timeline() {
                     icon={<StepBackwardOutlined />}
                 />
                 <Button type='primary' onClick={() => {
-                    setOptions( contextID, { ...getOptions( contextID ), playing : !playing})
+                    setOptions( contextID, { ...getOptions( contextID ), playing: !playing } );
                 }} icon={playing ? <PauseOutlined /> : <CaretRightOutlined />} />
 
                 <Button

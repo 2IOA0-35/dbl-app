@@ -24,7 +24,7 @@ export default function FDVisualization() {
 
     // Variables used for infobox display
     var currentNode;
-    var checked=false;
+    var checked = false;
     var recentID;
 
     let [ dataset ] = React.useContext( DataContext );
@@ -185,7 +185,7 @@ export default function FDVisualization() {
                     currentNode = d3.select( this );
                     d3.select( this ).style( 'stroke', 'red' );
                     infobox
-                        .html( 'Node ID: ' + i.id + '<br>Emails Sent: ' +i.outDegree
+                        .html( 'Node ID: ' + i.id + '<br>Emails Sent: ' + i.outDegree
                     + '<br>Email Received: ' + i.inDegree + '<br>Position: ' + i.job )
                         .transition().duration( 500 )
                         .style( 'opacity', 1 );
@@ -201,11 +201,11 @@ export default function FDVisualization() {
                         node.selectAll( 'circle' ).style( 'stroke', ( d ) => {
                             return 'white';
                         } );
-                        recentID=i.id;
+                        recentID = i.id;
                         currentNode = d3.select( this );
                         currentNode.style( 'stroke', 'red' );
                         infobox
-                            .html( 'Node ID: ' + i.id + '<br>Emails Sent: ' +i.outDegree
+                            .html( 'Node ID: ' + i.id + '<br>Emails Sent: ' + i.outDegree
                         + '<br>Email Received: ' + i.inDegree + '<br>Position: ' + i.job )
                             .transition()
                             .duration( 500 )
@@ -215,7 +215,7 @@ export default function FDVisualization() {
             } );
 
             // Apply attributes to all nodes
-            var currentNodePresent=false;// this is to check if prev. selected node is present in current drawing.
+            var currentNodePresent = false; // this is to check if prev. selected node is present in current drawing.
 
             // Apply attributes to all nodes
             node.selectAll( 'circle' )
@@ -226,7 +226,7 @@ export default function FDVisualization() {
                     return '#067f5b';
                 } )
                 .style( 'stroke', ( d ) => {
-                    if ( recentID!=d.id ) {
+                    if ( recentID != d.id ) {
                         if ( !currentNodePresent ) {
                             infobox.style( 'opacity',0 );
                         }
@@ -236,7 +236,7 @@ export default function FDVisualization() {
                     currentNodePresent = true;
                     infobox
                         .style( 'opacity', 1 )
-                        .html( 'Node ID: ' + d.id + '<br>Emails Sent: ' +d.outDegree
+                        .html( 'Node ID: ' + d.id + '<br>Emails Sent: ' + d.outDegree
                     + '<br>Email Received: ' + d.inDegree + '<br>Position: ' + d.job );
 
                     return 'red';
