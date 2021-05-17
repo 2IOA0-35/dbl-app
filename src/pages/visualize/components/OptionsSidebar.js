@@ -10,6 +10,7 @@ import { SettingOutlined, SlidersOutlined, FileSearchOutlined, ReadOutlined } fr
 import { Menu, Layout, Button } from 'antd';
 import { DataContext } from '../../../context/data';
 import './OptionsSidebar.css';
+import UserManual from './UserManual';
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
@@ -39,7 +40,7 @@ export default function OptionsSidebar() {
             case '3D force directed graph':
                 return <CustomMenuItem title='Not yet implemented!' height='1' />;
             case 'Manual':
-                return <CustomMenuItem title='Not yet implemented!' height='1' />;
+                return <UserManual/>;
 
             default:
                 return <CustomMenuItem title='Set a graph type in &#39;General Options&#39;' height='1' />;

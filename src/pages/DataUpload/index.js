@@ -1,18 +1,30 @@
+import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+    Badge,
+    Button,
+    Card,
+    Col,
+    Divider,
+    Layout,
+    message,
+    Popover,
+    Row,
+    Table,
+    Typography,
+    Upload
+} from 'antd';
 import React from 'react';
-import { Button, Upload, Row, Col, Card, Divider, Layout, Typography, Badge, Popover, Table } from 'antd';
-import { BrowserRouter as Route, Link } from 'react-router-dom';
-import { UploadOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { DataContext } from '../../context/data';
 import './DataUpload.css';
 import parse, { readFile } from '../../utils/parser';
-import { DataContext } from '../../context/data';
-import { InfoCircleOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 // functionality for buttons, checkbox to be added
 
 export default function DataUpload() {
-    // eslint-disable-next-line
-    let [data, setData, filename, setFileName ] = React.useContext(DataContext);
+
+    let [ data, setData, filename, setFileName ] = React.useContext( DataContext );
 
     const upload = async ( { onProgress, onError, onSuccess, file } ) => {
         try {
@@ -91,51 +103,70 @@ export default function DataUpload() {
         <Layout style={{ textAlign: 'center' }} className={'container'}>
             <Title style={{ padding: '20px', width: '100%', textAlign: 'center' }}>Upload Dataset</Title>
             <Card className='card' style={{ width: '80%' }}>
-                <p>Please upload dataset in CSV format:
-                    <Popover content={info} placement='bottom'>
-                        <Badge count={<InfoCircleOutlined style={{ color: '#067f5b', lineHeight: '22px', marginLeft: '5px' }} />} />
-                    </Popover>
-                </p>
+                <Text>
+                    <p>Please upload dataset in CSV format:
+                        <Popover content={info} placement='bottom'>
+                            <Badge count={<InfoCircleOutlined style={{ color: '#067f5b', lineHeight: '22px', marginLeft: '5px' }} />} />
+                        </Popover>
+                    </p>
 
-                <Upload
-                    customRequest={upload}
-                    accept='.csv'
-                    onRemove={() => setData( null )}
-                    maxCount={1}
-                    progress={{ strokeWidth: 5, showInfo: true }}
-                    className={'data-upload'}
-                >
-                    <Button type='primary'>
-                        <UploadOutlined /> Upload File
-                    </Button>
-                </Upload>
-                <Divider style={{ marginTop: '50px' }} />
-                <Row justify='center'>
-                    <Col span={12} style={{ textAlign: 'end', padding: '0 20px' }}>
-                        <Button type='ghost'>
-                            <Link to='/vis'>Go to Visualize</Link>
+                    <Upload
+                        customRequest={upload}
+                        accept='.csv'
+                        onRemove={() => setData( null )}
+                        maxCount={1}
+                        progress={{ strokeWidth: 5, showInfo: true }}
+                        className={'data-upload'}
+                        onChange={( info ) => {
+                            if ( info.file.status !== 'uploading' ) {
+                                console.log( info.file, info.fileList );
+                            }
+                            if ( info.file.status === 'done' ) {
+                                message.success(
+                                    `${info.file.name} file uploaded successfully.`
+                                );
+                            } else if ( info.file.status === 'error' ) {
+                                message.error(
+                                    `${info.file.name} file upload failed. Check the file structure and try again.`,
+                                    5
+                                );
+                            }
+                        }}
+                    >
+                        <Button type='primary' size='large'>
+                            <UploadOutlined /> Upload File
                         </Button>
-                    </Col>
-                    {/* Doesn't work!! */}
-                    <Col span={12} style={{ textAlign: 'start', padding: '0 20px' }}>
-                        <Button type='ghost'>
-                            <Link
-                                to='/vis'
+                    </Upload>
+                    <Divider style={{ marginTop: '50px' }} />
+                    <Row justify='center'>
+                        <Col span={12} style={{ textAlign: 'end', padding: '0 20px' }}>
+                            <Button type='ghost'>
+                                <Link to='/vis'>Go to Visualize</Link>
+                            </Button>
+                        </Col>
+                        {/* Doesn't work!! */}
+                        <Col span={12} style={{ textAlign: 'start', padding: '0 20px' }}>
+                            <Button type='ghost'>
+                                <Link
+                                    to='/vis'
                                 // target='_blank'
-                            >
+                                >
                                 Open Visualization in New Tab
-                            </Link>
-                        </Button>
-                    </Col>
-                </Row>
+                                </Link>
+                            </Button>
+                        </Col>
+                    </Row>
+                </Text>
             </Card>
             <Card className='card' title='About the Data Upload Tool' style={{ width: '80%' }}>
-                <p>
+                <Text>
+                    <p>
                     On this page you can upload your own dataset and use our visualization tools to explore the data.
                     The file must be in <code>.csv</code>, which stands for{' '}
-                    <a href='https://en.wikipedia.org/wiki/Comma-separated_values'>comma-sepperated values</a> and is a
+                        <a href='https://en.wikipedia.org/wiki/Comma-separated_values'>comma-sepperated values</a> and is a
                     common file type amongst data handling software.
-                </p>
+                    </p>
+                </Text>
             </Card>
         </Layout>
     );

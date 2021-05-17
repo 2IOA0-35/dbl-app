@@ -1,4 +1,11 @@
 .ant-upload-list-text-container {
-	width: 40%;
+	width: 250px;
 	margin: 0px auto -30px auto;
+}
+
+.ant-upload-list-item-done .ant-upload-list-item-info {
+	background-color: rgb(200, 236, 212);
+}
+.ant-upload-list-item:hover .ant-upload-list-item-info, .ant-upload-list-item-error .ant-upload-list-item-info {
+	background-color: rgb(236, 200, 200);
 }

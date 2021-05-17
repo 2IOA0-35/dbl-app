@@ -83,6 +83,7 @@ export default function HEBVisualization() {
 
             let sentimentColors = ( t ) => {
                 // 'Viridis', 'Inferno', 'Plasma', 'Warm', 'Cool'
+                // Using sigmoid function for better distribution because most values are around 0.5
                 t = 1 / ( 1 + ( ( t + 1 ) / ( 1 - t ) ) ** -options.colorFactor );
                 switch ( options.colorRange ) {
                     case 'Viridis':
@@ -114,7 +115,6 @@ export default function HEBVisualization() {
 
                         sentiment /= divider;
                         
-                        // Using sigmoid function for better distribution because most values are around 0.5
                         return sentimentColors( sentiment );
                     }
                     case 'Minimum Sentiment': {
@@ -128,7 +128,6 @@ export default function HEBVisualization() {
     
                         if ( sentiment == 2 ) return 'black';
     
-                        // Using sigmoid function for better distribution because most values are around 0.5
                         return sentimentColors( sentiment );
                     }
                     case 'Maximum Sentiment': {
@@ -142,7 +141,6 @@ export default function HEBVisualization() {
     
                         if ( sentiment == -2 ) return 'black';
     
-                        // Using sigmoid function for better distribution because most values are around 0.5
                         return sentimentColors( sentiment );
                     }
                     case "Sender's Jobtitle":
@@ -167,7 +165,6 @@ export default function HEBVisualization() {
 
                         sentiment /= divider;
 
-                        // Using sigmoid function for better distribution because most values are around 0.5
                         return sentimentColors( sentiment );
                     case "Sender's Jobtitle":
                         return jobColors( d[0].data.jobtitle );
@@ -226,13 +223,18 @@ ${d.incoming?.length} incoming`
             link.selectAll( 'path' )
                 .data( links )
                 .join( 'path' )
-                .attr( 'stroke-width', options.edgeThickness + 'px' )
+                .style( 'stroke-width', null )
                 // .style('mix-blend-mode', 'multiply')
                 .attr( 'd', ( [ i, o ] ) => line( i.path( o ) ) )
                 .attr( 'stroke', ( d ) => colorEdge( d ) )
                 .each( function( d ) {
                     d.path = this;
                 } );
+
+            if ( options.edgeThickness != 1 ) {
+                link.selectAll( 'path' )
+                    .style( 'stroke-width', options.edgeThickness + 'px' );
+            }
         };
 
         update( root, options );
@@ -249,9 +251,9 @@ ${d.incoming?.length} incoming`
         function outed( event, d ) {
             // link.style('mix-blend-mode', 'multiply');
             d3.select( this ).attr( 'font-weight', null );
-            d3.selectAll( d.incoming.map( ( d ) => d.path ) ).classed( 'link-target', false ).raise();
+            d3.selectAll( d.incoming.map( ( d ) => d.path ) ).classed( 'link-target', false );
             d3.selectAll( d.incoming.map( ( [ d ] ) => d.text ) ).classed( 'node-source', false );
-            d3.selectAll( d.outgoing.map( ( d ) => d.path ) ).classed( 'link-source', false ).raise();
+            d3.selectAll( d.outgoing.map( ( d ) => d.path ) ).classed( 'link-source', false );
             d3.selectAll( d.outgoing.map( ( [ , d ] ) => d.text ) ).classed( 'node-target', false );
         }
 
@@ -309,7 +311,7 @@ ${d.incoming?.length} incoming`
         } );
 
         // TODO: fix this mess. flare used "imports".
-        // I have made each email a seperate array with date, instead of putting all toEmails in a single array
+        // I have made each email a separate array with date, instead of putting all toEmails in a single array
         // This is because I wanted to include the time.
         // the point is, is that the format is slightly different and this function will need to be altered.
         function bilink( root ) {
