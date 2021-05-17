@@ -27,6 +27,9 @@ export default function FDVisualization() {
     var checked = false;
     var recentID;
 
+    // Variables used for Legend
+    var showLegend = false;
+
     let [dataset] = React.useContext(DataContext);
 
     let [formattedData, setFormattedData] = useState(
@@ -94,14 +97,49 @@ export default function FDVisualization() {
 
         var legend = d3.select(visBox.current)
             .append('div')
-            .style('bottom', '5.34px')
+            .style('bottom', '20.34px')
             .style('left', '20.15px')
             .style('position', 'absolute')
             .style('background-color', 'white')
             .style('border-radius', '10px')
             .style('padding', '10px')
+            .style('width', '200px')
+        
+        var legendHeader = legend
+            .append('div')
+            .style('display', 'flex')
+            .style('justify-content', 'space-between')
+            .style('align-items', 'center')
             .html('<h2>Legend</h2>');
 
+        var legendButton = legendHeader
+            .append('a')
+            .style('background',  'none')
+            .style('color', 'blue')
+            .style('border', 'none')
+            .style('text-decoration', 'none')
+            .style('font-size', '1rem')
+            .html('Show')
+            .on('mouseover', () => {
+                legendButton.style('text-decoration', 'underline');
+            })
+            .on('mouseout', () => {
+                legendButton.style('text-decoration', 'none');
+            })
+        
+        var legendContent = legend.append('div').style('display', 'none');
+
+        legendButton
+            .on('click', () => {
+                if(showLegend){
+                    legendContent.style('display', 'none');
+                    legendButton.html(' Show');
+                } else {
+                    legendContent.style('display', 'block');
+                    legendButton.html(' Hide');
+                }
+                showLegend = !showLegend;
+            });
         // Initialize forces & simulation
         let manyBodyForce = d3.forceManyBody();
         let linkForce = d3.forceLink([]).id((d) => d.id);
@@ -226,7 +264,7 @@ export default function FDVisualization() {
 
             // Apply attributes to all nodes
             var currentNodePresent = false; // this is to check if prev. selected node is present in current drawing.
-            let legendContent = '<h2>Legend</h2>';
+            let legendContentText = '';
             let jobs = new Map();
 
             // Apply attributes to all nodes
@@ -234,7 +272,7 @@ export default function FDVisualization() {
                 .attr('fill', (d) => {
                     console.log(d.job);
                     let color = '#067f5b';
-                    if (options.colorBy){
+                    if (options.colorBy) {
                         color = jobColors(d.job);
                         if (!jobs.has(d.job)) {
                             jobs.set(d.job, color);
@@ -265,10 +303,10 @@ export default function FDVisualization() {
                 .text((d) => `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`);
 
             let jobsSorted = new Map([...jobs.entries()].sort());
-            for (let [key, value] of jobsSorted){
-                legendContent += `<p><span style='color: ${value};'>&#11044</span> ${key}</p>`
+            for (let [key, value] of jobsSorted) {
+                legendContentText += `<p><span style='color: ${value};'>&#11044</span> ${key}</p>`
             }
-            legend.html(legendContent);
+            legendContent.html(legendContentText);
 
             // if dynamicNodes set then make size dynamic
             if (options.dynamicNodes) {
