@@ -18,7 +18,7 @@ const { Sider } = Layout;
 export default function OptionsSidebar() {
     const [ collapsed, setCollapsed ] = useState( false );
     
-    let [ data, setData, filename, setFileName ] = React.useContext( DataContext );
+    let [ data, setData, fileName, setFileName ] = React.useContext( DataContext );
     
     const [ getOptions ] = useContext( GlobalContext );
 
@@ -73,7 +73,7 @@ export default function OptionsSidebar() {
                         marginBottom: '4px'
                     }}
                 >
-                    <span style={{ marginRight: '10px' }}>{filename}</span>
+                    <span style={{ marginRight: '10px' }}>{fileName}</span>
                     <Button type='primary'>
                         <Link to='/dataUpload'>Edit</Link>
                     </Button>

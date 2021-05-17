@@ -24,7 +24,7 @@ const { Title, Text } = Typography;
 
 export default function DataUpload() {
 
-    let [ data, setData, filename, setFileName ] = React.useContext( DataContext );
+    let [ data, setData, fileName, setFileName ] = React.useContext( DataContext );
 
     const upload = async ( { onProgress, onError, onSuccess, file } ) => {
         try {
@@ -113,7 +113,7 @@ export default function DataUpload() {
                     <Upload
                         customRequest={upload}
                         accept='.csv'
-                        onRemove={() => setData( null )}
+                        onRemove={() => { setData( null ); setFileName( null ); }}
                         maxCount={1}
                         progress={{ strokeWidth: 5, showInfo: true }}
                         className={'data-upload'}
