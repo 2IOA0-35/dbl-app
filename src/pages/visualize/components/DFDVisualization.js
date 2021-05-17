@@ -3,6 +3,7 @@ import moment from 'moment';
 import { GlobalContext } from './GlobalContext';
 import * as d3 from 'd3';
 import { DataContext } from '../../../context/data';
+import { every } from 'd3';
 
 const VIS_ID = 'Disjoint Force-Directed';
 const CONTEXT_ID = 'Global';
@@ -84,6 +85,29 @@ export default function FDVisualization() {
             .attr('stroke', '#fff')
             .attr('stroke-width', 1.5);
 
+        var zoom = d3.zoom().on("zoom", function (event) {
+            console.log(event.transform)
+            node.attr("transform", event.transform)
+            link.attr("transform", event.transform)
+        })
+
+        svg.call(zoom)
+
+        let zoomButton = d3.select(visBox.current)
+            .append('button')
+            .html('Reset Zoom')
+            .style('background-color', '#067f5b')
+            .style('border', 'none')
+            .style('position', 'absolute')
+            .style('bottom', '35.34px')
+            .style('color', 'white')
+            .style('left', '0')
+            .style('right', '0')
+            .style('margin', 'auto')
+            .on('click', () => {
+                svg.call(zoom.transform, d3.zoomIdentity)               
+            })
+
         // infobox for onclick
         var infobox = d3.select(visBox.current)
             .append('div')
@@ -104,7 +128,7 @@ export default function FDVisualization() {
             .style('border-radius', '10px')
             .style('padding', '10px')
             .style('width', '200px')
-        
+
         var legendHeader = legend
             .append('div')
             .style('display', 'flex')
@@ -114,7 +138,7 @@ export default function FDVisualization() {
 
         var legendButton = legendHeader
             .append('a')
-            .style('background',  'none')
+            .style('background', 'none')
             .style('color', 'blue')
             .style('border', 'none')
             .style('text-decoration', 'none')
@@ -126,12 +150,12 @@ export default function FDVisualization() {
             .on('mouseout', () => {
                 legendButton.style('text-decoration', 'none');
             })
-        
+
         var legendContent = legend.append('div').style('display', 'none');
 
         legendButton
             .on('click', () => {
-                if(showLegend){
+                if (showLegend) {
                     legendContent.style('display', 'none');
                     legendButton.html(' Show');
                 } else {
