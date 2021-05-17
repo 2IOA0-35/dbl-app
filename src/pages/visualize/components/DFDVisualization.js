@@ -105,7 +105,7 @@ export default function FDVisualization() {
             .style('right', '0')
             .style('margin', 'auto')
             .on('click', () => {
-                svg.call(zoom.transform, d3.zoomIdentity)               
+                svg.call(zoom.transform, d3.zoomIdentity)
             })
 
         // infobox for onclick
@@ -117,6 +117,7 @@ export default function FDVisualization() {
             .style('position', 'absolute')
             .style('background-color', 'white')
             .style('border-radius', '10px')
+            .style('z-index', '100')
             .style('padding', '10px');
 
         var legend = d3.select(visBox.current)
@@ -202,6 +203,12 @@ export default function FDVisualization() {
             event.subject.fx = null;
             event.subject.fy = null;
         }
+
+        infobox.call(d3.drag()
+            .on('drag', function (event) {
+                infobox.style('top', event.y + 'px')
+                infobox.style('left', event.x + 'px')
+            }));
 
         // Job color scale that is used to color nodes based on jobs
         let jobColors = d3.scaleOrdinal(d3.schemeCategory10);
