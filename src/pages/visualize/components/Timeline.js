@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Slider, Row, Button, Space } from 'antd';
-import { StepBackwardOutlined, StepForwardOutlined, PauseOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { Tooltip } from 'antd';
+import { StepBackwardOutlined, StepForwardOutlined, PauseOutlined, CaretRightOutlined, FastBackwardOutlined, FastForwardOutlined } from '@ant-design/icons';
 import { GlobalContext } from './GlobalContext';
 import moment from 'moment';
 import './Timeline.css';
+import { DataContext } from '../../../context/data';
 
 const MAX_UPDATE_INTERVAL = 500;
 
@@ -11,6 +13,8 @@ export default function Timeline() {
     const contextID = 'Global';
 
     const [ getOptions, setOptions ] = useContext( GlobalContext );
+
+    let [ dataset ] = React.useContext( DataContext );
 
     const { timeline, playing, timeframe, playbackSpeed } = getOptions( contextID );
 
@@ -27,6 +31,9 @@ export default function Timeline() {
 
     // Value that ignores cooldown that is used for correct display of the slider
     const [ value, setValue ] = useState( timeline );
+
+    // State that contains the dataset dates in sorted order
+    const [ sortedDates, setSortedDates ] = useState( [] );
 
     // The cooldown will activate when the timeline value is changed.
     useEffect( () => {
@@ -58,6 +65,24 @@ export default function Timeline() {
         return () => clearTimeout( interval );
 
     }, [ playing, timeline, playbackSpeed, getOptions ] );
+
+    // useEffect that sorts the dataset on date to be used for the skip forward and skip back buttons
+    useEffect( () => {
+        if (!dataset)
+            return;
+
+        let sorted = dataset.sort( ( a, b ) => {
+            return a.date - b.date;
+        } );
+
+        sorted = sorted.map( ( row ) => {
+            return row.date;
+        } );
+
+        setSortedDates( sorted );
+        
+    }, [ dataset ] );
+
 
     return (
         <Row justify='center' style={{ padding: '20px 50px' }}>
@@ -99,32 +124,107 @@ export default function Timeline() {
                 }}
             />
             <Space size='middle'>
-                <Button
-                    type='primary'
-                    onClick={() => {
-                        let value = moment( timeline ).subtract( 1, 'days' );
-    
-                        setValue( value );
+                <Tooltip placement='topLeft' title='Skip to previous change'>
 
-                        setOptions( contextID, { ...getOptions( contextID ), timeline: value } );
-                    }}
-                    icon={<StepBackwardOutlined />}
-                />
-                <Button type='primary' onClick={() => {
-                    setOptions( contextID, { ...getOptions( contextID ), playing: !playing } );
-                }} icon={playing ? <PauseOutlined /> : <CaretRightOutlined />} />
+                    <Button
+                        type='primary'
+                        onClick={() => {
+                            let value = moment( timeline );
+                            
+                            for( let i = sortedDates.length - 1; i >= 0; i-- ) {
 
-                <Button
-                    type='primary'
-                    onClick={() => {
-                        let value = moment( timeline ).add( 1, 'days' );
-    
-                        setValue( value );
+                                if( !value.isAfter( sortedDates[ i ] ) ) {
 
-                        setOptions( contextID, { ...getOptions( contextID ), timeline: value } );
-                    }}
-                    icon={<StepForwardOutlined />}
-                />
+                                    //Check that we are not at the first element yet
+                                    if( i > 0 ) 
+                                        continue;
+
+                                    //If no elements match, we set the date to the start
+                                    value = moment( timeframe[0] );
+                                    
+                                } else {
+                                    value = moment( sortedDates[ i ] );
+
+                                    break;
+                                }
+                                
+                            }
+
+                            setValue( value );
+
+                            setOptions( contextID, { ...getOptions( contextID ), timeline: value } );
+                        }}
+                        icon={<FastBackwardOutlined style={{ fontSize: 18 }} />}
+                    />
+
+                </Tooltip>
+                <Tooltip placement='topLeft' title='Skip backward'>
+
+                    <Button
+                        type='primary'
+                        onClick={() => {
+                            let value = moment( timeline ).subtract( 1, 'days' );
+
+                            setValue( value );
+
+                            setOptions( contextID, { ...getOptions( contextID ), timeline: value } );
+                        }}
+                        icon={<StepBackwardOutlined />}
+                    />
+                </Tooltip>
+
+                <Tooltip title={playing ? 'Pause' :'Play'  }>
+                    <Button type='primary' onClick={() => {
+                        setOptions( contextID, { ...getOptions( contextID ), playing: !playing } );
+                    }} icon={playing ? <PauseOutlined /> : <CaretRightOutlined />} />
+                </Tooltip>
+
+                <Tooltip placement='topRight' title='Skip forward'>
+                    <Button
+                        type='primary'
+                        onClick={() => {
+                            let value = moment( timeline ).add( 1, 'days' );
+
+                            setValue( value );
+
+                            setOptions( contextID, { ...getOptions( contextID ), timeline: value } );
+                        }}
+                        icon={<StepForwardOutlined />}
+                    />
+                </Tooltip>
+
+                <Tooltip placement='topRight' title='Skip to next change'>
+                    <Button
+                        type='primary'
+                        onClick={() => {
+                            let value = moment( timeline );
+
+                            for( let i = 0; i < sortedDates.length; i++ ) {
+
+                                if( !value.isBefore( sortedDates[ i ] ) ) {
+
+                                    //Check that we are not at the last element yet
+                                    if( i < sortedDates.length - 1 ) 
+                                        continue;
+
+                                    //If no elements match, we set the date to the end
+                                    value = moment( timeframe[1] );
+                                    
+                                } else {
+                                    value = moment( sortedDates[ i ] );
+
+                                    break;
+                                }
+                                
+                            }
+
+                            setValue( value );
+
+                            setOptions( contextID, { ...getOptions( contextID ), timeline: value } );
+                        }}
+                        icon={<FastForwardOutlined style={{ fontSize: 18 }}/>}
+                    />
+                </Tooltip>
             </Space>
         </Row>
     );
