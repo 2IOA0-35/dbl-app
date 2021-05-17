@@ -57,7 +57,7 @@ export default function Timeline() {
 
         return () => clearTimeout( interval );
 
-    }, [ playing, timeline, playbackSpeed ] );
+    }, [ playing, timeline, playbackSpeed, getOptions ] );
 
     return (
         <Row justify='center' style={{ padding: '20px 50px' }}>
