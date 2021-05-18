@@ -138,14 +138,15 @@ export default function DataUpload() {
                         </Button>
                     </Upload>
                     <Divider style={{ marginTop: '50px' }} />
-                    <Row justify='center'>
-                        <Col span={12} style={{ textAlign: 'end', padding: '0 20px' }}>
+                    <Row justify='center' gutter={[ 48, 0 ]}>
+                        {/* Change the textAlign below to 'end' if two buttons are enabled */}
+                        <Col span={12} style={{ textAlign: 'center', padding: '0 20px' }}>
                             <Button type='ghost'>
                                 <Link to='/vis'>Go to Visualize</Link>
                             </Button>
                         </Col>
                         {/* Doesn't work!! */}
-                        <Col span={12} style={{ textAlign: 'start', padding: '0 20px' }}>
+                        {/* <Col span={12} style={{ textAlign: 'start', padding: '0 20px' }}>
                             <Button type='ghost'>
                                 <Link
                                     to='/vis'
@@ -154,7 +155,7 @@ export default function DataUpload() {
                                 Open Visualization in New Tab
                                 </Link>
                             </Button>
-                        </Col>
+                        </Col> */}
                     </Row>
                 </Text>
             </Card>
