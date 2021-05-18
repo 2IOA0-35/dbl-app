@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Peppy Graph",
+  "name": "Peppy Graph - A Dynamic Data Visualizer",
   "icons": [
     {
       "src": "favicon.ico",
@@ -13,6 +13,12 @@
       "sizes": "192x192"
     },
     {
+      "src": "maskable192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
       "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
@@ -20,6 +26,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#067F5B",
   "background_color": "#ffffff"
 }
