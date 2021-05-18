@@ -97,15 +97,24 @@ export default function FDVisualization() {
             .append('button')
             .html('Reset Zoom')
             .style('background-color', '#067f5b')
-            .style('border', 'none')
+            .style('border', '3px solid #067f5b')
             .style('position', 'absolute')
             .style('bottom', '35.34px')
             .style('color', 'white')
             .style('left', '0')
             .style('right', '0')
             .style('margin', 'auto')
+            .style('cursor', 'pointer')
+            .style('border-radius', '2px')
+            .style('transition', 'all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)')
             .on('click', () => {
                 svg.call(zoom.transform, d3.zoomIdentity)
+            })
+            .on('mouseover', () => {
+                zoomButton.style('background-color', '#1d8c67');
+            })
+            .on('mouseout', () => {
+                zoomButton.style('background-color', '#067f5b');
             })
 
         // infobox for onclick
