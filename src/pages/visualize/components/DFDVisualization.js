@@ -108,14 +108,21 @@ export default function FDVisualization() {
             .style('border-radius', '2px')
             .style('transition', 'all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)')
             .on('click', () => {
-                svg.call(zoom.transform, d3.zoomIdentity)
+                svg
+                    .transition()
+                    .duration(600)
+                    .call(zoom.transform, d3.zoomIdentity);
             })
             .on('mouseover', () => {
-                zoomButton.style('background-color', '#1d8c67');
+                zoomButton
+                    .style('background-color', '#1d8c67')
+                    .style('border-color', '#1d8c67');
             })
             .on('mouseout', () => {
-                zoomButton.style('background-color', '#067f5b');
-            })
+                zoomButton
+                    .style('background-color', '#067f5b')
+                    .style('border-color', '#067f5b');
+            });
 
         // infobox for onclick
         var infobox = d3.select(visBox.current)
