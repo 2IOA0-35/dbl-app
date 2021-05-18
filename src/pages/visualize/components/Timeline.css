@@ -1,3 +1,42 @@
 .ant-slider-mark-text {
     white-space: nowrap;
 }
+
+.timelineControls {
+    padding: 0 50px 20px 50px;
+}
+
+.timelineControls .lock {
+    margin-right: auto;
+    width: 250px;
+}
+
+.timelineControls .speed {
+    margin-left: auto;
+    width: 250px;
+    justify-content: flex-end;
+}
+
+.timelineControls .lock .ant-btn, .timelineSecondary .lock .ant-btn {
+    display: flex;
+    align-items: center;
+}
+
+.timelineControls .lock .anticon, .timelineSecondary .lock .anticon {
+    font-size: 18px;
+}
+
+.timelineSecondary {
+    display: none;
+    padding: 0 30px;
+}
+
+@media screen and (max-width: 1200px) {
+    .timelineControls .lock, .timelineControls .speed {
+        display: none;
+    }
+
+    .timelineSecondary {
+        display: inline-flex;
+    }
+}
