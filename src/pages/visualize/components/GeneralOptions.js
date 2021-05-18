@@ -103,28 +103,6 @@ export default function GeneralOptions( { colList } ) {
                     />
                 </Space>
             </CustomMenuItem>
-            <CustomMenuItem title='How many previous days are shown?' height='2'>
-                <Slider
-                    max={moment.duration( timeframe[1].diff( timeframe[0] ) ).asDays()}
-                    min={1}
-                    defaultValue={previousDays}
-                    reverse
-                    onAfterChange={( event ) => {
-                        setOptions( contextID, { ...getOptions( contextID ), previousDays: event } );
-                    }}
-                />
-            </CustomMenuItem>
-            <CustomMenuItem title='Set a custom playback speed:' height='2'>
-                <Slider
-                    min={0}
-                    max={4}
-                    step={0.1}
-                    defaultValue={playbackSpeed}
-                    onAfterChange={( event ) => {
-                        setOptions( contextID, { ...getOptions( contextID ), playbackSpeed: event } );
-                    }}
-                />
-            </CustomMenuItem>
         </div>
     );
 }
