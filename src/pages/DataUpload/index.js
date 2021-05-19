@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 import { DataContext } from '../../context/data';
 import './DataUpload.css';
 import parse, { readFile } from '../../utils/parser';
+import db from '../../db';
 
 const { Title, Text } = Typography;
 // functionality for buttons, checkbox to be added
@@ -39,6 +40,7 @@ export default function DataUpload() {
                 onProgress( { percent: percent / 2 + 50 } );
             } );
 
+            db.data.put( { key: 'data', data: data, filename: file.name } );
             setData( data );
 
             onSuccess( `Successfully parsed ${data.length} rows.` );
@@ -139,23 +141,21 @@ export default function DataUpload() {
                     </Upload>
                     <Divider style={{ marginTop: '50px' }} />
                     <Row justify='center' gutter={[ 48, 0 ]}>
-                        {/* Change the textAlign below to 'end' if two buttons are enabled */}
-                        <Col span={12} style={{ textAlign: 'center', padding: '0 20px' }}>
+                        <Col span={12} style={{ textAlign: 'end' }}>
                             <Button type='ghost'>
                                 <Link to='/vis'>Go to Visualize</Link>
                             </Button>
                         </Col>
-                        {/* Doesn't work!! */}
-                        {/* <Col span={12} style={{ textAlign: 'start', padding: '0 20px' }}>
+                        <Col span={12} style={{ textAlign: 'start' }}>
                             <Button type='ghost'>
                                 <Link
                                     to='/vis'
-                                // target='_blank'
+                                    target='_blank'
                                 >
                                 Open Visualization in New Tab
                                 </Link>
                             </Button>
-                        </Col> */}
+                        </Col>
                     </Row>
                 </Text>
             </Card>

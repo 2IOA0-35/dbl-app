@@ -3,6 +3,7 @@ import { Layout, Card, Typography, Button, Select, message, Row, Col, Image, Pop
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { DataContext } from '../../context/data';
+import db from '../../db';
 
 const { Option } = Select;
 const { Header, Content } = Layout;
@@ -19,15 +20,19 @@ export default function home() {
 
         let data = null;
 
+        let fileName = null;
+
         try {
             switch ( value ) {
                 case 'Enron': {
                     setFileName( 'enron.csv' );
+                    fileName = 'enron.csv';
                     data = ( await import( '../../data/enron.json' ) ).default;
                     break;
                 }
                 case 'EnronSample': {
                     setFileName( 'enronSample.csv' );
+                    fileName = 'enronSample.csv';
                     data = ( await import( '../../data/enronSample.json' ) ).default;
                     break;
                 }
@@ -44,6 +49,9 @@ export default function home() {
             return;
         }
         message.destroy( 'Dataset-Load' );
+        
+        db.data.put( { key: 'data', data: data, filename: fileName } );
+        
         setData( data );
         message.success( 'Successfully loaded the dataset.' );
         history.push( '/vis' );

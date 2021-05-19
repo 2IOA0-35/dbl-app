@@ -1,5 +1,6 @@
 import React, { useState, createContext } from 'react';
 import PropTypes from 'prop-types';
+import db from '../db';
 
 /**
  * @type {React.Context<[ {
@@ -37,6 +38,13 @@ export function DataProvider( props ) {
     );
 
     let [ fileName, setFileName ] = useState( '' );
+
+    window.addEventListener( 'load', () => {
+        db.data.get( 'data' ).then( ( data ) => {
+            setData( data.data );
+            setFileName( data.filename );
+        } );
+    } );
 
     return <DataContext.Provider value={[ data, setData, fileName, setFileName ]}>{props.children}</DataContext.Provider>;
 }
