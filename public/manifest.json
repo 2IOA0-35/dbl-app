@@ -1,6 +1,7 @@
 {
-  "short_name": "Peppy Graph",
-  "name": "Peppy Graph - A Dynamic Data Visualizer",
+  "short_name": "Envision",
+  "name": "Envision",
+  "description": "A Dynamic Data Visualizer",
   "icons": [
     {
       "src": "favicon.ico",

@@ -51,7 +51,13 @@ export default function home() {
 
     return (
         <Layout style={{ textAlign: 'center' }} className={'container'}>
-            <Title style={{ padding: '20px', width: '100%', textAlign: 'center' }}>The Web-App</Title>
+            <Title style={{ padding: '20px', width: '100%', textAlign: 'center', margin: '20px 0' }}>
+                <Image
+                    style={{ width: '500px', maxWidth: '100%' }}
+                    src='/res/envision_banner.png'
+                    preview={false}
+                />
+            </Title>
 
             <Card title='How to Use Our Data Analysis Tool ' className='card' style={{ width: '80%' }}>
                 <Text>
@@ -125,6 +131,7 @@ export default function home() {
                                 width={200}
                                 style={{ filter: 'grayscale(100%)' }}
                                 src='/res/tue_logo.png'
+                                preview={false}
                             />
                         </Col>
                         <Col 
