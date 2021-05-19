@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import db from '../db';
 
@@ -39,12 +39,22 @@ export function DataProvider( props ) {
 
     let [ fileName, setFileName ] = useState( '' );
 
-    window.addEventListener( 'load', () => {
-        db.data.get( 'data' ).then( ( data ) => {
-            setData( data.data );
-            setFileName( data.filename );
-        } );
+    useEffect( () => {
+        function onLoad() {
+            db.data.get( 'data' ).then( ( data ) => {
+                if( !data )
+                    return;
+
+                setData( data.data );
+                setFileName( data.filename );
+            } );
+        }
+
+        window.addEventListener( 'load', onLoad );
+
+        return () => window.removeEventListener( 'load', onLoad );
     } );
+
 
     return <DataContext.Provider value={[ data, setData, fileName, setFileName ]}>{props.children}</DataContext.Provider>;
 }
