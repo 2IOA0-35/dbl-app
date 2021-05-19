@@ -220,11 +220,16 @@ ${d.incoming?.length} incoming`
             svg.classed( 'fastRender', enableFastRender )
                 .classed( 'capitalize', options.convertEmail );
 
+            let selection = link.selectAll( 'path' )
+                .data( links );
+
+            selection.enter().append( 'path' );
+            selection.exit ().remove();
+
             link.selectAll( 'path' )
-                .data( links )
-                .join( 'path' )
                 .style( 'stroke-width', null )
-                // .style('mix-blend-mode', 'multiply')
+                .classed( 'link-target', false )
+                .classed( 'link-source', false )
                 .attr( 'd', ( [ i, o ] ) => line( i.path( o ) ) )
                 .attr( 'stroke', ( d ) => colorEdge( d ) )
                 .each( function( d ) {
@@ -242,6 +247,8 @@ ${d.incoming?.length} incoming`
         function overed( event, d ) {
             // link.style('mix-blend-mode', null);
             d3.select( this ).attr( 'font-weight', 'bold' );
+            console.log( d.incoming, d.outgoing );
+
             d3.selectAll( d.incoming.map( ( d ) => d.path ) ).classed( 'link-target', true ).raise();
             d3.selectAll( d.incoming.map( ( [ d ] ) => d.text ) ).classed( 'node-source', true );
             d3.selectAll( d.outgoing.map( ( d ) => d.path ) ).classed( 'link-source', true ).raise();
