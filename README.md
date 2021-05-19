@@ -1,6 +1,13 @@
+![Envision](public/res/envision_banner.png?raw=true "Envision")
+
+This README contains information & set-up instructions for graders under the section [Application](#application). The rest of the README is intended for groupmembers to set-up the development workspace.
+
+<div style="page-break-after: always;"></div>
+
 # Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
+- [Application](#application)
 - [Set-up](#set-up)
   - [Installation](#installation)
     - [Git Installation Options](#git-installation-options)
@@ -27,8 +34,34 @@
   - [Linting](#linting)
 - [Resolving Issues](#resolving-issues)
   - [Missing Dependencies](#missing-dependencies)
+  - [Missing Modules during start](#missing-modules-during-start)
+
+
+<div style="page-break-after: always;"></div>
+
+# Application
+
+This section of the `README` is specifically intended for graders.
+
+Envision is a visualisation tool for e-mail networks. It is primarily focussed on the Enron dataset, but allows for other similarly formatted datasets to be uploaded.
+
+Using the dataset it can show two different types of visualisations: Disjoint Force-Directed Graphs and Hierarchical Edge Bundling.
+
+The application is available at [envision.riswick.net](https://envision.riswick.net), but can also be manually built using this source code.
+
+To build the application from source, [NodeJS](https://nodejs.org/) (and the included package manager `npm`) need to be installed. The project has been tested to work with the latest LTS version of NodeJS 14.x.x and npm 7.x.x (other versions will probably also work). To then install all project dependencies, navigate to the project directory in a terminal and run `npm install`. This will install all dependencies.
+
+After installing dependencies, all commands listed under [Starting the application](#starting-the-application) are available. The primary ones that can be used are `npm run build` to build the application. All files will then be available in the `build` directory. To then start a local web server, `npm run serve` can be used, which will make this directory accessible on [localhost:5000](http://localhost:5000).
+
+`npm start` can be used to start the application in development mode, which will make it available at [localhost:3000](http://localhost:3000). However, this method will have a performance impact and is therefore not the preferred method of viewing the application.
+
+Very rarely, an issue occurs during installation where npm does not install all dependencies, and on start-up issues occur with missing modules. This can likely be fixed using the steps defined here: [Missing Modules during start](#missing-modules-during-start).
+
+<div style="page-break-after: always;"></div>
 
 # Set-up
+
+This section of the `README` indicates how to set-up a development environment. It is not intended for graders.
 
 ## Installation
 
@@ -105,6 +138,8 @@ added 2003 packages from 774 contributors and audited 2006 packages in 82.547s
 found 0 vulnerabilities
 ```
 
+<div style="page-break-after: always;"></div>
+
 # Starting the application
 
 ### `npm start`
@@ -144,6 +179,8 @@ To exit and go back to the command line type `Ctrl+C`.
 
 [ESLint](#Linting) will be executed on all files to check for any warnings or errors.
 These will be shown in the terminal.
+
+<div style="page-break-after: always;"></div>
 
 # Git & Visual Studio Code
 
@@ -216,6 +253,8 @@ To resolve the conflict, VS Code gives you quick options to accept `current`, `i
 
 After you have resolved the conflict, you can press the `+`-sign again and provide a message, just like a commit.
 
+<div style="page-break-after: always;"></div>
+
 # Tools
 
 ## Browser
@@ -241,6 +280,8 @@ Placing breakpoints can be done by clicking next to a line number in any javascr
 
 ESLint will make sure your code rougly follows a common style. Some common problems, like quotes, can be fixed using the light-bulb that appears in VS Code.
 
+<div style="page-break-after: always;"></div>
+
 # Resolving Issues
 
 ## Missing Dependencies
@@ -251,3 +292,10 @@ In this case, you can fix the problem by re-running `npm install`, which will in
 
 If problems remain, you can force a re-install of all modules by removing the node_modules directory: `rm -r node_modules`.
 Then, you can once again run `npm install`.
+
+## Missing Modules during start
+
+If you ran `npm install` and still have issues during start-up where some modules can't be found, you can try the following debugging step.
+Removing both the `node_modules` directory and `package-lock.json` file will trigger `npm` to start fresh. Triggering an install using `npm install` will then likely install all dependencies correctly.
+
+If issues persist, a possible cause could be that npm is outdated. The project was tested with npm version 7 (the version can be checked using `npm -v`). To update npm run `npm install -g npm`, after which you can try the previous steps again.
