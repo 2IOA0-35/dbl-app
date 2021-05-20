@@ -107,7 +107,30 @@ export default function About() {
             </Card>
 
             <Card title='Aloys Riswick' className='right card'>
-                <Text>Here you can put a bit of text about yourself.</Text>
+                <Text>
+                    <p>
+                        {`
+                        Hey there! 
+                        My name is Aloys and I'm a fist year Computer Science students at the TU/e.
+                        Personally, I'm quite interested in web development, 
+                        so working on this website was a fun experience for me. 
+                        For this website I was heavily involved in the initial layout of the 'Visualize' page.
+                        I also worked on implementing the visualization together with the others.
+                        Apart from that I worked on some minor features and 
+                        occasionally I fix margins or styles that are of by a few pixels. 
+                        When I notice that something is just slightly off, I can't help but fix it, 
+                        sometimes to the annoyance of my team members perhaps.
+                        `}
+                    </p>
+                    <p>
+                        {`
+                        I really enjoyed this project and 
+                        I believe that this is largely due to the amazing team I got to work with. 
+                        I hope that I can use the experience gained from this project in my future endeavors and 
+                        I wouldn't mind working with this team again!
+                        `}
+                    </p>
+                </Text>
             </Card>
 
             <Card title='Hugo van Schalm' className='left card'>
