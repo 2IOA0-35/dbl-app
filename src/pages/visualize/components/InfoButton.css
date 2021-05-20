@@ -2,8 +2,8 @@
     info button will always be in the top right of the ancestor with position: relative*/
 .info-button {
     position: absolute;
-    top: 30px;
-    right: 30px;
+    top: 20px;
+    right: 20px;
     z-index: 40;
 }
 

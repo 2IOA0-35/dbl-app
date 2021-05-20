@@ -64,6 +64,7 @@ export default function home() {
                     style={{ width: '500px', maxWidth: '100%' }}
                     src='/res/envision_banner.png'
                     preview={false}
+                    alt='Envision Logo'
                 />
             </Title>
 
@@ -81,7 +82,7 @@ export default function home() {
                             choose to either pick one of our predefined datasets, or you can upload your own. When
                             uploading your own dataset, please make sure that it satisfies the requirements. For more
                             information about the dataset requirements, 
-                            please go to the <Link to='/vis'>Data Upload</Link> page.
+                            please go to the <Link to='/dataUpload'>Data Upload</Link> page.
                             </p>
                             <p>
                             Once you&apos;ve selected a dataset, or uploaded your own, you can go to the
@@ -140,6 +141,7 @@ export default function home() {
                                 style={{ filter: 'grayscale(100%)' }}
                                 src='/res/tue_logo.png'
                                 preview={false}
+                                alt='TU/e Logo'
                             />
                         </Col>
                         <Col 
