@@ -111,7 +111,11 @@ export default function About() {
             </Card>
 
             <Card title='Hugo van Schalm' className='left card'>
-                <Text>Here you can put a bit of text about yourself.</Text>
+                <Text>
+                    Hey, my name is Hugo and I&apos;m a first year student at the Computer Science Bachelor.
+                    For this project I mostly helped creating some features for the visualisations, like panning, zooming and the legend.
+                    I had a lot of fun working on this project. I had to learn React and D3 from scratch, but to me that was a lot of fun.
+                </Text>
             </Card>
 
             <Card title='Kristopher Schlett' className='right card'>
