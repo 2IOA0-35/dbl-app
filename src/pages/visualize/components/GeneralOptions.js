@@ -21,9 +21,9 @@ export default function GeneralOptions( { colList } ) {
         'None',
         'Hierarchical Edge Bundling',
         'Disjoint Force-Directed',
-        'Force-Directed Graph',
-        'Arc Diagram',
-        '3D force directed graph'
+        //'Force-Directed Graph',
+        //'Arc Diagram',
+        //'3D force directed graph'
     ];
     const graphOptions = [];
 
@@ -40,7 +40,7 @@ export default function GeneralOptions( { colList } ) {
 
     return (
         <div>
-            <CustomMenuItem title='Which two columns from the data are used?' height='3'>
+            {/*<CustomMenuItem title='Which two columns from the data are used?' height='3'>
                 <Select
                     disabled
                     defaultValue={column1}
@@ -60,8 +60,8 @@ export default function GeneralOptions( { colList } ) {
                     }}
                 >
                     {columnOptions}
-                </Select>
-            </CustomMenuItem>
+                </Select> 
+            </div></CustomMenuItem>*/}
             <CustomMenuItem title='Which graph(s) do you want to display?' height='3'>
                 <Select
                     defaultValue={graph1}

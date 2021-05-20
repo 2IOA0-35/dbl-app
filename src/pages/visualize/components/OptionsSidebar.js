@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { Tooltip } from 'antd';
 import CustomMenuItem from './CustomMenuItem';
 import { GlobalContext } from './GlobalContext';
 import GeneralOptions from './GeneralOptions';
@@ -35,10 +36,10 @@ export default function OptionsSidebar() {
                 return <DFDOptions />;
             case 'Force-Directed Graph':
                 return <FDOptions />;
-            case 'Arc Diagram':
-                return <CustomMenuItem title='Not yet implemented!' height='1' />;
-            case '3D force directed graph':
-                return <CustomMenuItem title='Not yet implemented!' height='1' />;
+            //case 'Arc Diagram':
+               // return <CustomMenuItem title='Not yet implemented!' height='1' />;
+            //case '3D force directed graph':
+                //return <CustomMenuItem title='Not yet implemented!' height='1' />;
             case 'Manual':
                 return <UserManual/>;
 
@@ -74,9 +75,11 @@ export default function OptionsSidebar() {
                     }}
                 >
                     <span style={{ marginRight: '10px' }}>{fileName}</span>
-                    <Button type='primary'>
-                        <Link to='/dataUpload'>Edit</Link>
-                    </Button>
+                    <Tooltip placement='top' title={'Goes to home page to change the dataset.'}>
+                        <Button type='primary'>
+                            <Link to='/Home'>Edit Dataset</Link>
+                        </Button>
+                    </Tooltip>
                 </Menu.Item>
 
                 {/* These are general options that should be applicable to any graph */}
