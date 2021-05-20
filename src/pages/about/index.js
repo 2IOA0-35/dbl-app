@@ -91,14 +91,19 @@ export default function About() {
 
             <hr style={{ width: '80%' }} />
 
-            <Title style={{ padding: '20px', width: '100%', textAlign: 'center', color: 'white' }}>About us</Title>
+            <Title style={{ padding: '20px', width: '100%', textAlign: 'center' }}>About us</Title>
 
             <Card title='Christine Jacob' className='right card'>
                 <Text> I am a First Year student studying Bachelor of Computer Science. I worked on the Home Page, Interim Report and Navigation. Through this course I have developed an interest to learn about web development and learned how simple and logical it can be!</Text>
             </Card>
 
             <Card title='Tom van Liempd' className='left card'>
-                <Text>Here you can put a bit of text about yourself.</Text>
+                <Text>
+                    Hi, I am Tom. I am a first year student for the Computer Science Bachelor. 
+                    For Envision I have mainly focussed on organisational work and setting up the base layer for our app.
+                    Since I already have quite extensive experience with web development and especially React (which Envision runs on), I have helped set-up various bits of the application.
+                    One of these is making the Enron dataset compatible with the Hierarchical Edge Bundling visualisation drawn by our visualisation library D3.
+                </Text>
             </Card>
 
             <Card title='Aloys Riswick' className='right card'>

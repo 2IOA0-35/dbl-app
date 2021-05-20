@@ -2,7 +2,7 @@
     info button will always be in the bottom right of the ancestor with position: relative */
 .save-button {
     position: absolute;
-    bottom: 30px;
-    right: 30px;
+    bottom: 20px;
+    right: 20px;
     z-index: 40;
 }

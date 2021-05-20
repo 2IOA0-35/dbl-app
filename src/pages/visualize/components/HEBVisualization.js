@@ -247,7 +247,7 @@ ${d.incoming?.length} incoming`
         function overed( event, d ) {
             // link.style('mix-blend-mode', null);
             d3.select( this ).attr( 'font-weight', 'bold' );
-            console.log( d.incoming, d.outgoing );
+            // console.log( d.incoming, d.outgoing );
 
             d3.selectAll( d.incoming.map( ( d ) => d.path ) ).classed( 'link-target', true ).raise();
             d3.selectAll( d.incoming.map( ( [ d ] ) => d.text ) ).classed( 'node-source', true );
