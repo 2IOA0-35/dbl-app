@@ -152,8 +152,8 @@ export default function About() {
 
             <Card title='Anke Staal' className='left card'>
                 <Text>
-                    Hi! My name is Anke Staal and I am 20 years old. I am a second year Psychology & Technology student at the TU/e and 
-                    I currently live in Eindhoven together with my six roommates. I don't have I lot of prior knowledge about anything related to
+                    Hi! My name is Anke Staal and I am 20 years old. I am a second year Psychology &amp; Technology student at the TU/e and 
+                    I currently live in Eindhoven together with my six roommates. I don&apos;t have I lot of prior knowledge about anything related to
                     HTML, CSS, JavaScript or React, so I hope I can learn a lot from this project.
                 </Text>
             </Card>
