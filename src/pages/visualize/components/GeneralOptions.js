@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Slider, Select, Space, DatePicker } from 'antd';
+import { Select, Space, DatePicker } from 'antd';
 import PropTypes from 'prop-types';
 import CustomMenuItem from './CustomMenuItem';
 import { GlobalContext } from './GlobalContext';
-import moment from 'moment';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -15,7 +14,7 @@ export default function GeneralOptions( { colList } ) {
 
     const [ type, setType ] = useState( 'Date' );
 
-    const { column1, column2, graph1, graph2, timeframe, previousDays, playbackSpeed } = getOptions( contextID );
+    const { graph1, graph2, timeframe } = getOptions( contextID );
 
     const dataGraphs = [
         'None',

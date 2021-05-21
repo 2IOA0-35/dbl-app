@@ -25,6 +25,7 @@ const { Title, Text } = Typography;
 
 export default function DataUpload() {
 
+    //eslint-disable-next-line
     let [ data, setData, fileName, setFileName ] = React.useContext( DataContext );
 
     const upload = async ( { onProgress, onError, onSuccess, file } ) => {

@@ -19,6 +19,7 @@ const { Sider } = Layout;
 export default function OptionsSidebar() {
     const [ collapsed, setCollapsed ] = useState( false );
     
+    //eslint-disable-next-line
     let [ data, setData, fileName, setFileName ] = React.useContext( DataContext );
     
     const [ getOptions ] = useContext( GlobalContext );
@@ -37,7 +38,7 @@ export default function OptionsSidebar() {
             case 'Force-Directed Graph':
                 return <FDOptions />;
             //case 'Arc Diagram':
-               // return <CustomMenuItem title='Not yet implemented!' height='1' />;
+                //return <CustomMenuItem title='Not yet implemented!' height='1' />;
             //case '3D force directed graph':
                 //return <CustomMenuItem title='Not yet implemented!' height='1' />;
             case 'Manual':

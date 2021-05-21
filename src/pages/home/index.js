@@ -6,11 +6,11 @@ import { DataContext } from '../../context/data';
 import db from '../../db';
 
 const { Option } = Select;
-const { Header, Content } = Layout;
 const { Title, Text } = Typography;
 
 export default function home() {
     
+    //eslint-disable-next-line
     let [ data, setData, fileName, setFileName ] = React.useContext( DataContext );
 
     let history = useHistory();

@@ -3,7 +3,6 @@ import moment from 'moment';
 import { GlobalContext } from './GlobalContext';
 import * as d3 from 'd3';
 import { DataContext } from '../../../context/data';
-import { every } from 'd3';
 
 const VIS_ID = 'Disjoint Force-Directed';
 const CONTEXT_ID = 'Global';
@@ -93,7 +92,7 @@ export default function FDVisualization() {
 
         svg.call( zoom );
 
-        let zoomButton = d3.select( visBox.current )
+        d3.select( visBox.current )
             .append( 'button' )
             .html( 'Reset Zoom' )
             .style( 'position', 'absolute' )
@@ -288,7 +287,7 @@ export default function FDVisualization() {
                             .duration( 500 )
                             .style( 'opacity', 0 );
                     } else {
-                        node.selectAll( 'circle' ).style( 'stroke', ( d ) => {
+                        node.selectAll( 'circle' ).style( 'stroke', () => {
                             return 'white';
                         } );
                         recentID = i.id;
