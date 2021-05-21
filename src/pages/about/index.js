@@ -141,8 +141,13 @@ export default function About() {
                 </Text>
             </Card>
 
-            <Card title='Kristopher Schlett' className='right card'>
-                <Text>Here you can put a bit of text about yourself.</Text>
+            <Card title='Kristopher Alex Schlett' className='right card'>
+                <Text>
+                    Hello! My name is Kris and I&apos;m also a first year student taking the Bachelor of Computer Science and Engineering.
+                    When it comes to Envision, I contributed with mostly creating graph features such as variable node size, zooming/panning, and an Infobox.
+                    Working on this project was a very good, and interesting, experience as I have not worked on such a large scale product prior to Envision.
+                    In addition, learning the selected languages was a fun challenge since I had never used them beforehand.  
+                </Text>
             </Card>
 
             <Card title='Anke Staal' className='left card'>
