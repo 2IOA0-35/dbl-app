@@ -18,7 +18,7 @@ The webapp is available at [envision.riswick.net](https://envision.riswick.net),
 
 ## Languages
 
-The project will be created using React for the web frontend. For now, a server backend seems unnecessary, and will therefore not be focussed on in the first sprint.
+The project will be created using React for the web frontend. For now, a server backend seems unnecessary.
 
 ## Visualisations
 
@@ -49,7 +49,7 @@ This document includes an exported list of the issues (tasks) and wishes present
  - Sprint 1: 21-04-2021  -  07-05-2021\
    **Goal**: A basic & functional website with basic visualisations and a first draft of the report.
 
- - Sprint 2: 10-05-2021  -  21-05-2021
+ - Sprint 2: 10-05-2021  -  21-05-2021\
    **Goal**: A basic version of the second visualisation, improvements for the first visualisation, integrating the site pages and completing the interim report.
 
  - Sprint 3: 24-05-2021  -  04-06-2021
@@ -105,28 +105,40 @@ This document includes an exported list of the issues (tasks) and wishes present
 <div style="page-break-after: always;"></div>
 
 # Planned Tasks
+*None*
+
+<div style="page-break-after: always;"></div>
+
+# Finished Tasks       
 |Issue|Assignee|Labels|
 |----|----|----|
 |#1.12: Create a uniform style|Christine Jacob, Tom van Liempd|priority: 3, size: small|
-|#1.13: Improve the home page|-|priority: 4, size: medium|
-|#1.14: Improve the navigation|-|priority: 5, size: small|
-|#2.5: Implement the play button|Christine Jacob, Tom van Liempd|priority: 3, size: medium|
-|#2.6: Improve Timeline Functionality|-|priority: 4, size: medium|
-|#2.7: Add a Legend|Hugo van Schalm|priority: 5, size: medium|
-|#4.3: Add zooming & panning|-|priority: 3, size: medium|
-|#8.3: Visualization|Hugo van Schalm|priority: 1, size: large|
-|#8.4: Interaction techniques|Kristopher Schlett|priority: 1, size: large|
-
-# Finished Tasks
-|Issue|Assignee|Labels|
-|----|----|----|
+|#1.13: Improve the home page|Aloys Riswick|priority: 4, size: medium|
+|#1.14: Improve the navigation|Christine Jacob, Tom van Liempd|priority: 5, size: small|
 |#1.15: Improve the data-upload page|Anke Staal, Aloys Riswick|priority: 3, size: large|
-|#2.4: Optimize rerendering Force-Directed Graph|Tom van Liempd|priority: 1, size: large| 
+|#1.16: Fix bug where timeline updates cause undefined behaviour + Tom|Christine Jacob|priority: 3, size: large|
+|#1.17: Implement Theming in Remaining parts|Aloys Riswick|priority: 3, size: medium|
+|#1.18: Add simple service worker|Aloys Riswick|priority: 4, size: small|
+|#1.19: Improve timeline|Tom van Liempd|priority: 3, size: medium|
+|#1.20: About page sections (Everyone)|-|priority: 3, size: small|
+|#1.21: Create User Manual|Kristopher Schlett, Hugo van Schalm|priority: 2, size: medium|
+|#1.22: Clean-up the visualisation page |Christine Jacob|priority: 2, size: medium|
+|#2.5: Implement the play button|Christine Jacob, Tom van Liempd|priority: 3, size: medium|
+|#2.6: Improve Timeline Functionality|Christine Jacob, Tom van Liempd|priority: 4, size: medium|
+|#2.7: Add a Legend|Hugo van Schalm|priority: 5, size: medium|
 |#2.8: Look into performance optimisations for HEB|Aloys Riswick|priority: 1, size: large|
 |#2.9: HEB Dataset Formatting|Tom van Liempd|priority: 2, size: medium|
 |#2.10: HEB Crash Improvements|Aloys Riswick|priority: 2, size: large|
-|#2.11: Link HEB Options to Visualizaition|Aloys Riswick|priority: 3, size: medium|       
+|#2.11: Link HEB Options to Visualizaition|Aloys Riswick|priority: 3, size: medium|
+|#2.12: Fix HEB Hover Bug|Tom van Liempd|priority: 4, size: medium|
+|#2.13: Remember selected data|Anke Staal, Aloys Riswick|priority: 3, size: large|
 |#4.1: Research Interaction Techniques|Kristopher Schlett|priority: 2, size: small|
 |#4.2: Show node information on click|Kristopher Schlett|priority: 3, size: medium|
+|#4.3: Add zooming & panning|Hugo van Schalm, Kristopher Schlett|priority: 3, size: medium|
+|#4.4: Make the infobox draggable|Kristopher Schlett, Hugo van Schalm|priority: 4, size: small|
+|#6.1: Research ideas for videos|Everyone|priority: 5, size: medium|
 |#8.1: Abstract & Introduction|Christine Jacob|priority: 1, size: large|
-|#8.2: Related work|Anke Staal|priority: 1, size: large|
+|#8.2: Related work |Anke Staal|priority: 1, size: large|
+|#8.3: Visualization|Hugo van Schalm|priority: 1, size: large|
+|#8.4: Interaction techniques|Kristopher Schlett|priority: 1, size: large|
+|#8.5: Finalize the report|Everyone|priority: 1, size: medium|
