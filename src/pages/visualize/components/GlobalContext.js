@@ -31,7 +31,9 @@ export function GlobalProvider( props ) {
             'sentiment'
         ],
         playbackSpeed: 1,
-        playing: false
+        playing: false,
+        selectedNode: null,
+        hoveredNode: null
     } );
     
     //Default options for the HEB controlled by the HEBOptions component

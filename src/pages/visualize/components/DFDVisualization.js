@@ -11,7 +11,7 @@ export default function DFDVisualization() {
 
     // #region ------------------ SETUP -------------------
 
-    const [ getOptions ] = useContext( GlobalContext );
+    const [ getOptions, setOptions ] = useContext( GlobalContext );
 
     const globalOptions = getOptions( CONTEXT_ID );
 
@@ -23,7 +23,7 @@ export default function DFDVisualization() {
     } );
 
     // Variables used for infobox display
-    var currentNode;
+    var selectedNode = globalOptions.selectedNode;
     var checked = false;
     var recentID;
 
@@ -233,7 +233,10 @@ export default function DFDVisualization() {
         setTimeout( resize, 10 );
 
         // Update handler for all things that depend on the nodes and links
-        let update = ( nodes, links, maxDegree, options ) => {
+        let update = ( nodes, links, maxDegree, getOptions, setOptions ) => {
+
+            const options       = getOptions( VIS_ID     );
+            const globalOptions = getOptions( CONTEXT_ID );
 
             // Make a shallow copy to protect against mutation, while
             // recycling old nodes to preserve position and velocity.
@@ -266,8 +269,9 @@ export default function DFDVisualization() {
             node.selectAll( 'circle' ).on( 'click', function ( d, i ) {
                 if ( !checked ) {
                     checked = true;
+                    setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id});
                     recentID = i.id;
-                    currentNode = d3.select( this );
+                    selectedNode = d3.select( this );
                     d3.select( this ).style( 'stroke', 'red' );
                     infobox
                         .html( 
@@ -281,6 +285,7 @@ export default function DFDVisualization() {
                 } else if ( checked ) {
                     if ( recentID === i.id ) {
                         d3.select( this ).style( 'stroke', 'white' );
+                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null});
                         recentID = '';
                         infobox
                             .transition()
@@ -290,9 +295,10 @@ export default function DFDVisualization() {
                         node.selectAll( 'circle' ).style( 'stroke', () => {
                             return 'white';
                         } );
+                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id});
                         recentID = i.id;
-                        currentNode = d3.select( this );
-                        currentNode.style( 'stroke', 'red' );
+                        selectedNode = d3.select( this );
+                        selectedNode.style( 'stroke', 'red' );
                         infobox
                             .html( 
                                 `<b>Node ID:</b> ${i.id} <br>
@@ -376,7 +382,7 @@ export default function DFDVisualization() {
         };
 
         // Initialize nodes and links with an empty list.
-        update( [], [], 0, options );
+        update( [], [], 0, getOptions, setOptions );
 
         // Provide the update and resize functions in the state such that other hooks can use it.
         setVisualisation( {
@@ -432,6 +438,9 @@ export default function DFDVisualization() {
     // Data filterer that will execute if a user changes options
     useEffect( () => {
         // If there is no data available, ignore update
+        // if(getOptions(CONTEXT_ID).selectedNode !== recentID){
+        //     return;
+        // }
         if ( !formattedData )
             return;
 
@@ -447,6 +456,7 @@ export default function DFDVisualization() {
         // Loop through all links in the dataset.
         // For each one that falls within the date range, we add it (if it does not already exist) and add the source and target.
         formattedData.links.forEach( ( link ) => {
+            
             if ( link.date < startDate || link.date > endDate )
                 return;
 
@@ -507,6 +517,7 @@ export default function DFDVisualization() {
 
         setFilteredData( filtered );
 
+
     }, [ formattedData, globalOptions, options ] );
 
     // Update when filtered data changes
@@ -514,7 +525,7 @@ export default function DFDVisualization() {
         if ( !filteredData || !visualisation.update )
             return;
 
-        visualisation.update( filteredData.nodes, filteredData.links, filteredData.maxDegree, options );
+        visualisation.update( filteredData.nodes, filteredData.links, filteredData.maxDegree, getOptions, setOptions );
 
     }, [ filteredData ] );
 
