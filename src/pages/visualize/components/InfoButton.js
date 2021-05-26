@@ -4,6 +4,9 @@ import { GlobalContext } from './GlobalContext';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import './InfoButton.css';
 
+/**
+ * Renders the menu displayed when hovering over the info button on the top-right
+ */
 export default function InfoButton() {
     const contextID = 'Global';
 
@@ -15,6 +18,12 @@ export default function InfoButton() {
     const dataGraph1 = [];
     const dataGraph2 = [];
 
+    /**
+     * Stringifies a value. If the value is an array, comma's are added in between.
+     * 
+     * @param {*} value 
+     * @returns 
+     */
     const parseValue = ( value ) => {
         if ( Array.isArray( value ) ) {
             return `${value.join( ', ' )}`;
@@ -23,16 +32,12 @@ export default function InfoButton() {
         return `${value}`;
     };
 
-    for ( const [ key, value ] of Object.entries( values ) ) {
+    for ( const [ key, value ] of Object.entries( values ) )
         dataGlobal.push( { key: key, variable: key, value: parseValue( value ) } );
-    }
-    for ( const [ key, value ] of Object.entries( getOptions( values.graph1 ) ) ) {
+    for ( const [ key, value ] of Object.entries( getOptions( values.graph1 ) ) )
         dataGraph1.push( { key: key, variable: key, value: parseValue( value ) } );
-    }
-
-    for ( const [ key, value ] of Object.entries( getOptions( values.graph2 ) ) ) {
+    for ( const [ key, value ] of Object.entries( getOptions( values.graph2 ) ) )
         dataGraph2.push( { key: key, variable: key, value: parseValue( value ) } );
-    }
 
     const columns = [
         {

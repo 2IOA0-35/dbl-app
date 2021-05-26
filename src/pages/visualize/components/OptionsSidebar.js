@@ -16,11 +16,14 @@ import UserManual from './UserManual';
 const { SubMenu } = Menu;
 const { Sider } = Layout;
 
+/**
+ * Renders the sidebar with the correct sections based on the graphs that are selected.
+ */
 export default function OptionsSidebar() {
     const [ collapsed, setCollapsed ] = useState( false );
     
     //eslint-disable-next-line
-    let [ data, setData, fileName, setFileName ] = React.useContext( DataContext );
+    let [ data, setData, fileName ] = React.useContext( DataContext );
     
     const [ getOptions ] = useContext( GlobalContext );
 

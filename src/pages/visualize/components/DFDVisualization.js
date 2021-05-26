@@ -7,7 +7,7 @@ import { DataContext } from '../../../context/data';
 const VIS_ID = 'Disjoint Force-Directed';
 const CONTEXT_ID = 'Global';
 
-export default function FDVisualization() {
+export default function DFDVisualization() {
 
     // #region ------------------ SETUP -------------------
 

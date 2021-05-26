@@ -4,8 +4,9 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import CustomMenuItem from './CustomMenuItem';
 import { GlobalContext } from './GlobalContext';
 
-const { Option } = Select;
-
+/**
+ * Renders all HEB graph sidebar options
+ */
 export default function HEBOptions() {
     const visID = 'Hierarchical Edge Bundling';
 
@@ -18,16 +19,6 @@ export default function HEBOptions() {
     const nodeOptions = [ 'None', 'Average Sentiment', 'Minimum Sentiment', 'Maximum Sentiment', "Sender's Jobtitle" ];
     const colorOptions = [ 'Viridis', 'Inferno', 'Plasma', 'Warm', 'Cool' ];
 
-    const getOptionList = ( array ) => {
-        let columnOptions = [];
-
-        for ( let i = 0; i < array.length; i++ ) {
-            columnOptions.push( <Option key={array[i]}>{array[i]}</Option> );
-        }
-
-        return columnOptions;
-    };
-
     return (
         <div>
             <CustomMenuItem title='Color edges based on:' height='2'>
@@ -37,9 +28,8 @@ export default function HEBOptions() {
                     onChange={( event ) => {
                         setOptions( visID, { ...getOptions( visID ), colorEdgeBy: event } );
                     }}
-                >
-                    {getOptionList( edgeOptions )}
-                </Select>
+                    options={edgeOptions.map( ( option ) => ( { label: option, value: option } ) )}
+                />
             </CustomMenuItem>
             <CustomMenuItem title='Color nodes based on:' height='2'>
                 <Select
@@ -48,9 +38,8 @@ export default function HEBOptions() {
                     onChange={( event ) => {
                         setOptions( visID, { ...getOptions( visID ), colorNodeBy: event } );
                     }}
-                >
-                    {getOptionList( nodeOptions )}
-                </Select>
+                    options={nodeOptions.map( ( option ) => ( { label: option, value: option } ) ) }
+                />
             </CustomMenuItem>
             {( colorEdgeBy.includes( 'Sentiment' ) || colorNodeBy.includes( 'Sentiment' ) ) && (
                 <>
@@ -61,9 +50,8 @@ export default function HEBOptions() {
                             onChange={( event ) => {
                                 setOptions( visID, { ...getOptions( visID ), colorRange: event } );
                             }}
-                        >
-                            {getOptionList( colorOptions )}
-                        </Select>
+                            options={colorOptions.map( ( option ) => ( { label: option, value: option } ) )}
+                        />
                     </CustomMenuItem>
                     <CustomMenuItem
                         title='Color sensitivity factor:'

@@ -3,10 +3,13 @@ import { GlobalContext } from './GlobalContext';
 import { Row, Col, Result } from 'antd';
 import HEBVisualization from './HEBVisualization';
 import DFDVisualization from './DFDVisualization';
-import SaveButton from './SaveButton';
+import SaveImage from './SaveImage';
 import FDVisualization from './FDVisualization';
 import { DataContext } from '../../../context/data';
 
+/**
+ * Creates a container and renders the selected visualizations within it.
+ */
 export default function VisContainer() {
     const [ getOptions ] = useContext( GlobalContext );
 
@@ -61,7 +64,7 @@ export default function VisContainer() {
         >
             <Col style={{ position: 'relative' }} span={graph2 !== 'None' ? 12 : 24} id='graph1'>
                 {renderVisualizations( graph1 )}
-                <SaveButton id='graph1' />
+                <SaveImage id='graph1' />
             </Col>
             {graph2 !== 'None' && (
                 <Col
@@ -70,7 +73,7 @@ export default function VisContainer() {
                     id='graph2'
                 >
                     {renderVisualizations( graph2 )}
-                    <SaveButton id='graph2' />
+                    <SaveImage id='graph2' />
                 </Col>
             )}
         </Row>

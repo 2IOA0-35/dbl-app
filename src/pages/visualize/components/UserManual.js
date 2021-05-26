@@ -4,6 +4,9 @@ import { Typography } from 'antd';
 
 const { Title, Paragraph } = Typography;
 
+/**
+ * Renders the user manual in the sidebar
+ */
 export default function UserManual() {
 
     return (

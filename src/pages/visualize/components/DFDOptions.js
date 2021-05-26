@@ -4,6 +4,9 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import CustomMenuItem from './CustomMenuItem';
 import { GlobalContext } from './GlobalContext';
 
+/**
+ * Renders all Disjoint Force-Directed graph sidebar options
+ */
 export default function DFDOptions() {
     const visID = 'Disjoint Force-Directed';
 

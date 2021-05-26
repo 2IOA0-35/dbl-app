@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 
 export const GlobalContext = createContext();
 
+/**
+ * Provides the global context with all variables shared across the visualization page.
+ */
 export function GlobalProvider( props ) {
+
+    //Default global options controlled by the GeneralOptions component
     const [ globalOptions, setGlobalOptions ] = useState( {
         column1: 'fromEmail',
         column2: 'toEmail',
@@ -28,7 +33,8 @@ export function GlobalProvider( props ) {
         playbackSpeed: 1,
         playing: false
     } );
-
+    
+    //Default options for the HEB controlled by the HEBOptions component
     const [ HEBOptions, setHEBOptions ] = useState( {
         edgeThickness: 1,
         convertEmail: true,
@@ -38,7 +44,7 @@ export function GlobalProvider( props ) {
         colorRange: 'Viridis',
         colorFactor: 25
     } );
-
+    //Default options for the DFD controlled by the DFDOptions component
     const [ DFDOptions, setDFDOptions ] = useState( {
         edgeSize: 50,
         nodeSize: 5,
@@ -48,7 +54,7 @@ export function GlobalProvider( props ) {
         nodeScaleFactor: 3,
         edgeScaleFactor: 5
     } );
-
+    //Default options for the FD controlled by the FDOptions component
     const [ FDOptions, setFDOptions ] = useState( {
         edgeSize: 20,
         nodeSize: 5,
@@ -59,6 +65,7 @@ export function GlobalProvider( props ) {
         edgeScaleFactor: 5
     } );
 
+    //Gets the correct state based on the visID
     const getOptions = ( visID ) => {
         switch ( visID ) {
             case 'Global':
@@ -78,7 +85,7 @@ export function GlobalProvider( props ) {
                 return {};
         }
     };
-
+    //Sets the correct state based on ID and options selected
     const setOptions = ( visID, options ) => {
         switch ( visID ) {
             case 'Global':

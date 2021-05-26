@@ -3,14 +3,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import domtoimage from 'dom-to-image';
 import { SaveFilled, QuestionCircleOutlined } from '@ant-design/icons';
-import './SaveButton.css';
+import './SaveImage.css';
 
-export default function SaveButton( { id } ) {
+/**
+ * Renders the button that allows the user to download the graph as a png file
+ */
+export default function SaveImage( { id } ) {
     const filter = ( node ) => {
         return node.tagName !== 'BUTTON';
     };
 
     const save = () => {
+        //Use domtoimage to create the png file
         domtoimage.toPng( document.getElementById( id ), { filter: filter } ).then( function( dataUrl ) {
             var link = document.createElement( 'a' );
 
@@ -40,6 +44,6 @@ export default function SaveButton( { id } ) {
     );
 }
 
-SaveButton.propTypes = {
+SaveImage.propTypes = {
     id: PropTypes.string.isRequired
 };

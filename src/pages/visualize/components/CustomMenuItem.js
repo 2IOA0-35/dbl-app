@@ -4,6 +4,9 @@ import './CustomMenuItem.css';
 import { Badge, Popover, Space } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 
+/**
+ * Provides a premade sidebar menu item component
+ */
 export default function CustomMenuItem( { title, children, height, info } ) {
     height *= 40;
 
