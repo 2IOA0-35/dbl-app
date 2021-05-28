@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@craco/craco": "^6.1.2",
         "antd": "^4.15.3",
         "craco-less": "^1.17.1",
         "d3": "^6.7.0",
