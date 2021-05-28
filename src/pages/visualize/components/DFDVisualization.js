@@ -4,6 +4,7 @@ import { GlobalContext } from './GlobalContext';
 import * as d3 from 'd3';
 import { DataContext } from '../../../context/data';
 
+
 const VIS_ID = 'Disjoint Force-Directed';
 const CONTEXT_ID = 'Global';
 
@@ -23,7 +24,7 @@ export default function DFDVisualization() {
     } );
 
     // Variables used for infobox display
-    var selectedNode = globalOptions.selectedNode;
+    
     var checked = false;
     var recentID;
 
@@ -108,17 +109,17 @@ export default function DFDVisualization() {
                     .call( zoom.transform, d3.zoomIdentity );
             } );
         // infobox for onclick
-        var infobox = d3.select( visBox.current )
-            .append( 'div' )
-            .style( 'top', '5px' )
-            .style( 'left', '20px' )
-            .style( 'opacity', 0 )
-            .style( 'position', 'absolute' )
-            .style( 'background-color', 'white' )
-            .style( 'border-radius', '10px' )
-            .style( 'z-index', '100' )
-            .style( 'padding', '10px 15px' )
-            .style( 'cursor', 'move' );
+        // var infobox = d3.select( visBox.current )
+        //     .append( 'div' )
+        //     .style( 'top', '5px' )
+        //     .style( 'left', '20px' )
+        //     .style( 'opacity', 0 )
+        //     .style( 'position', 'absolute' )
+        //     .style( 'background-color', 'white' )
+        //     .style( 'border-radius', '10px' )
+        //     .style( 'z-index', '100' )
+        //     .style( 'padding', '10px 15px' )
+        //     .style( 'cursor', 'move' );
 
         var legend = d3.select( visBox.current )
             .append( 'div' )
@@ -210,11 +211,11 @@ export default function DFDVisualization() {
             event.subject.fy = null;
         }
 
-        infobox.call( d3.drag()
-            .on( 'drag', function ( event ) {
-                infobox.style( 'top', event.y + 'px' );
-                infobox.style( 'left', event.x + 'px' );
-            } ) );
+        // infobox.call( d3.drag()
+        //     .on( 'drag', function ( event ) {
+        //         infobox.style( 'top', event.y + 'px' );
+        //         infobox.style( 'left', event.x + 'px' );
+        //     } ) );
 
         // Job color scale that is used to color nodes based on jobs
         let jobColors = d3.scaleOrdinal( d3.schemeCategory10 );
@@ -265,50 +266,54 @@ export default function DFDVisualization() {
             // (This is a kind of inefficient way of doing things, but this will probably get replaced by a pop-up when a node is clicked or something)
             node.selectAll( 'circle' ).selectAll( 'title' ).remove();
 
+            let {selectedNode, emailsSent, emailsReceived, position} = getOptions(CONTEXT_ID);
+                
             // On click show infobox for node
             node.selectAll( 'circle' ).on( 'click', function ( d, i ) {
                 if ( !checked ) {
                     checked = true;
-                    setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id});
+                    setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id, 
+                        emailsSent: i.outDegree, emailsReceived: i.inDegree, position: i.job});
                     recentID = i.id;
-                    selectedNode = d3.select( this );
+                    
                     d3.select( this ).style( 'stroke', 'red' );
-                    infobox
-                        .html( 
-                            `<b>Node ID:</b> ${i.id} <br>
-                             <b>Emails Sent:</b> ${i.outDegree} <br>
-                             <b>Email Received:</b> ${i.inDegree} <br>
-                             <b>Position:</b> ${i.job}` 
-                        )
-                        .transition().duration( 500 )
-                        .style( 'opacity', 1 );
+                    // infobox
+                    //     .html( 
+                    //         `<b>Node ID:</b> ${i.id} <br>
+                    //          <b>Emails Sent:</b> ${i.outDegree} <br>
+                    //          <b>Email Received:</b> ${i.inDegree} <br>
+                    //          <b>Position:</b> ${i.job}` 
+                    //     )
+                    //     .transition().duration( 500 )
+                    //     .style( 'opacity', 1 );
                 } else if ( checked ) {
                     if ( recentID === i.id ) {
                         d3.select( this ).style( 'stroke', 'white' );
-                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null});
+                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null,
+                            emailsSent: 0, emailsReceived: 0, position: null });
                         recentID = '';
-                        infobox
-                            .transition()
-                            .duration( 500 )
-                            .style( 'opacity', 0 );
+                        // infobox
+                        //     .transition()
+                        //     .duration( 500 )
+                        //     .style( 'opacity', 0 );
                     } else {
                         node.selectAll( 'circle' ).style( 'stroke', () => {
                             return 'white';
                         } );
-                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id});
+                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id,
+                            emailsSent: i.outDegree, emailsReceived: i.inDegree, position: i.job});
                         recentID = i.id;
-                        selectedNode = d3.select( this );
-                        selectedNode.style( 'stroke', 'red' );
-                        infobox
-                            .html( 
-                                `<b>Node ID:</b> ${i.id} <br>
-                                <b>Emails Sent:</b> ${i.outDegree} <br>
-                                <b>Email Received:</b> ${i.inDegree} <br>
-                                <b>Position:</b> ${i.job}` 
-                            )
-                            .transition()
-                            .duration( 500 )
-                            .style( 'opacity', 1 );
+                        d3.select( this ).style( 'stroke', 'red' );
+                        // infobox
+                        //     .html( 
+                        //         `<b>Node ID:</b> ${i.id} <br>
+                        //         <b>Emails Sent:</b> ${i.outDegree} <br>
+                        //         <b>Email Received:</b> ${i.inDegree} <br>
+                        //         <b>Position:</b> ${i.job}` 
+                        //     )
+                            // .transition()
+                            // .duration( 500 )
+                            // .style( 'opacity', 1 );
                     }
                 }
             } );
@@ -335,25 +340,39 @@ export default function DFDVisualization() {
                     return color;
                 } )
                 .style( 'stroke', ( d ) => {
-                    if ( recentID != d.id ) {
-                        if ( !currentNodePresent ) {
-                            infobox.style( 'opacity', 0 );
-                        }
-
+                    if ( recentID != d.id ) { 
+                        // if (!currentNodePresent && selectedNode != null) { // any node before mark =
+                        //     infobox.style( 'opacity', 0 );
+                        // }
                         return 'white';
                     }
+                    
                     currentNodePresent = true;
-                    infobox
-                        .style( 'opacity', 1 )
-                        .html( 
-                            `<b>Node ID:</b> ${d.id} <br>
-                             <b>Emails Sent:</b> ${d.outDegree} <br>
-                             <b>Email Received:</b> ${d.inDegree} <br>
-                             <b>Position:</b> ${d.job}` 
-                        );
+                    // infobox
+                    //     .style( 'opacity', 1 )
+                    //     .html( 
+                    //         `<b>Node ID:</b> ${d.id} <br>
+                    //          <b>Emails Sent:</b> ${d.outDegree} <br>
+                    //          <b>Email Received:</b> ${d.inDegree} <br>
+                    //          <b>Position:</b> ${d.job}` 
+                    //     );
 
                     return 'red';
                 } )
+                .each( function (d) {
+                    if ( recentID == d.id ) {
+                        if ( selectedNode != d.id || emailsSent != d.outDegree || emailsReceived != d.inDegree ) {
+                            // If something has changed, update the context
+                            setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), 
+                                selectedNode: d.id,
+                                emailsSent: d.outDegree, 
+                                emailsReceived: d.inDegree 
+                            });
+                        }
+                    } else if (!currentNodePresent && selectedNode != null) {
+                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null});
+                    }
+                })
                 .call( d3.drag().on( 'start', dragstarted ).on( 'drag', dragged ).on( 'end', dragended ) )
                 .append( 'title' )
                 .text( ( d ) => `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}` );

@@ -33,7 +33,10 @@ export function GlobalProvider( props ) {
         playbackSpeed: 1,
         playing: false,
         selectedNode: null,
-        hoveredNode: null
+        hoveredNode: null,
+        emailsSent: 0,
+        emailsReceived: 0,
+        position: null
     } );
     
     //Default options for the HEB controlled by the HEBOptions component
