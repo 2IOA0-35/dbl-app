@@ -1,51 +1,54 @@
 path.arc {
-    cursor: move;
-    fill: #fff;
+	cursor: move;
+
+	fill: #ffffff;
 }
 
 .node {
-    font-size: 10px;
+	font-size: 10px;
+
+	cursor: pointer;
 }
 
 .node:hover {
-    fill: black;
+	fill: black;
 }
 
 .link {
-    fill: none;
-    stroke: #444444;
-    stroke-opacity: .4;
-    pointer-events: none;
-    stroke-linecap: round;
+	pointer-events: none;
+
+	fill: none;
+	stroke: #444444;
+	stroke-linecap: round;
+	stroke-opacity: 0.4;
 }
 
-.link-source,
-.link-target {
-    stroke-opacity: 1;
-    stroke-width: 2px;
+.link-source, .link-target {
+	stroke-opacity: 1;
+	stroke-width: 2px;
 }
 
 .node-target {
-    fill: #e67e29 !important;
+	fill: #e67e29 !important;
 }
 
 .link-source {
-    stroke: #e67e29;
+	stroke: #e67e29;
 }
 
 .node-source {
-    fill: #1890ff;
+	fill: #1890ff;
 }
 
 .link-target {
-    stroke: #1890ff;
+	stroke: #1890ff;
 }
 
 svg.fastRender {
-    shape-rendering: optimizeSpeed;
-    text-rendering: optimizeSpeed;
+	shape-rendering: optimizeSpeed;
+	text-rendering: optimizeSpeed;
 }
 
 .capitalize {
-    text-transform: capitalize;
+	text-transform: capitalize;
 }

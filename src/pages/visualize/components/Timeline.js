@@ -142,11 +142,11 @@ export default function Timeline() {
                 const min = minValue - Math.min(...startBounds);
                 const ratio = Math.min(Math.max(pos / (this.getSliderLength() / (maxValue - minValue)), min), max);
                 const nextBounds = startBounds.map((v) =>
-                    Math.floor(Math.max(Math.min(v + ratio, maxValue), minValue)),
+                    Math.floor(Math.max(Math.min(v + ratio, maxValue), minValue))
                 );
                 if (state.bounds.map((c, i) => c === nextBounds[i]).some((c) => !c)) {
                     this.onChange({
-                        bounds: nextBounds,
+                        bounds: nextBounds
                     });
                 }
                 return;
@@ -187,7 +187,7 @@ export default function Timeline() {
                         marks={{
                             [-4]: '-4',
                             0: '0',
-                            4: '4',
+                            4: '4'
                         }}
                         defaultValue={playbackSpeed}
                         onAfterChange={( event ) => {
@@ -300,7 +300,7 @@ export default function Timeline() {
                         />
                     </Tooltip>
 
-                    <Tooltip title={playing ? 'Pause' :'Play'  }>
+                    <Tooltip title={playing ? 'Pause' : 'Play'  }>
                         <Button type='primary' onClick={() => {
                             setOptions( contextID, { ...getOptions( contextID ), playing: !playing } );
                         }} icon={playing ? <PauseOutlined /> : <CaretRightOutlined />} />

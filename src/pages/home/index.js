@@ -167,7 +167,7 @@ export default function home() {
                             The website was constructed over a period of roughly 3 months by a team of 6 members.
                             </p>
                             <p>
-                            If you want to know more about the individual visualizations and team mebers, 
+                            If you want to know more about the individual visualizations and team members, 
                             please check out the About page.
                             </p>
                         </Col>

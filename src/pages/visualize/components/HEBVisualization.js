@@ -88,6 +88,12 @@ export default function HEBVisualization() {
         //Mapping of jobs to colors
         let jobColors = d3.scaleOrdinal(d3.schemeCategory10);
 
+        //Stores all path and node elements that are rendered by their id, used in the onHover calls
+        let pathElements = [];
+        let nodeElements = {};
+
+        let oldOptions = {};
+
         /**
          * Updates all parts of the visualization that are dependent on either the dataset or the user options.
          * 
@@ -98,59 +104,85 @@ export default function HEBVisualization() {
          */
         let update = (root, options, getOptions, setOptions) => {
 
+            //Checks for all things that have changed in options. Used for rendering optimization
+            let changed = {
+                nodeColor: false,
+                edgeColor: false,
+                convertEmail: false,
+                edgeThickness: false,
+                bundlingFactor: false
+            };
+
+            if( options.colorNodeBy != oldOptions.colorNodeBy || options.colorRange != oldOptions.colorRange || options.colorFactor != oldOptions.colorFactor )
+                changed.nodeColor = true;
+
+            if( options.convertEmail != oldOptions.convertEmail )
+                changed.convertEmail = true;
+
+            if( options.colorEdgeBy != oldOptions.colorEdgeBy || options.colorRange != oldOptions.colorRange || options.colorFactor != oldOptions.colorFactor )
+                changed.edgeColor = true;
+
+            if( options.edgeThickness != oldOptions.edgeThickness )
+                changed.edgeThickness = true;
+
+            if( options.bundlingFactor != oldOptions.bundlingFactor )
+                changed.bundlingFactor = true;
+
+            oldOptions = options;
+
             /**
-         * Called when the user hovers over a specific e-mailaddress
-         * 
-         * @param {*} event Mouse event details
-         * @param {*} d     E-mail address data that was hovered over
-         */
+             * Called when the user hovers over a specific e-mailaddress
+             *
+             * @param {*} event Mouse event details
+             * @param {*} d     E-mail address data that was hovered over
+             */
             function onMouseOver(event, d) {
-               
                 //setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: d.data.name});
 
                 d3.select(this).attr('font-weight', 'bold');
 
                 //Highlight the paths by applying a class to them
-                d3.selectAll(d.incoming.map((d) => d.path)).classed('link-target', true).raise();
-                d3.selectAll(d.outgoing.map((d) => d.path)).classed('link-source', true).raise();
+                d3.selectAll(d.incoming.map((d) => pathElements[d.id]))
+                    .classed('link-target', true)
+                    .raise();
+                d3.selectAll(d.outgoing.map((d) => pathElements[d.id]))
+                    .classed('link-source', true)
+                    .raise();
 
                 //Highlight the e-mail address labels by applying a class to them
-                d3.selectAll(d.incoming.map(([d]) => d.text)).classed('node-source', true);
-                d3.selectAll(d.outgoing.map(([, d]) => d.text)).classed('node-target', true);
+                d3.selectAll(d.incoming.map(([d]) => nodeElements[d.data.name])).classed('node-source', true);
+                d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).classed('node-target', true);
             }
 
             /**
-         * Called when the user clicks on a specific e-mailaddress
-         * 
-         * @param {*} event Mouse event details
-         * @param {*} d     E-mail address data that was clicked
-         */
+             * Called when the user clicks on a specific e-mailaddress
+             *
+             * @param {*} event Mouse event details
+             * @param {*} d     E-mail address data that was clicked
+             */
             function onMouseClick(event, d) {
                 //setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: d.data.name});
-                if ( d3.select(this).attr('clicked') ) {
-                    
+                if (d3.select(this).attr('clicked')) {
                     d3.select(this).attr('clicked', null);
                     console.log('here');
                     //Highlight the paths by applying an attribute to them
-                    d3.selectAll(d.incoming.map((d) => d.path)).attr('clicked', null);
-                    d3.selectAll(d.outgoing.map((d) => d.path)).attr('clicked', null);
-    
+                    d3.selectAll(d.incoming.map((d) => pathElements[d.id])).attr('clicked', null);
+                    d3.selectAll(d.outgoing.map((d) => pathElements[d.id])).attr('clicked', null);
+
                     //Highlight the e-mail address labels by applying a class to them
-                    d3.selectAll(d.incoming.map(([d]) => d.text)).attr('clicked', null);
-                    d3.selectAll(d.outgoing.map(([, d]) => d.text)).attr('clicked', null);  
+                    d3.selectAll(d.incoming.map(([d]) => nodeElements[d.data.name])).attr('clicked', null);
+                    d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).attr('clicked', null);
                 } else {
-                    
                     d3.select(this).attr('clicked', true);
 
                     //Highlight the paths by applying an attribute to them
-                    d3.selectAll(d.incoming.map((d) => d.path)).attr('clicked', true);
-                    d3.selectAll(d.outgoing.map((d) => d.path)).attr('clicked', true);
-    
+                    d3.selectAll(d.incoming.map((d) => pathElements[d.id])).attr('clicked', true);
+                    d3.selectAll(d.outgoing.map((d) => pathElements[d.id])).attr('clicked', true);
+
                     //Highlight the e-mail address labels by applying a class to them
-                    d3.selectAll(d.incoming.map(([d]) => d.text)).attr('clicked', true);
-                    d3.selectAll(d.outgoing.map(([, d]) => d.text)).attr('clicked', true);  
+                    d3.selectAll(d.incoming.map(([d]) => nodeElements[d.data.name])).attr('clicked', true);
+                    d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).attr('clicked', true);
                 }
-                
             }
 
             /**
@@ -159,17 +191,15 @@ export default function HEBVisualization() {
              * @param {*} d     E-mail address data that was hovered over
              */
             function onMouseOut(event, d) {
-                
                 //setOptions(CONTEXT_ID, { ...getOptions(CONTEXT_ID), hoveredNode: null });
-                if ( !d3.select(this).attr('clicked') ) {
-                    
+                if (!d3.select(this).attr('clicked')) {
                     d3.select(this).attr('font-weight', null);
                     //Un-highlight the paths
-                    d3.selectAll(d.incoming.map((d) => d.path)).classed('link-target', false);
-                    d3.selectAll(d.outgoing.map((d) => d.path)).classed('link-source', false);
+                    d3.selectAll(d.incoming.map((d) => pathElements[d.id])).classed('link-target', false);
+                    d3.selectAll(d.outgoing.map((d) => pathElements[d.id])).classed('link-source', false);
                     //Un-highlight the E-mail addresses
-                    d3.selectAll(d.incoming.map(([d]) => d.text)).classed('node-source', false);
-                    d3.selectAll(d.outgoing.map(([, d]) => d.text)).classed('node-target', false); 
+                    d3.selectAll(d.incoming.map(([d]) => nodeElements[d.data.name])).classed('node-source', false);
+                    d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).classed('node-target', false);
                 }
             }
 
@@ -177,11 +207,15 @@ export default function HEBVisualization() {
             root = tree(root);
 
             //Update bundling factor for the edges
-            let line = d3.lineRadial().curve(d3.curveBundle.beta(options.bundlingFactor)).radius((d) => d.y).angle((d) => d.x);
+            let line = d3
+                .lineRadial()
+                .curve(d3.curveBundle.beta(options.bundlingFactor))
+                .radius((d) => d.y)
+                .angle((d) => d.x);
 
             /**
              * Returns the sentiment color based on the selected color scheme (options.colorRange).
-             * 
+             *
              * @param {*} sentiment Sentiment value of a particular e-mail message
              * @returns String of RGB value (#RRGGBB) or default 'black'
              */
@@ -203,12 +237,11 @@ export default function HEBVisualization() {
                     default:
                         return 'black';
                 }
-
             };
 
             /**
              * Returns the color of the node based on the user settings
-             * 
+             *
              * @param {*} node Node datapoint
              * @returns String of RGB value (#RRGGBB) or default 'black'
              */
@@ -261,7 +294,7 @@ export default function HEBVisualization() {
 
             /**
              * Returns the edge color based on the user's settings
-             * 
+             *
              * @param {*} edge Array with 2 elements: outgoing node and incoming node
              * @returns Returns coloring or #444 as default
              */
@@ -289,17 +322,14 @@ export default function HEBVisualization() {
                         return '#444';
                 }
             };
-            //Remove all text elements from nodes
-            node.selectAll('g').selectAll('text').remove();
 
-            //Creates all text elements (e-mail labels)
-            node.selectAll('g')
-                .data(root.leaves())
-                .join('g')
+            let nodes = node.selectAll('g').data(root.leaves(), (d) => d.data.name);
 
+            nodes.enter()
+                .append( 'g' )
+                
                 //Use the x and y position calculated by the tree function to place it onto the circle
-                .attr('transform', (d) => `rotate(${d.x * 180 / Math.PI - 90}) translate(${d.y},0)`)
-
+                .attr('transform', (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`)
                 .append('text')
                 .attr('dy', '0.31em')
 
@@ -310,71 +340,92 @@ export default function HEBVisualization() {
 
                 //Format text
                 .text((d) => {
-                    if (options.convertEmail)
-                        return d.data.name.replace('.', ' ').substr(
-                            0, d.data.name.indexOf('@'));
+                    if (options.convertEmail) return d.data.name.replace('.', ' ').substr(0, d.data.name.indexOf('@'));
 
                     return d.data.name;
                 })
                 .attr('fill', (d) => colorNode(d))
                 .each(function (d) {
-                    d.text = this;
+                    nodeElements[d.data.name] = this;
                 })
-                .on('mouseover', onMouseOver)
-                .on('mouseout', onMouseOut)
-                .on( 'click', onMouseClick)
-                //Add text to display on hover
                 .call((text) =>
-                    text.append('title').text(
-                        (d) => `${d.data.name} (${d.data.jobtitle})`
-                            + `\n${d.outgoing?.length} outgoing`
-                            + `\n${d.incoming?.length} incoming`
-                    )
+                    text.append('title')
                 );
+
+            nodes.exit()
+                .each(function (d) {
+                    delete nodeElements[d.data.name];
+                })
+                .remove();
+
+            node.selectAll( 'g' ).on('mouseover', onMouseOver)
+                .on('mouseout', onMouseOut)
+                .on('click', onMouseClick)
+                .call((elem) => {
+                    elem
+                        .select('title')
+                        .text(
+                            (d) =>
+                                `${d.data.name} (${d.data.jobtitle})` +
+                                `\n${d.outgoing?.length} outgoing` +
+                                `\n${d.incoming?.length} incoming`
+                        );
+
+                    let text = elem.select('text');
+                           
+                    if( changed.convertEmail )
+                        text.text((d) => {
+                            if (options.convertEmail) return d.data.name.replace('.', ' ').substr(0, d.data.name.indexOf('@'));
+
+                            return d.data.name;
+                        });
+                    if( changed.nodeColor || options.colorNodeBy?.includes( 'Sentiment' ) )
+                        text.attr('fill', ( d ) => { return colorNode( d ); } );
+                } );
+            
 
             //Enable or disable fast rendering when there are over a certain number of edges on screen.
             //Fast render tells the browser to not render as much detail (edge curves are less smooth)
             let links = root.leaves().flatMap((leaf) => leaf.outgoing);
             let enableFastRender = links.length > FAST_RENDER_THRESHOLD;
 
-            if (!enableFastRender && svg.classed('fastRender'))
-                message.info('Fast rendering mode disabled.', 5);
-            else if (enableFastRender && !svg.classed('fastRender'))
-                message.info('Fast rendering mode enabled.', 5);
+            if (!enableFastRender && svg.classed('fastRender')) message.info('Fast rendering mode disabled.', 5);
+            else if (enableFastRender && !svg.classed('fastRender')) message.info('Fast rendering mode enabled.', 5);
 
-            svg.classed('fastRender', enableFastRender)
-                .classed('capitalize', options.convertEmail);
+            svg.classed('fastRender', enableFastRender).classed('capitalize', options.convertEmail);
 
-
-            let selection = link.selectAll('path')
-                .data(links);
+            let selection = link.selectAll('path').data(links, ( d ) => d.id);
 
             //Add a new path element for all new emails in the filtered dataset
-            selection.enter().append('path');
-            //Remove all path elements for everything outside filtered dataset
-            selection.exit().remove();
-
-            //Apply all styles, classes and attributes to each path that is rendered
-            link.selectAll('path')
-                .style('stroke-width', null)
-                .classed('link-target', false)
-                .classed('link-source', false)
+            selection.enter().append('path')
                 .attr('d', ([i, o]) => line(i.path(o)))
                 .attr('stroke', (d) => colorEdge(d))
-                .each(function (d) {
-                    d.path = this;
-                });
+                .style('stroke-width', options.edgeThickness == 1 ? null : options.edgeThickness + 'px')
+                .each( function( d ) {
+                    pathElements[ d.id ] = this;
+                } );
+            //Remove all path elements for everything outside filtered dataset
+            selection.exit()
+                .each(function( d ) {
+                    delete pathElements[ d.id ];
+                } )
+                .remove();
 
-            //If edgeThickness is selected from options apply it to the path elements.
-            if (options.edgeThickness != 1) {
-                link.selectAll('path')
-                    .style('stroke-width', options.edgeThickness + 'px');
-            }
+            //Apply all styles, classes and attributes to each path that is rendered
+            let paths = link.selectAll('path');
+
+            if( changed.edgeThickness )
+                paths.style('stroke-width', options.edgeThickness == 1 ? null : options.edgeThickness + 'px');
+
+            if( changed.edgeColor )
+                paths.attr('stroke', (d) => colorEdge(d));
+
+            if( changed.bundlingFactor )
+                paths.attr('d', ([i, o]) => line(i.path(o)));
         };
 
         //Update the graph with the empty hierarchical data
         update(root, options, getOptions, setOptions);
-
 
 
         setVisualisation({ update: update });
@@ -399,13 +450,14 @@ export default function HEBVisualization() {
         //Create email and job map to easily keep track of all e-mail addresses uniquely and all jobtypes uniquely
         const emailMap = new Map();
         const jobMap = new Map();
-        //Get dates from the ones specified by the timeline
-        const startDate = new Date(moment(globalOptions.timeline).subtract(globalOptions.previousDays, 'days'));
-        const endDate = new Date(globalOptions.timeline);
+
+        //Get dates from the ones specified by the timeline (use getTime to convert to numbers for efficiency)
+        const startDate = new Date(moment(globalOptions.timeline).subtract(globalOptions.previousDays, 'days')).getTime();
+        const endDate = new Date(globalOptions.timeline).getTime();
 
         //Loop over the dataset and populate the maps above with all e-mail addresses and jobs (these are not filtered on date).
         //When the date of an e-mail falls within the range, add it to the e-mail map.
-        dataset.forEach((data) => {
+        dataset.forEach((data, index) => {
 
             let { fromJobtitle, fromEmail, toEmail, toJobtitle, date, sentiment } = data;
 
@@ -421,10 +473,12 @@ export default function HEBVisualization() {
             if (!emailMap.get(toEmail))
                 emailMap.set(toEmail, { children: [], jobtitle: toJobtitle });
 
-            if (date < startDate || date > endDate)
-                return;
+            //Convert to number for efficiency
+            let time = date.getTime();
 
-            emailMap.get(fromEmail).children.push({ toEmail: toEmail, date: date, sentiment: sentiment });
+            if (time < startDate || time > endDate)
+                return;
+            emailMap.get(fromEmail).children.push({ toEmail: toEmail, date: date, sentiment: sentiment, id: index });
 
         });
 
@@ -446,7 +500,11 @@ export default function HEBVisualization() {
             //Create all outgoing edges for each e-mail address
             for (const d of root.leaves()) {
                 d.incoming = [];
-                d.outgoing = d.data?.children?.mails?.map((i) => [d, map.get(i.toEmail)]);
+                d.outgoing = d.data?.children?.mails?.map((i) => {
+                    let array = [d, map.get(i.toEmail)];
+                    array.id = i.id;
+                    return array;
+                });
 
                 if (!d.outgoing)
                     d.outgoing = [];
