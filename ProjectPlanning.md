@@ -52,7 +52,9 @@ This document includes an exported list of the issues (tasks) and wishes present
  - Sprint 2: 10-05-2021  -  21-05-2021\
    **Goal**: A basic version of the second visualisation, improvements for the first visualisation, integrating the site pages and completing the interim report.
 
- - Sprint 3: 24-05-2021  -  04-06-2021
+ - Sprint 3: 24-05-2021  -  04-06-2021\
+   **Goal**: Cleaning-up the code, creating a draft of the video and final report, implementing graph interactions and extra graphs.
+
  - Sprint 4: 07-06-2021  -  18-06-2021
 
 
@@ -61,25 +63,24 @@ This document includes an exported list of the issues (tasks) and wishes present
 # Wishes
 
  - **#1: Basic Website**\
-   Basic Website that has a usable interface and basic systems that can be added to (such as routing and multiple pages).
-   Content is not necessary, just the basic systems up and running.
+   Improve the user experience on the website.
 
-   Priority: 2,
+   Priority: 3,
    Size: ~4-8 hours
  - **#2: Visualisations**\
-   Choose at least 2 visualisations to implement and get a basic version working on the app.
+   Implement extra visualisations in the app. This could include the force-directed graph or any other visualisations that have been researched.
 
-   Priority: 1,
-   Size: ~15 hours
+   Priority: 3,
+   Size: ~8-16 hours
  - *(Finished)* **#3: Make Dataset Upload Tool**\
    Create a first basic version of a data upload tool, to provide data for the visualisations.
 
    Priority: 4,
    Size: ~2-4 hours
  - **#4: Dynamic Visualisations**\
-   Visualisations should be interactable. You should be able to highlight, zoom in and out.
+   Implement the interaction between 2 graphs.
 
-   Priority: 2,
+   Priority: 1,
    Size: ~8-12 hours
  - *(Finished)* **#5: First Draft Report**\
    Create a preliminary version of the report (which should be handed in at the end of Sprint 2).
@@ -89,56 +90,47 @@ This document includes an exported list of the issues (tasks) and wishes present
  - **#6: First Draft Video**\
    Create a preliminary version (or sketch) of the video (which should be handed in at the end of Sprint 4). 
 
-   Priority: 3,
-   Size: ~3 hours
+   Priority: 2,
+   Size: ~8 hours
  - **#7: Deliver Planning, Timesheets, Minutes**\
    Send the project planning, the timesheets and the meeting minutes to the tutor at the end of each week.
 
    Priority: 1,
    Size: 1 hour
- - **#8: Create Interim Report**\
-   Complete the interim report (which should be handed in at the end of the sprint).
+ - *(Finished)* **#8: Create Interim Report**\
+   Complete the interim report.
 
    Priority: 1
    Size: ~15 hours
+ - **#9: Final Report**\
+   Create a first draft of the final report.
+
+   Priority: 2
+   Size: ~8-16 hours
 
 <div style="page-break-after: always;"></div>
 
 # Planned Tasks
-*None*
+|Issue|Assignee|Labels|
+|----|----|----|
+|#1.23: Upload multiple datasets and switch between them|-|priority: 4, size: large|
+|#1.24: Auto set the date range depending on the selected dataset|-|priority: 4, size: medium|
+|#2.15: Add features to FD graphs|-|priority: 3, size: medium|
+|#2.16: Add a legend to the HEB|-|priority: 3, size: large|
+|#4.6: Implement selecting nodes on the hierarchical graph|Tom van Liempd, Aloys Riswick|priority: 1, size: medium|
+|#4.7: Add selected items to the sidebar|Christine Jacob, Kristopher Schlett|priority: 2, size: medium|
+|#4.8: Allow hovering over nodes in the DFD graph|-|priority: 2, size: small|
+|#4.9: Use and store data in the shared data framework between visualizations|-|priority: 1, size: large|   
+|#6.2: Create a video script|Hugo van Schalm, Anke Staal|priority: 2, size: large|
+|#9.2: Discussion and limitations|-|priority: 3, size: medium|
+|#9.3: Conclusion and future work|-|priority: 3, size: medium|
 
 <div style="page-break-after: always;"></div>
 
-# Finished Tasks       
+# Finished Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
-|#1.12: Create a uniform style|Christine Jacob, Tom van Liempd|priority: 3, size: small|
-|#1.13: Improve the home page|Aloys Riswick|priority: 4, size: medium|
-|#1.14: Improve the navigation|Christine Jacob, Tom van Liempd|priority: 5, size: small|
-|#1.15: Improve the data-upload page|Anke Staal, Aloys Riswick|priority: 3, size: large|
-|#1.16: Fix bug where timeline updates cause undefined behaviour + Tom|Christine Jacob|priority: 3, size: large|
-|#1.17: Implement Theming in Remaining parts|Aloys Riswick|priority: 3, size: medium|
-|#1.18: Add simple service worker|Aloys Riswick|priority: 4, size: small|
-|#1.19: Improve timeline|Tom van Liempd|priority: 3, size: medium|
-|#1.20: About page sections (Everyone)|-|priority: 3, size: small|
-|#1.21: Create User Manual|Kristopher Schlett, Hugo van Schalm|priority: 2, size: medium|
-|#1.22: Clean-up the visualisation page |Christine Jacob|priority: 2, size: medium|
-|#2.5: Implement the play button|Christine Jacob, Tom van Liempd|priority: 3, size: medium|
-|#2.6: Improve Timeline Functionality|Christine Jacob, Tom van Liempd|priority: 4, size: medium|
-|#2.7: Add a Legend|Hugo van Schalm|priority: 5, size: medium|
-|#2.8: Look into performance optimisations for HEB|Aloys Riswick|priority: 1, size: large|
-|#2.9: HEB Dataset Formatting|Tom van Liempd|priority: 2, size: medium|
-|#2.10: HEB Crash Improvements|Aloys Riswick|priority: 2, size: large|
-|#2.11: Link HEB Options to Visualizaition|Aloys Riswick|priority: 3, size: medium|
-|#2.12: Fix HEB Hover Bug|Tom van Liempd|priority: 4, size: medium|
-|#2.13: Remember selected data|Anke Staal, Aloys Riswick|priority: 3, size: large|
-|#4.1: Research Interaction Techniques|Kristopher Schlett|priority: 2, size: small|
-|#4.2: Show node information on click|Kristopher Schlett|priority: 3, size: medium|
-|#4.3: Add zooming & panning|Hugo van Schalm, Kristopher Schlett|priority: 3, size: medium|
-|#4.4: Make the infobox draggable|Kristopher Schlett, Hugo van Schalm|priority: 4, size: small|
-|#6.1: Research ideas for videos|Everyone|priority: 5, size: medium|
-|#8.1: Abstract & Introduction|Christine Jacob|priority: 1, size: large|
-|#8.2: Related work |Anke Staal|priority: 1, size: large|
-|#8.3: Visualization|Hugo van Schalm|priority: 1, size: large|
-|#8.4: Interaction techniques|Kristopher Schlett|priority: 1, size: large|
-|#8.5: Finalize the report|Everyone|priority: 1, size: medium|
+|#2.14: Clean-up code|Kristopher Schlett, Tom van Liempd|priority: 1, size: large|
+|#4.5: Implement data sharing between graphs|Hugo van Schalm, Anke Staal|priority: 1, size: medium|
+|#6.1: Research ideas for videos|Everyone|priority: 1, size: medium|
+|#9.1: Use case / data-set findings / application example|Aloys Riswick|priority: 2, size: large|
