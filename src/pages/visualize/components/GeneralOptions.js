@@ -22,7 +22,7 @@ export default function GeneralOptions() {
         'None',
         'Hierarchical Edge Bundling',
         'Disjoint Force-Directed',
-        //'Force-Directed Graph',
+        'Force-Directed Graph',
         //'Arc Diagram',
         //'3D force directed graph'
     ];

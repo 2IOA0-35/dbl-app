@@ -11,7 +11,7 @@ export default function FDVisualization() {
 
     // #region ------------------ SETUP -------------------
 
-    const [ getOptions ] = useContext( GlobalContext );
+    const [ getOptions, setOptions ] = useContext( GlobalContext );
 
     const globalOptions = getOptions( CONTEXT_ID );
 
@@ -21,6 +21,12 @@ export default function FDVisualization() {
          */
         update: null
     } );
+    
+    // Variables used for Legend
+    var showLegend = false;
+    // Variables for node info
+    var checked = false;
+    var recentID;
 
     let [ dataset ] = React.useContext( DataContext );
 
@@ -75,6 +81,81 @@ export default function FDVisualization() {
             .append( 'g' )
             .attr( 'stroke', '#fff' )
             .attr( 'stroke-width', 1.5 );
+
+        var zoom = d3.zoom().on( 'zoom', function ( event ) {
+            // console.log( event.transform );
+            node.attr( 'transform', event.transform );
+            link.attr( 'transform', event.transform );
+        } );
+
+        svg.call( zoom );
+
+        d3.select( visBox.current )
+            .append( 'button' )
+            .html( 'Reset Zoom' )
+            .style( 'position', 'absolute' )
+            .style( 'bottom', '20px' )
+            .style( 'left', '0' )
+            .style( 'right', '0' )
+            .style( 'margin', 'auto' )
+            .classed( 'ant-btn ant-btn-primary', true )
+            .on( 'click', () => {
+                svg
+                    .transition()
+                    .duration( 600 )
+                    .call( zoom.transform, d3.zoomIdentity );
+            } );
+
+        var legend = d3.select( visBox.current )
+            .append( 'div' )
+            .style( 'bottom', '20px' )
+            .style( 'left', '20px' )
+            .style( 'position', 'absolute' )
+            .style( 'background-color', 'white' )
+            .style( 'border-radius', '10px' )
+            .style( 'padding', '10px 15px 0 15px' )
+            .style( 'width', '200px' )
+            .style( 'overflow', 'hidden' )
+            .style( 'max-height', '53px' )
+            .style( 'transition', 'all 250ms ease-in-out 0s' );
+
+            var legendHeader = legend
+            .append( 'div' )
+            .style( 'display', 'flex' )
+            .style( 'justify-content', 'space-between' )
+            .style( 'align-items', 'center' )
+            .style( 'margin-bottom', '10px' )
+            .html( "<h2 style='margin: 0;'>Legend</h2>" );
+
+        var legendContent = legend.append( 'div' );
+
+        var legendButton = legendHeader
+            .append( 'a' )
+            .style( 'background', 'none' )
+            // .style( 'color', 'blue' )
+            .style( 'border', 'none' )
+            .style( 'text-decoration', 'none' )
+            .style( 'font-size', '1rem' )
+            .html( 'Show' )
+            .on( 'click', () => {
+                if ( showLegend ) {
+                    legendButton.html( 'Show' );
+                    legend.style( 'max-height', '53px' );
+                } else {
+                    legendButton.html( 'Hide' );
+                    legend.style( 'max-height', ( legendContent.node().offsetHeight + 67 ) + 'px' );
+                }
+                showLegend = !showLegend;
+            } )
+            .on( 'mouseover', () => {
+                legendButton.style( 'text-decoration', 'underline' );
+            } )
+            .on( 'mouseout', () => {
+                legendButton.style( 'text-decoration', 'none' );
+            } );
+        
+        legendButton;
+       
 
         // Initialize forces & simulation
         let manyBodyForce = d3.forceManyBody();
@@ -157,9 +238,14 @@ export default function FDVisualization() {
 
         // Fixes a bug where the initial size is not correct
         setTimeout( resize, 10 );
-
+        console.log(getOptions(VIS_ID))
         // Update handler for all things that depend on the nodes and links
-        let update = ( nodes, links, maxDegree, options ) => {
+        let update = ( nodes, links, maxDegree, getOptions, setOptions ) => {
+        console.log("2")
+
+
+            const options       = getOptions( VIS_ID     );
+            const globalOptions = getOptions( CONTEXT_ID );
 
             // Make a shallow copy to protect against mutation, while
             // recycling old nodes to preserve position and velocity.
@@ -188,14 +274,73 @@ export default function FDVisualization() {
             // (This is a kindof inefficient way of doing things, but this will probably get replaced by a pop-up when a node is clicked or something)
             node.selectAll( 'circle' ).selectAll( 'title' ).remove();
 
+            //on click update border and selected node
+            let {selectedNode, emailsSent, emailsReceived, position} = getOptions(CONTEXT_ID);
+
+            node.selectAll('circle').on( 'click', function ( d, i ) {
+                if ( !checked ) {
+                    checked = true;
+                    setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id, 
+                        emailsSent: i.outDegree, emailsReceived: i.inDegree, position: i.job});
+                    recentID = i.id;
+                    d3.select( this ).style( 'stroke', 'red' );
+                    
+                } else if ( checked ) {
+                    if ( recentID === i.id ) {
+                        d3.select( this ).style( 'stroke', 'white' );
+                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null,
+                            emailsSent: 0, emailsReceived: 0, position: null });
+                        recentID = '';
+                    } else {
+                        node.selectAll( 'circle' ).style( 'stroke', () => {
+                            return 'white';
+                        } );
+                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id,
+                            emailsSent: i.outDegree, emailsReceived: i.inDegree, position: i.job});
+                        recentID = i.id;
+                        d3.select( this ).style( 'stroke', 'red' );
+                    }
+                }
+            } );
+
             // Apply attributes to all nodes
+            var currentNodePresent = false; // this is to check if prev. selected node is present in current drawing.
+            let legendContentText = '';
+            let jobs = new Map();
+
+
             node.selectAll( 'circle' )
                 .attr( 'fill', ( d ) => {
-                    if ( options.colorBy )
-                        return jobColors( d.job );
-
-                    return '#067f5b';
+                    let color = '#067f5b';
+                    if ( options.colorBy ){
+                        color = jobColors( d.job );
+                        if ( !jobs.has( d.job ) ) {
+                            jobs.set( d.job, color );
+                        }
+                    }
+                    return color;
                 } )
+                .style( 'stroke', ( d ) => {
+                    if ( recentID != d.id ) { 
+                        return 'white';
+                    }
+                    currentNodePresent = true;
+                    return 'red';
+                } )
+                .each( function (d) {
+                    if ( recentID == d.id ) {
+                        if ( selectedNode != d.id || emailsSent != d.outDegree || emailsReceived != d.inDegree ) {
+                            // If something has changed, update the context
+                            setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), 
+                                selectedNode: d.id,
+                                emailsSent: d.outDegree, 
+                                emailsReceived: d.inDegree 
+                            });
+                        }
+                    } else if (!currentNodePresent && selectedNode != null) {
+                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null});
+                    }
+                })
                 .call( d3.drag().on( 'start', dragstarted ).on( 'drag', dragged ).on( 'end', dragended ) )
                 .append( 'title' )
                 .text( ( d ) => `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}` );
@@ -208,12 +353,22 @@ export default function FDVisualization() {
                 node.selectAll( 'circle' ).attr( 'r', options.nodeSize );
             }
 
+            let jobsSorted = new Map( [ ...jobs.entries() ].sort() );
+            for ( let [ key, value ] of jobsSorted ) {
+                legendContentText += `<p><span style='color: ${value};'>&#11044</span> ${key}</p>`;
+            }
+            legendContent.html( legendContentText );
+
+            if ( showLegend ) {
+                legend.style( 'max-height', ( legendContent.node().offsetHeight + 67 ) + 'px' );
+            }
+
             // Restart the simulation by 'reheating' it with a higher alpha.
             simulation.alpha( 0.3 ).alphaTarget( 0 ).alphaDecay( 1 - 0.001 ^ ( 1 / 1000 ) ).restart();
         };
 
         // Initialize nodes and links with an empty list.
-        update( [], [], 0, options );
+        update( [], [], 0, getOptions, setOptions );
 
         // Provide the update and resize functions in the state such that other hooks can use it.
         setVisualisation( {
@@ -347,11 +502,11 @@ export default function FDVisualization() {
     }, [ formattedData, globalOptions, options ] );
 
     // Update when filtered data changes
-    useEffect( () => {
+     useEffect( () => {
         if ( !filteredData || !visualisation.update )
             return;
 
-        visualisation.update( filteredData.nodes, filteredData.links, filteredData.maxDegree, options );
+        visualisation.update( filteredData.nodes, filteredData.links, filteredData.maxDegree, getOptions, setOptions );
 
     }, [ filteredData ] );
 
