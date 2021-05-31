@@ -20,7 +20,7 @@ export default function HEBVisualization() {
 
     //Fetch the global options from the context
     const globalOptions = getOptions(CONTEXT_ID);
-    console.log(globalOptions.selectedNode);
+
     //Gets the specific graph options from the context
     const options = getOptions(VIS_ID);
 
@@ -91,6 +91,9 @@ export default function HEBVisualization() {
         //Stores all path and node elements that are rendered by their id, used in the onHover calls
         let pathElements = [];
         let nodeElements = {};
+        let highlightedEmails = [];
+
+        let previousHighlightedNodes = [];
 
         let oldOptions = {};
 
@@ -137,21 +140,7 @@ export default function HEBVisualization() {
              * @param {*} d     E-mail address data that was hovered over
              */
             function onMouseOver(event, d) {
-                //setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: d.data.name});
-
-                d3.select(this).attr('font-weight', 'bold');
-
-                //Highlight the paths by applying a class to them
-                d3.selectAll(d.incoming.map((d) => pathElements[d.id]))
-                    .classed('link-target', true)
-                    .raise();
-                d3.selectAll(d.outgoing.map((d) => pathElements[d.id]))
-                    .classed('link-source', true)
-                    .raise();
-
-                //Highlight the e-mail address labels by applying a class to them
-                d3.selectAll(d.incoming.map(([d]) => nodeElements[d.data.name])).classed('node-source', true);
-                d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).classed('node-target', true);
+                setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), hoveredNode: d.data.name});
             }
 
             /**
@@ -161,28 +150,16 @@ export default function HEBVisualization() {
              * @param {*} d     E-mail address data that was clicked
              */
             function onMouseClick(event, d) {
-                //setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: d.data.name});
-                if (d3.select(this).attr('clicked')) {
-                    d3.select(this).attr('clicked', null);
-                    console.log('here');
-                    //Highlight the paths by applying an attribute to them
-                    d3.selectAll(d.incoming.map((d) => pathElements[d.id])).attr('clicked', null);
-                    d3.selectAll(d.outgoing.map((d) => pathElements[d.id])).attr('clicked', null);
-
-                    //Highlight the e-mail address labels by applying a class to them
-                    d3.selectAll(d.incoming.map(([d]) => nodeElements[d.data.name])).attr('clicked', null);
-                    d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).attr('clicked', null);
-                } else {
-                    d3.select(this).attr('clicked', true);
-
-                    //Highlight the paths by applying an attribute to them
-                    d3.selectAll(d.incoming.map((d) => pathElements[d.id])).attr('clicked', true);
-                    d3.selectAll(d.outgoing.map((d) => pathElements[d.id])).attr('clicked', true);
-
-                    //Highlight the e-mail address labels by applying a class to them
-                    d3.selectAll(d.incoming.map(([d]) => nodeElements[d.data.name])).attr('clicked', true);
-                    d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).attr('clicked', true);
-                }
+                let { selectedNode } = getOptions(CONTEXT_ID);
+                if( selectedNode == d.data.name )
+                    setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null});
+                else
+                    setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), 
+                        selectedNode: d.data.name,
+                        emailsSent: d.outgoing?.length,
+                        emailsReceived: d.incoming?.length,
+                        position: d.data.jobtitle,
+                    });
             }
 
             /**
@@ -191,16 +168,12 @@ export default function HEBVisualization() {
              * @param {*} d     E-mail address data that was hovered over
              */
             function onMouseOut(event, d) {
-                //setOptions(CONTEXT_ID, { ...getOptions(CONTEXT_ID), hoveredNode: null });
-                if (!d3.select(this).attr('clicked')) {
-                    d3.select(this).attr('font-weight', null);
-                    //Un-highlight the paths
-                    d3.selectAll(d.incoming.map((d) => pathElements[d.id])).classed('link-target', false);
-                    d3.selectAll(d.outgoing.map((d) => pathElements[d.id])).classed('link-source', false);
-                    //Un-highlight the E-mail addresses
-                    d3.selectAll(d.incoming.map(([d]) => nodeElements[d.data.name])).classed('node-source', false);
-                    d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).classed('node-target', false);
-                }
+                let { hoveredNode } = getOptions(CONTEXT_ID);
+
+                if( hoveredNode != d.data.name )
+                    return;
+
+                setOptions(CONTEXT_ID, { ...getOptions(CONTEXT_ID), hoveredNode: null });
             }
 
             //Calculates an x and y position for each of the nodes in the circle
@@ -422,6 +395,84 @@ export default function HEBVisualization() {
 
             if( changed.bundlingFactor )
                 paths.attr('d', ([i, o]) => line(i.path(o)));
+
+
+            //Highlighting & unhighlighting
+
+            let { selectedNode, hoveredNode } = getOptions( CONTEXT_ID );
+
+            let toUnhighlight = highlightedEmails.filter( ( element ) => element != selectedNode && element != hoveredNode );
+
+            highlightedEmails = [ selectedNode, hoveredNode ];
+
+            /**
+             * Called for all elements that will be unhighlighted
+             * 
+             * @param {*} d            Node data
+             * @param {*} element      HTML element
+             */
+            function unhighlight(d, element) {
+                d3.select(element).attr('font-weight', null);
+                //Un-highlight the paths
+                d3.selectAll(d.incoming.map((d) => pathElements[d.id])).classed('link-target', false);
+                d3.selectAll(d.outgoing.map((d) => pathElements[d.id])).classed('link-source', false);
+                //Un-highlight the E-mail addresses
+                d3.selectAll(d.incoming.map(([d]) => nodeElements[d.data.name])).classed('node-source', false);
+                d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).classed('node-target', false);
+            }
+
+            toUnhighlight.forEach( ( email ) => {
+                let node = root.leaves().find( ( d ) => d.data.name == email );
+                if( node != null )
+                    unhighlight( node, nodeElements[ email ] );
+            } );
+
+            let highlightedNodes = [];
+
+            /**
+             * Called when the user hovers over a specific e-mailaddress
+             *
+             * @param {*} d             Node data 
+             * @param {*} element       HTML element
+             */
+            function highlight(d, element) {
+                console.log( d, element );
+                d3.select(element).attr('font-weight', 'bold');
+
+                //Highlight the paths by applying a class to them
+                d3.selectAll(d.incoming.map((d) => pathElements[d.id]))
+                    .classed('link-target', true)
+                    .raise();
+                d3.selectAll(d.outgoing.map((d) => pathElements[d.id]))
+                    .classed('link-source', true)
+                    .raise(); 
+
+                //Highlight the e-mail address labels by applying a class to them
+                d3.selectAll(d.incoming.map(([d]) => {
+                    if( !highlightedNodes.includes( nodeElements[d.data.name] ) )
+                        highlightedNodes.push( nodeElements[d.data.name] );
+                    return nodeElements[d.data.name];
+                } )).classed('node-source', true);
+                d3.selectAll(d.outgoing.map(([, d]) => {
+                    if( !highlightedNodes.includes( nodeElements[d.data.name] ) )
+                        highlightedNodes.push( nodeElements[d.data.name] );
+                    return nodeElements[d.data.name];
+                } )).classed('node-target', true);
+            }
+
+            highlightedEmails.forEach( ( email ) => {
+                let node = root.leaves().find( ( d ) => d.data.name == email );
+                if ( node != null )
+                    highlight( node, nodeElements[ email ] );
+            });
+
+            //Unhighlight all previous nodes that might still be highlighted after the removal of an edge
+            d3.selectAll( previousHighlightedNodes.filter( ( node ) => !highlightedNodes.includes( node ) ) )
+                .classed( 'node-source', false )
+                .classed( 'node-target', false );
+
+            previousHighlightedNodes = highlightedNodes;
+
         };
 
         //Update the graph with the empty hierarchical data
@@ -527,7 +578,7 @@ export default function HEBVisualization() {
 
         setFormattedData(data);
 
-    }, [dataset, globalOptions, options]);
+    }, [dataset, globalOptions.timeline, globalOptions.previousDays, options]);
 
     /**
      * Apply to the data to the visualisation when either the visualisation or the data changes.
@@ -541,7 +592,9 @@ export default function HEBVisualization() {
         //Trigger a visualisation update that lets d3 rerender all data
         visualisation.update(formattedData, options, getOptions, setOptions);
 
-    }, [formattedData, visualisation]);
+    }, [formattedData, globalOptions, visualisation]);
+
+    console.log( 'HEB rerender' );
 
     return (
         <div>
