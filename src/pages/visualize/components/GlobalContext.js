@@ -122,6 +122,9 @@ export function GlobalProvider( props ) {
 
     useEffect( () => {
 
+        if( dataset == null )
+            return;
+
         //Sort the dataset based on e-mail date
         let sortedDataset = dataset.sort( ( a, b ) => {
             return a.date - b.date;
