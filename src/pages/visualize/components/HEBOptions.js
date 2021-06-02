@@ -17,7 +17,7 @@ export default function HEBOptions() {
 
     const edgeOptions = [ 'None', 'Sentiment', "Sender's Jobtitle", "Receiver's Jobtitle" ];
     const nodeOptions = [ 'None', 'Average Sentiment', 'Minimum Sentiment', 'Maximum Sentiment', "Sender's Jobtitle" ];
-    const colorOptions = [ 'Viridis', 'Inferno', 'Plasma', 'Warm', 'Cool' ];
+    const colorOptions = [ 'Viridis', 'Turbo', 'Inferno', 'Plasma', 'Warm', 'Cool' ];
 
     return (
         <div>

@@ -169,8 +169,6 @@ export default function DFDVisualization() {
                 legendButton.style('text-decoration', 'none');
             });
 
-        legendButton;
-
 
         // Initialize forces & simulation
         let manyBodyForce = d3.forceManyBody();
@@ -320,8 +318,7 @@ export default function DFDVisualization() {
                 .style('stroke', (d) => {
                     if (d.id === selectedNode) {
                         return 'red';
-                    }
-                    else if (d.id === hoveredNode) {
+                    } else if (d.id === hoveredNode) {
                         return 'black';
                     }
                     return 'white';
