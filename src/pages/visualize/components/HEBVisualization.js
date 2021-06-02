@@ -24,6 +24,8 @@ export default function HEBVisualization() {
     //Gets the specific graph options from the context
     const options = getOptions(VIS_ID);
 
+    var showLegend = false;
+
     let [visualisation, setVisualisation] = useState({
         /**
          * @type {( root ) => void}
@@ -52,7 +54,6 @@ export default function HEBVisualization() {
      * Initializes the d3 visualization and provides an update function for updating it.
      */
     useEffect(() => {
-
         //Set width and radius of visualization
         const width = 850;
         const radius = width / 2;
@@ -76,14 +77,59 @@ export default function HEBVisualization() {
             .style('width', '100%');
 
         //Create the nodes container
-        const node = svg
-            .append('g')
-            .classed('node', true);
+        const node = svg.append('g').classed('node', true);
 
         //Create the links container
-        const link = svg
-            .append('g')
-            .classed('link', true);
+        const link = svg.append('g').classed('link', true);
+
+        var legend = d3
+            .select(visBox.current)
+            .append('div')
+            .style('bottom', '20px')
+            .style('left', '20px')
+            .style('position', 'absolute')
+            .style('background-color', 'white')
+            .style('border-radius', '10px')
+            .style('padding', '10px 15px 0 15px')
+            .style('width', '200px')
+            .style('overflow', 'hidden')
+            .style('max-height', '53px')
+            .style('transition', 'all 250ms ease-in-out 0s');
+
+        var legendHeader = legend
+            .append('div')
+            .style('display', 'flex')
+            .style('justify-content', 'space-between')
+            .style('align-items', 'center')
+            .style('margin-bottom', '10px')
+            .html("<h2 style='margin: 0;'>Legend</h2>");
+
+        var legendContent = legend.append('div');
+
+        var legendButton = legendHeader
+            .append('a')
+            .style('background', 'none')
+            // .style( 'color', 'blue' )
+            .style('border', 'none')
+            .style('text-decoration', 'none')
+            .style('font-size', '1rem')
+            .html('Show')
+            .on('click', () => {
+                if (showLegend) {
+                    legendButton.html('Show');
+                    legend.style('max-height', '53px');
+                } else {
+                    legendButton.html('Hide');
+                    legend.style('max-height', legendContent.node().offsetHeight + 67 + 'px');
+                }
+                showLegend = !showLegend;
+            })
+            .on('mouseover', () => {
+                legendButton.style('text-decoration', 'underline');
+            })
+            .on('mouseout', () => {
+                legendButton.style('text-decoration', 'none');
+            });
 
         //Mapping of jobs to colors
         let jobColors = d3.scaleOrdinal(d3.schemeCategory10);
@@ -99,14 +145,13 @@ export default function HEBVisualization() {
 
         /**
          * Updates all parts of the visualization that are dependent on either the dataset or the user options.
-         * 
+         *
          * @param {*} root                  Filtered and formatterd dataset
          * @param {*} options               User options
          * @param {Function} getOptions     Get options function
          * @param {Function} setOptions
          */
         let update = (root, options, getOptions, setOptions) => {
-
             //Checks for all things that have changed in options. Used for rendering optimization
             let changed = {
                 nodeColor: false,
@@ -116,20 +161,25 @@ export default function HEBVisualization() {
                 bundlingFactor: false
             };
 
-            if( options.colorNodeBy != oldOptions.colorNodeBy || options.colorRange != oldOptions.colorRange || options.colorFactor != oldOptions.colorFactor )
+            if (
+                options.colorNodeBy != oldOptions.colorNodeBy ||
+                options.colorRange != oldOptions.colorRange ||
+                options.colorFactor != oldOptions.colorFactor
+            )
                 changed.nodeColor = true;
 
-            if( options.convertEmail != oldOptions.convertEmail )
-                changed.convertEmail = true;
+            if (options.convertEmail != oldOptions.convertEmail) changed.convertEmail = true;
 
-            if( options.colorEdgeBy != oldOptions.colorEdgeBy || options.colorRange != oldOptions.colorRange || options.colorFactor != oldOptions.colorFactor )
+            if (
+                options.colorEdgeBy != oldOptions.colorEdgeBy ||
+                options.colorRange != oldOptions.colorRange ||
+                options.colorFactor != oldOptions.colorFactor
+            )
                 changed.edgeColor = true;
 
-            if( options.edgeThickness != oldOptions.edgeThickness )
-                changed.edgeThickness = true;
+            if (options.edgeThickness != oldOptions.edgeThickness) changed.edgeThickness = true;
 
-            if( options.bundlingFactor != oldOptions.bundlingFactor )
-                changed.bundlingFactor = true;
+            if (options.bundlingFactor != oldOptions.bundlingFactor) changed.bundlingFactor = true;
 
             oldOptions = options;
 
@@ -140,7 +190,7 @@ export default function HEBVisualization() {
              * @param {*} d     E-mail address data that was hovered over
              */
             function onMouseOver(event, d) {
-                setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), hoveredNode: d.data.name});
+                setOptions(CONTEXT_ID, { ...getOptions(CONTEXT_ID), hoveredNode: d.data.name });
             }
 
             /**
@@ -151,14 +201,15 @@ export default function HEBVisualization() {
              */
             function onMouseClick(event, d) {
                 let { selectedNode } = getOptions(CONTEXT_ID);
-                if( selectedNode == d.data.name )
-                    setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null});
+                if (selectedNode == d.data.name)
+                    setOptions(CONTEXT_ID, { ...getOptions(CONTEXT_ID), selectedNode: null });
                 else
-                    setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), 
+                    setOptions(CONTEXT_ID, {
+                        ...getOptions(CONTEXT_ID),
                         selectedNode: d.data.name,
                         emailsSent: d.outgoing?.length,
                         emailsReceived: d.incoming?.length,
-                        position: d.data.jobtitle,
+                        position: d.data.jobtitle
                     });
             }
 
@@ -170,8 +221,7 @@ export default function HEBVisualization() {
             function onMouseOut(event, d) {
                 let { hoveredNode } = getOptions(CONTEXT_ID);
 
-                if( hoveredNode != d.data.name )
-                    return;
+                if (hoveredNode != d.data.name) return;
 
                 setOptions(CONTEXT_ID, { ...getOptions(CONTEXT_ID), hoveredNode: null });
             }
@@ -198,6 +248,8 @@ export default function HEBVisualization() {
                 switch (options.colorRange) {
                     case 'Viridis':
                         return d3.interpolateViridis(sentiment);
+                    case 'Turbo':
+                        return d3.interpolateTurbo(sentiment);
                     case 'Inferno':
                         return d3.interpolateInferno(sentiment);
                     case 'Plasma':
@@ -298,9 +350,10 @@ export default function HEBVisualization() {
 
             let nodes = node.selectAll('g').data(root.leaves(), (d) => d.data.name);
 
-            nodes.enter()
-                .append( 'g' )
-                
+            nodes
+                .enter()
+                .append('g')
+
                 //Use the x and y position calculated by the tree function to place it onto the circle
                 .attr('transform', (d) => `rotate(${(d.x * 180) / Math.PI - 90}) translate(${d.y},0)`)
                 .append('text')
@@ -321,41 +374,52 @@ export default function HEBVisualization() {
                 .each(function (d) {
                     nodeElements[d.data.name] = this;
                 })
-                .call((text) =>
-                    text.append('title')
-                );
+                .call((text) => text.append('title'));
 
-            nodes.exit()
+            nodes
+                .exit()
                 .each(function (d) {
                     delete nodeElements[d.data.name];
                 })
                 .remove();
 
-            node.selectAll( 'g' ).on('mouseover', onMouseOver)
+            let legendContentText = '';
+            let jobs = new Map();
+
+            node.selectAll('g')
+                .on('mouseover', onMouseOver)
                 .on('mouseout', onMouseOut)
                 .on('click', onMouseClick)
                 .call((elem) => {
-                    elem
-                        .select('title')
-                        .text(
-                            (d) =>
-                                `${d.data.name} (${d.data.jobtitle})` +
-                                `\n${d.outgoing?.length} outgoing` +
-                                `\n${d.incoming?.length} incoming`
-                        );
+                    elem.select('title').text(
+                        (d) =>
+                            `${d.data.name} (${d.data.jobtitle})` +
+                            `\n${d.outgoing?.length} outgoing` +
+                            `\n${d.incoming?.length} incoming`
+                    );
 
                     let text = elem.select('text');
-                           
-                    if( changed.convertEmail )
+
+                    if (changed.convertEmail)
                         text.text((d) => {
-                            if (options.convertEmail) return d.data.name.replace('.', ' ').substr(0, d.data.name.indexOf('@'));
+                            if (options.convertEmail)
+                                return d.data.name.replace('.', ' ').substr(0, d.data.name.indexOf('@'));
 
                             return d.data.name;
                         });
-                    if( changed.nodeColor || options.colorNodeBy?.includes( 'Sentiment' ) )
-                        text.attr('fill', ( d ) => { return colorNode( d ); } );
-                } );
-            
+                    if (changed.nodeColor || options.colorNodeBy?.includes('Sentiment'))
+                        text.attr('fill', (d) => {
+                            return colorNode(d);
+                        });
+                })
+                .each((d) => {
+                    //console.log(d);
+                    let jobtitle = d.data.jobtitle;
+                    if ((options.colorNodeBy.includes('Jobtitle') || options.colorEdgeBy.includes('Jobtitle')) && !jobs.has(jobtitle)) {
+                        let color = jobColors(jobtitle);
+                        jobs.set(jobtitle, color);
+                    }
+                });
 
             //Enable or disable fast rendering when there are over a certain number of edges on screen.
             //Fast render tells the browser to not render as much detail (edge curves are less smooth)
@@ -367,47 +431,49 @@ export default function HEBVisualization() {
 
             svg.classed('fastRender', enableFastRender).classed('capitalize', options.convertEmail);
 
-            let selection = link.selectAll('path').data(links, ( d ) => d.id);
+            let selection = link.selectAll('path').data(links, (d) => d.id);
 
             //Add a new path element for all new emails in the filtered dataset
-            selection.enter().append('path')
+            selection
+                .enter()
+                .append('path')
                 .attr('d', ([i, o]) => line(i.path(o)))
                 .attr('stroke', (d) => colorEdge(d))
                 .style('stroke-width', options.edgeThickness == 1 ? null : options.edgeThickness + 'px')
-                .each( function( d ) {
-                    pathElements[ d.id ] = this;
-                } );
+                .each(function (d) {
+                    pathElements[d.id] = this;
+                });
             //Remove all path elements for everything outside filtered dataset
-            selection.exit()
-                .each(function( d ) {
-                    delete pathElements[ d.id ];
-                } )
+            selection
+                .exit()
+                .each(function (d) {
+                    delete pathElements[d.id];
+                })
                 .remove();
 
             //Apply all styles, classes and attributes to each path that is rendered
             let paths = link.selectAll('path');
 
-            if( changed.edgeThickness )
+            if (changed.edgeThickness)
                 paths.style('stroke-width', options.edgeThickness == 1 ? null : options.edgeThickness + 'px');
 
-            if( changed.edgeColor )
-                paths.attr('stroke', (d) => colorEdge(d));
+            if (changed.edgeColor) paths.attr('stroke', (d) => colorEdge(d));
 
-            if( changed.bundlingFactor )
-                paths.attr('d', ([i, o]) => line(i.path(o)));
-
+            if (changed.bundlingFactor) paths.attr('d', ([i, o]) => line(i.path(o)));
 
             //Highlighting & unhighlighting
 
-            let { selectedNode, hoveredNode } = getOptions( CONTEXT_ID );
+            let { selectedNode, hoveredNode } = getOptions(CONTEXT_ID);
 
-            let toUnhighlight = highlightedEmails.filter( ( element ) => element != selectedNode && element != hoveredNode );
+            let toUnhighlight = highlightedEmails.filter(
+                (element) => element != selectedNode && element != hoveredNode
+            );
 
-            highlightedEmails = [ selectedNode, hoveredNode ];
+            highlightedEmails = [selectedNode, hoveredNode];
 
             /**
              * Called for all elements that will be unhighlighted
-             * 
+             *
              * @param {*} d            Node data
              * @param {*} element      HTML element
              */
@@ -421,22 +487,21 @@ export default function HEBVisualization() {
                 d3.selectAll(d.outgoing.map(([, d]) => nodeElements[d.data.name])).classed('node-target', false);
             }
 
-            toUnhighlight.forEach( ( email ) => {
-                let node = root.leaves().find( ( d ) => d.data.name == email );
-                if( node != null )
-                    unhighlight( node, nodeElements[ email ] );
-            } );
+            toUnhighlight.forEach((email) => {
+                let node = root.leaves().find((d) => d.data.name == email);
+                if (node != null) unhighlight(node, nodeElements[email]);
+            });
 
             let highlightedNodes = [];
 
             /**
              * Called when the user hovers over a specific e-mailaddress
              *
-             * @param {*} d             Node data 
+             * @param {*} d             Node data
              * @param {*} element       HTML element
              */
             function highlight(d, element) {
-                console.log( d, element );
+                //console.log( d, element );
                 d3.select(element).attr('font-weight', 'bold');
 
                 //Highlight the paths by applying a class to them
@@ -445,39 +510,71 @@ export default function HEBVisualization() {
                     .raise();
                 d3.selectAll(d.outgoing.map((d) => pathElements[d.id]))
                     .classed('link-source', true)
-                    .raise(); 
+                    .raise();
 
                 //Highlight the e-mail address labels by applying a class to them
-                d3.selectAll(d.incoming.map(([d]) => {
-                    if( !highlightedNodes.includes( nodeElements[d.data.name] ) )
-                        highlightedNodes.push( nodeElements[d.data.name] );
-                    return nodeElements[d.data.name];
-                } )).classed('node-source', true);
-                d3.selectAll(d.outgoing.map(([, d]) => {
-                    if( !highlightedNodes.includes( nodeElements[d.data.name] ) )
-                        highlightedNodes.push( nodeElements[d.data.name] );
-                    return nodeElements[d.data.name];
-                } )).classed('node-target', true);
+                d3.selectAll(
+                    d.incoming.map(([d]) => {
+                        if (!highlightedNodes.includes(nodeElements[d.data.name]))
+                            highlightedNodes.push(nodeElements[d.data.name]);
+                        return nodeElements[d.data.name];
+                    })
+                ).classed('node-source', true);
+                d3.selectAll(
+                    d.outgoing.map(([, d]) => {
+                        if (!highlightedNodes.includes(nodeElements[d.data.name]))
+                            highlightedNodes.push(nodeElements[d.data.name]);
+                        return nodeElements[d.data.name];
+                    })
+                ).classed('node-target', true);
             }
 
-            highlightedEmails.forEach( ( email ) => {
-                let node = root.leaves().find( ( d ) => d.data.name == email );
-                if ( node != null )
-                    highlight( node, nodeElements[ email ] );
+            highlightedEmails.forEach((email) => {
+                let node = root.leaves().find((d) => d.data.name == email);
+                if (node != null) highlight(node, nodeElements[email]);
             });
 
             //Unhighlight all previous nodes that might still be highlighted after the removal of an edge
-            d3.selectAll( previousHighlightedNodes.filter( ( node ) => !highlightedNodes.includes( node ) ) )
-                .classed( 'node-source', false )
-                .classed( 'node-target', false );
+            d3.selectAll(previousHighlightedNodes.filter((node) => !highlightedNodes.includes(node)))
+                .classed('node-source', false)
+                .classed('node-target', false);
 
             previousHighlightedNodes = highlightedNodes;
 
+            let jobsSorted = new Map([...jobs.entries()].sort());
+
+            for (let [key, value] of jobsSorted) {
+                legendContentText += `<p><span style='color: ${value};'>&#11044</span> ${key}</p>`;
+            }
+            legendContent.html(legendContentText);
+
+            if (options.colorNodeBy.includes('Sentiment') || options.colorEdgeBy.includes('Sentiment')) {
+                legendContent.append('p')
+                    .style('font-weight', 'bold')
+                    .style('text-align', 'center')
+                    .style('margin-bottom', '4px')
+                    .html('Sentiment Value');
+                legendContent.append('img')
+                    .attr('src', `/res/${options.colorRange}.png`)
+                    .attr('height', '20px')
+                    .attr('width', '100%')
+                    .style('border-radius', '5px');
+                var colorRangeLabel = legendContent.append('p')
+                    .style('display', 'flex')
+                    .style('justify-content', 'space-between');
+                colorRangeLabel
+                    .append('span').html('Angry');
+                colorRangeLabel
+                    .append('span').html('Happy');
+            }
+
+            if (showLegend) {
+                legend.style('max-height', legendContent.node().offsetHeight + 67 + 'px');
+            }
         };
 
         //Update the graph with the empty hierarchical data
         update(root, options, getOptions, setOptions);
-
 
         setVisualisation({ update: update });
 
@@ -491,9 +588,7 @@ export default function HEBVisualization() {
      * Filter and prepare the dataset based on the date range in the timeline.
      */
     useEffect(() => {
-
-        if (!dataset)
-            return;
+        if (!dataset) return;
 
         // Will be populated with the dataset converted to hierarchical structure
         let root = { name: 'data', children: [] };
@@ -503,39 +598,36 @@ export default function HEBVisualization() {
         const jobMap = new Map();
 
         //Get dates from the ones specified by the timeline (use getTime to convert to numbers for efficiency)
-        const startDate = new Date(moment(globalOptions.timeline).subtract(globalOptions.previousDays, 'days')).getTime();
+        const startDate = new Date(
+            moment(globalOptions.timeline).subtract(globalOptions.previousDays, 'days')
+        ).getTime();
         const endDate = new Date(globalOptions.timeline).getTime();
 
         //Loop over the dataset and populate the maps above with all e-mail addresses and jobs (these are not filtered on date).
         //When the date of an e-mail falls within the range, add it to the e-mail map.
         dataset.forEach((data, index) => {
-
             let { fromJobtitle, fromEmail, toEmail, toJobtitle, date, sentiment } = data;
 
-            if (!jobMap.has(fromJobtitle))
-                jobMap.set(fromJobtitle, { children: [] });
+            if (!jobMap.has(fromJobtitle)) jobMap.set(fromJobtitle, { children: [] });
 
-            if (!jobMap.has(toJobtitle))
-                jobMap.set(toJobtitle, { children: [] });
+            if (!jobMap.has(toJobtitle)) jobMap.set(toJobtitle, { children: [] });
 
-            if (!emailMap.get(fromEmail))
-                emailMap.set(fromEmail, { children: [], jobtitle: fromJobtitle });
+            if (!emailMap.get(fromEmail)) emailMap.set(fromEmail, { children: [], jobtitle: fromJobtitle });
 
-            if (!emailMap.get(toEmail))
-                emailMap.set(toEmail, { children: [], jobtitle: toJobtitle });
+            if (!emailMap.get(toEmail)) emailMap.set(toEmail, { children: [], jobtitle: toJobtitle });
 
             //Convert to number for efficiency
             let time = date.getTime();
 
-            if (time < startDate || time > endDate)
-                return;
+            if (time < startDate || time > endDate) return;
             emailMap.get(fromEmail).children.push({ toEmail: toEmail, date: date, sentiment: sentiment, id: index });
-
         });
 
-        //Add all email adresses to the jobs to create a hierarchical structure 
+        //Add all email adresses to the jobs to create a hierarchical structure
         emailMap.forEach((entry, key) => {
-            jobMap.get(entry.jobtitle).children.push({ name: key, jobtitle: entry.jobtitle, children: { mails: entry.children } });
+            jobMap
+                .get(entry.jobtitle)
+                .children.push({ name: key, jobtitle: entry.jobtitle, children: { mails: entry.children } });
         });
 
         //Populate the root object with the hierarchical job data
@@ -557,8 +649,7 @@ export default function HEBVisualization() {
                     return array;
                 });
 
-                if (!d.outgoing)
-                    d.outgoing = [];
+                if (!d.outgoing) d.outgoing = [];
             }
             //Create all incoming edges for the email addresses based on outgoing edges
             for (const d of root.leaves()) {
@@ -577,24 +668,20 @@ export default function HEBVisualization() {
         );
 
         setFormattedData(data);
-
     }, [dataset, globalOptions.timeline, globalOptions.previousDays, options]);
 
     /**
      * Apply to the data to the visualisation when either the visualisation or the data changes.
      */
     useEffect(() => {
-
         // Can't do anything without data or update function
-        if (!formattedData || !visualisation)
-            return;
+        if (!formattedData || !visualisation) return;
 
         //Trigger a visualisation update that lets d3 rerender all data
         visualisation.update(formattedData, options, getOptions, setOptions);
-
     }, [formattedData, globalOptions, visualisation]);
 
-    console.log( 'HEB rerender' );
+    //console.log( 'HEB rerender' );
 
     return (
         <div>
