@@ -8,11 +8,13 @@ import DFDOptions from './DFDOptions';
 import FDOptions from './FDOptions';
 import { Link } from 'react-router-dom';
 import { SettingOutlined, SlidersOutlined, FileSearchOutlined, ReadOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { Menu, Layout, Button } from 'antd';
+import { Menu, Layout, Button, Dropdown } from 'antd';
 import { DataContext } from '../../../context/data';
 import './OptionsSidebar.css';
 import UserManual from './UserManual';
 import SelectedNode from './SelectedNode';
+import db from '../../../db';
+
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
@@ -21,22 +23,22 @@ const { Sider } = Layout;
  * Renders the sidebar with the correct sections based on the graphs that are selected.
  */
 export default function OptionsSidebar() {
-    const [ collapsed, setCollapsed ] = useState( false );
-    
+    const [collapsed, setCollapsed] = useState(false);
+
     //eslint-disable-next-line
-    let [ data, setData, fileName ] = React.useContext( DataContext );
-    
-    const [ getOptions ] = useContext( GlobalContext );
+    let [data, setData, fileName, setFileName] = React.useContext(DataContext);
+
+    const [getOptions] = useContext(GlobalContext);
 
     const contextID = 'Global';
 
-    const { graph1, graph2, columnList, selectedNode, position, emailsSent, emailsReceived } = getOptions( contextID );
-    
+    const { graph1, graph2, columnList, selectedNode, position, emailsSent, emailsReceived } = getOptions(contextID);
+
 
     // Will render the appropriate option panel depending on the selected graph
-    const renderOptions = ( graph ) => {
-       
-        switch ( graph ) {
+    const renderOptions = (graph) => {
+
+        switch (graph) {
             case 'Hierarchical Edge Bundling':
                 return <HEBOptions />;
             case 'Disjoint Force-Directed':
@@ -44,33 +46,50 @@ export default function OptionsSidebar() {
             case 'Force-Directed Graph':
                 return <FDOptions />;
             //case 'Arc Diagram':
-                //return <CustomMenuItem title='Not yet implemented!' height='1' />;
+            //return <CustomMenuItem title='Not yet implemented!' height='1' />;
             //case '3D force directed graph':
-                //return <CustomMenuItem title='Not yet implemented!' height='1' />;
+            //return <CustomMenuItem title='Not yet implemented!' height='1' />;
             case 'Manual':
-                return <UserManual/>;
-             
+                return <UserManual />;
+
             case 'SelectedNode':
-                return<SelectedNode Email = {selectedNode} inDegree = {emailsReceived} outDegree = {emailsSent} Job= {position}/>;
+                return <SelectedNode Email={selectedNode} inDegree={emailsReceived} outDegree={emailsSent} Job={position} />;
 
             default:
                 return <CustomMenuItem title='Set a graph type in &#39;General Options&#39;' height='1' />;
         }
     };
+    let dropdownList = [];
+    db.data.where('selected').equals(0).each((item) => {
+        dropdownList.push(<Menu.Item onClick={() => {
+            db.data.where('selected').equals(1).modify({ selected: 0 });
+            db.data.put({ ...item, selected: 1 });
+            setData(item.data);
+            setFileName(item.filename)
+        }}>
+            {item.key}
+        </Menu.Item>)
+    })
+
+    const menu = (
+        <Menu>
+            {dropdownList}
+        </Menu>
+    )
 
     return (
         <Sider
             collapsible
             collapsed={collapsed}
             onCollapse={() => {
-                setCollapsed( !collapsed );
+                setCollapsed(!collapsed);
             }}
             breakpoint='lg'
             width={400}
         >
             <Menu
                 mode='inline'
-                defaultOpenKeys={[ 'sub1' ]}
+                defaultOpenKeys={['sub1']}
                 style={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}
                 selectable={0}
             >
@@ -84,12 +103,19 @@ export default function OptionsSidebar() {
                         marginBottom: '4px'
                     }}
                 >
-                    <span style={{ marginRight: '10px' }}>{fileName}</span>
-                    <Tooltip placement='top' title={'Goes to home page to change the dataset.'}>
+                    {/* <span style={{ marginRight: '10px' }}>{fileName}</span> */}
+                    {/*<Dropdown style={{ marginRight: '10px' }} overlay={menu}>
+                        <p>Hover me</p>
+                </Dropdown>*/}
+                    <Dropdown overlay={menu}>
+                        <Button>{fileName}</Button>
+                    </Dropdown>
+                    
+                    {/* <Tooltip placement='top' title={'Goes to home page to change the dataset.'}>
                         <Button type='primary'>
                             <Link to='/Home'>Edit Dataset</Link>
                         </Button>
-                    </Tooltip>
+                    </Tooltip> */}
                 </Menu.Item>
 
                 {/* These are general options that should be applicable to any graph */}
@@ -99,25 +125,25 @@ export default function OptionsSidebar() {
 
                 {/* These are the options specifically for Graph1 */}
                 <SubMenu key='sub2' icon={<SlidersOutlined />} title='Options For Graph #1'>
-                    {renderOptions( graph1 )}
+                    {renderOptions(graph1)}
                 </SubMenu>
 
                 {/* Disabled by default, active when two graphs are shown simultaneously */}
                 {graph2 != 'None' && (
                     <SubMenu key='sub3' icon={<SlidersOutlined />} title='Options For Graph #2'>
-                        {renderOptions( graph2 )}
+                        {renderOptions(graph2)}
                     </SubMenu>
                 )}
 
                 {/* Might change to button (Menu.Item) that opens a Modal */}
                 <SubMenu key='sub4' icon={<ReadOutlined />} title='User Manual'>
-                    {renderOptions( 'Manual' )}
+                    {renderOptions('Manual')}
                 </SubMenu>
-                
+
                 {/*This is where the selected node is displayed */}
                 <SubMenu key='sub5' icon={<InfoCircleOutlined />} title='Selected Node'>
-                    {renderOptions( 'SelectedNode' )}
-                    
+                    {renderOptions('SelectedNode')}
+
                 </SubMenu>
             </Menu>
         </Sider>

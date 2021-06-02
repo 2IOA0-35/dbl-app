@@ -50,7 +50,7 @@ export default function home() {
         }
         message.destroy( 'Dataset-Load' );
         
-        db.data.put( { key: 'data', data: data, filename: fileName } );
+        db.data.put( { key: fileName, data: data, filename: fileName, selected: 1 } );
         
         setData( data );
         message.success( 'Successfully loaded the dataset.' );

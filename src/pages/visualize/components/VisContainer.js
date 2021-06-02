@@ -17,17 +17,17 @@ export default function VisContainer() {
 
     const { graph1, graph2 } = getOptions( contextID );
 
-    let [ dataset ] = React.useContext( DataContext );
-
+    let [ dataset, setData, filename ] = React.useContext( DataContext );
+    console.log( filename );
     // Will render the appropriate visualization depending on the selected graph
     const renderVisualizations = ( graph ) => {
         switch ( graph ) {
             case 'Hierarchical Edge Bundling':
-                return <HEBVisualization />;
+                return <HEBVisualization key={filename} />;
             case 'Disjoint Force-Directed':
-                return <DFDVisualization />;
+                return <DFDVisualization key={filename} />;
             case 'Force-Directed Graph':
-                return <FDVisualization />;
+                return <FDVisualization key={filename} />;
             case 'Arc Diagram':
                 return <h1>Not yet implemented!</h1>;
             case '3D force directed graph':

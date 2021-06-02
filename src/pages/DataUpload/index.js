@@ -19,6 +19,7 @@ import { DataContext } from '../../context/data';
 import './DataUpload.css';
 import parse, { readFile } from '../../utils/parser';
 import db from '../../db';
+import {  Space } from 'antd';
 
 const { Title, Text } = Typography;
 // functionality for buttons, checkbox to be added
@@ -40,8 +41,14 @@ export default function DataUpload() {
                 console.log( 'progress parse', percent );
                 onProgress( { percent: percent / 2 + 50 } );
             } );
-
-            db.data.put( { key: 'data', data: data, filename: file.name } );
+            if( await db.data.get( file.name ) !== undefined ){
+                message.error('There is already a file present with that file name.');
+                onError();
+                return;
+            }
+            db.data.where('selected').equals(1).modify({ selected: 0 });
+            db.data.put( { key: file.name, data: data, filename: file.name, selected: 1 } );
+            
             setData( data );
 
             onSuccess( `Successfully parsed ${data.length} rows.` );
@@ -130,7 +137,7 @@ export default function DataUpload() {
                                 );
                             } else if ( info.file.status === 'error' ) {
                                 message.error(
-                                    `${info.file.name} file upload failed. Check the file structure and try again.`,
+                                    `${info.file.name} file upload failed.`,
                                     5
                                 );
                             }
@@ -165,7 +172,7 @@ export default function DataUpload() {
                     <p>
                     On this page you can upload your own dataset and use our visualization tools to explore the data.
                     The file must be in <code>.csv</code>, which stands for{' '}
-                        <a href='https://en.wikipedia.org/wiki/Comma-separated_values'>comma-sepperated values</a> and is a
+                        <a href='https://en.wikipedia.org/wiki/Comma-separated_values'>comma-separated values</a> and is a
                     common file type amongst data handling software.
                     </p>
                 </Text>
