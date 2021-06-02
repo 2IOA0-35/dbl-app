@@ -1,6 +1,7 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { DataContext } from '../../../context/data';
 
 export const GlobalContext = createContext();
 
@@ -114,6 +115,27 @@ export function GlobalProvider( props ) {
                 break;
         }
     };
+
+    
+    //Gets the dataset from the DataContext and stores it in the dataset variable
+    let [ dataset ] = React.useContext( DataContext );
+
+    useEffect( () => {
+
+        //Sort the dataset based on e-mail date
+        let sortedDataset = dataset.sort( ( a, b ) => {
+            return a.date - b.date;
+        } );
+
+        let startDate = moment( sortedDataset[ 0 ].date );
+        let endDate   = moment( sortedDataset[ sortedDataset.length - 1 ].date );
+
+        setGlobalOptions( {
+            ...globalOptions,
+            timeframe: [ startDate, endDate ]
+        } );
+
+    }, [ dataset ] );
 
     return <GlobalContext.Provider value={[ getOptions, setOptions ]}>{props.children}</GlobalContext.Provider>;
 }
