@@ -50,7 +50,7 @@ export default function VisContainer() {
             >
                 <Result
                     status='warning'
-                    title=' Please click the "Edit Dataset" button to select a dataset. '
+                    title='Please select a dataset from the dropdown at the top right of the sidebar.'
                 />
             </Row>
         );
