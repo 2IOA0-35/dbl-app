@@ -108,20 +108,12 @@ This document includes an exported list of the issues (tasks) and wishes present
    Priority: 2
    Size: ~8-16 hours
 
+
 <div style="page-break-after: always;"></div>
 
 # Planned Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
-|#1.23: Upload multiple datasets and switch between them|-|priority: 4, size: large|
-|#1.24: Auto set the date range depending on the selected dataset|-|priority: 4, size: medium|
-|#2.15: Add features to FD graphs|-|priority: 3, size: medium|
-|#2.16: Add a legend to the HEB|-|priority: 3, size: large|
-|#4.6: Implement selecting nodes on the hierarchical graph|Tom van Liempd, Aloys Riswick|priority: 1, size: medium|
-|#4.7: Add selected items to the sidebar|Christine Jacob, Kristopher Schlett|priority: 2, size: medium|
-|#4.8: Allow hovering over nodes in the DFD graph|-|priority: 2, size: small|
-|#4.9: Use and store data in the shared data framework between visualizations|-|priority: 1, size: large|   
-|#6.2: Create a video script|Hugo van Schalm, Anke Staal|priority: 2, size: large|
 |#9.2: Discussion and limitations|-|priority: 3, size: medium|
 |#9.3: Conclusion and future work|-|priority: 3, size: medium|
 
@@ -130,7 +122,18 @@ This document includes an exported list of the issues (tasks) and wishes present
 # Finished Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
+|#1.23: Upload multiple datasets and switch between them|Hugo van Schalm, Christine Jacob|priority: 4, size: large|   
+|#1.24: Auto set the date range depending on the selected dataset|Tom van Liempd, Anke Staal|priority: 4, size: medium|
 |#2.14: Clean-up code|Kristopher Schlett, Tom van Liempd|priority: 1, size: large|
+|#2.15: Add features to FD graphs|Christine Jacob, Kristopher Schlett|priority: 3, size: medium|
+|#2.16: Add a legend to the HEB|Kristopher Schlett, Aloys Riswick|priority: 3, size: large|
 |#4.5: Implement data sharing between graphs|Hugo van Schalm, Anke Staal|priority: 1, size: medium|
+|#4.6: Implement selecting nodes on the hierarchical graph|Tom van Liempd, Aloys Riswick|priority: 1, size: medium|
+|#4.7: Add selected items to the sidebar|Christine Jacob, Kristopher Schlett|priority: 2, size: medium|
+|#4.8: Allow hovering over nodes in the DFD graph|Hugo van Schalm, Anke Staal|priority: 2, size: medium|
+|#4.9: Use and store data in the shared data framework between visualizations|Aloys Riswick, Tom van Liempd|priority: 1, size: large|
 |#6.1: Research ideas for videos|Everyone|priority: 1, size: medium|
+|#6.2: Create a video script|Hugo van Schalm, Anke Staal|priority: 2, size: large|
+|#6.3: Give feedback on video script|Everyone|priority: 1, size: small|
+|#6.4: Improve video script|Anke Staal|priority: 2, size: small|
 |#9.1: Use case / data-set findings / application example|Aloys Riswick|priority: 2, size: large|
