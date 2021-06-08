@@ -4,6 +4,7 @@ import { InfoCircleOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { DataContext } from '../../context/data';
 import db from '../../db';
+import presets from '../../data/presets';
 
 const { Option } = Select;
 const { Title, Text } = Typography;
@@ -18,30 +19,12 @@ export default function home() {
     async function onChange( value ) {
         message.loading( { content: 'Loading dataset...', key: 'Dataset-Load' } );
 
-        let data = null;
-
-        let fileName = null;
-
         try {
-            switch ( value ) {
-                case 'Enron': {
-                    setFileName( 'enron.csv' );
-                    fileName = 'enron.csv';
-                    data = ( await import( '../../data/enron.json' ) ).default;
-                    break;
-                }
-                case 'EnronSample': {
-                    setFileName( 'enronSample.csv' );
-                    fileName = 'enronSample.csv';
-                    data = ( await import( '../../data/enronSample.json' ) ).default;
-                    break;
-                }
-            }
 
-            data = data.map( ( item ) => ( {
-                ...item,
-                date: new Date( item.date )
-            } ) );
+            let preset = presets.find( ( preset ) => preset.key == value );
+
+            setFileName( preset.filename );
+            setData( await preset.get() );
         } catch ( e ) {
             message.error( 'An error occurred while loading the dataset.' );
             console.error( 'Error while loading dataset: ', e );
@@ -50,9 +33,6 @@ export default function home() {
         }
         message.destroy( 'Dataset-Load' );
         
-        db.data.put( { key: fileName, data: data, filename: fileName, selected: 1 } );
-        
-        setData( data );
         message.success( 'Successfully loaded the dataset.' );
         history.push( '/vis' );
     }
@@ -110,8 +90,10 @@ export default function home() {
                                     size='large'
                                     onChange={onChange}
                                 >
-                                    <Option value='Enron'>Enron (31.041 e-mails)</Option>
-                                    <Option value='EnronSample'>Enron Sample (17 e-mails)</Option>
+                                    {presets.map( ( preset ) => 
+                                        //The regex adds dots for thousand seperators
+                                        <Option value={preset.key} key={preset.key}>{preset.key} ({preset.length.toString().replace( /\B(?=(\d{3})+(?!\d))/g, '.' )} e-mails)</Option>
+                                    )}
                                 </Select>
                             </p>
                             <p>or</p>
@@ -182,35 +164,6 @@ export default function home() {
                     </p>
                 </Text>
             </Card>
-
-            {/* <Layout>
-                <Content style={{ background: 'white', width: '100%', height: '100%' }}>
-                    <Divider orientation='left'>About the WebApp</Divider>
-                    <p>
-                        This webapp can visualize and display the emails that were sent to and from an employee of
-                        Enron.
-                    </p>
-                    <Divider> </Divider>
-
-                    <p>
-                        <Select style={{ width: 500 }} placeholder='Choose from a Sample DataSet' onChange={onChange}>
-                            <Option value='Enron'>Enron (31.041 e-mails)</Option>
-                            <Option value='EnronSample'>Enron Sample (17 e-mails)</Option>
-                        </Select>
-                    </p>
-
-                    <p>
-                        <Link to='/dataUpload'>
-                            <Button size={'large'}>Upload a DataSet</Button>
-                        </Link>{' '}
-                    </p>
-                    <p>
-                        <Link to='/about'>
-                            <Button size={'large'}>About</Button>
-                        </Link>{' '}
-                    </p>
-                </Content>
-            </Layout>*/}
         </Layout>
     );
 }

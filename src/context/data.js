@@ -1,9 +1,7 @@
 import React, { useState, createContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import db from '../db';
-import { count } from 'd3-array';
-import enron from '../data/enron.json';
-import enronSample from '../data/enronSample.json';
+import presets from '../data/presets';
+import db from './../db';
 
 /**
  * @type {React.Context<[ {
@@ -42,48 +40,53 @@ export function DataProvider(props) {
 
     let [fileName, setFileName] = useState('');
 
-    useEffect(() => {
-        function onLoad() {
-            async function storeSamples(){
-                if(await db.data.where('selected').equals(1).first().key !== 'enron.csv'){
-                    data = enron;
-                    data = data.map( ( item ) => ( {
-                        ...item,
-                        date: new Date( item.date )
-                    } ) );
-                    db.data.put( { key: 'enron.csv', data: data, filename: 'enron.csv', selected: 0 } );
-                }
-    
-                if( await db.data.where('selected').equals(1).first().key !== 'enronSample.csv' ){
-                    data = enronSample;
-                    data = data.map( ( item ) => ( {
-                        ...item,
-                        date: new Date( item.date )
-                    } ) );
-                    db.data.put( { key: 'enronSample.csv', data: data, filename: 'enronSample.csv', selected: 0 } );
-                }
-            }
-            
-            storeSamples();
-            if (db.data.where('selected').equals(1).count() <= 0) {
-                return;
-            }
-            db.data.where('selected').equals(1).first().then((data) => {
-                if (!data)
-                    return;
+    let [loading, setLoading] = useState( true );
 
-                setData(data.data);
-                setFileName(data.filename);
-            });
+    useEffect( async () => {
+
+        let selectedDataset = localStorage.getItem( 'DATASET_SELECTED' );
+
+        let datasets = [];
+
+        presets.forEach( ( preset ) => {
+            datasets.push( {
+                ...preset,
+                builtin: true,
+            } );
+        } );
+
+        await db.data.each( ( item ) => {
+            datasets.push( {
+                ...item,
+                get: () => item.data,
+                length: item.data.length,
+            } );
+        } );
+
+        let dataset = datasets.find( ( dataset ) => dataset.filename == selectedDataset );
+
+        if( dataset == null ) {
+            setLoading( false );
+            return;
         }
 
-        window.addEventListener('load', onLoad);
+        setData( await dataset.get() );
+        setFileName( selectedDataset );
 
-        return () => window.removeEventListener('load', onLoad);
-    });
+        setLoading( false );
+
+    }, [] );
+
+    let saveFileName = ( name ) => {
+
+        localStorage.setItem( 'DATASET_SELECTED', name );
+
+        setFileName( name );
+
+    };
 
 
-    return <DataContext.Provider value={[data, setData, fileName, setFileName]}>{props.children}</DataContext.Provider>;
+    return <DataContext.Provider value={[ data, setData, fileName, saveFileName, loading]}>{props.children}</DataContext.Provider>;
 }
 
 DataProvider.propTypes = {

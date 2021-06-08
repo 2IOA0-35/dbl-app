@@ -11,15 +11,17 @@ import {
     Row,
     Table,
     Typography,
-    Upload
+    Upload,
+    Modal
 } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { DataContext } from '../../context/data';
+import { FileExclamationOutlined } from '@ant-design/icons';
 import './DataUpload.css';
 import parse, { readFile } from '../../utils/parser';
 import db from '../../db';
-import {  Space } from 'antd';
+import DataList from '../../data/list';
 
 const { Title, Text } = Typography;
 // functionality for buttons, checkbox to be added
@@ -31,7 +33,41 @@ export default function DataUpload() {
 
     const upload = async ( { onProgress, onError, onSuccess, file } ) => {
         try {
-            setFileName( file.name );
+
+            let filename = file.name;
+
+            if( !filename.endsWith( '.csv' ) )
+                filename += '.csv';
+
+            if( await db.data.get( filename ) !== undefined ) {
+
+                let overwrite = await new Promise( ( resolve ) => Modal.confirm( {
+                    title: 'Overwrite File',
+                    icon: <FileExclamationOutlined />,
+                    content: 'A file with the same name was already uploaded previously. Do you want to overwrite it?',
+                    okText: 'Overwrite',
+                    onOk() {
+                        resolve( true );
+                    },
+                    onCancel() {
+                        resolve( false );
+                    },
+                } ) );
+
+                if( overwrite ) {
+                    await db.data.where( 'filename' ).equals( filename ).delete();
+
+                    //Check if thi was the current active dataset, if so, set to null
+                    if( fileName == filename ) {
+                        setFileName( null );
+                        setData( null );
+                    }
+                } else {
+                    onError();
+                    return;
+                }
+            }
+
             let content = await readFile( file, ( percent ) => {
                 console.log( 'progress read', percent );
                 onProgress( { percent: percent / 2 } );
@@ -39,16 +75,14 @@ export default function DataUpload() {
 
             let data = await parse( content, ( percent ) => {
                 console.log( 'progress parse', percent );
-                onProgress( { percent: percent / 2 + 50 } );
+                onProgress( { percent: percent / 2 + 49 } );
             } );
-            if( await db.data.get( file.name ) !== undefined ){
-                message.error('There is already a file present with that file name.');
-                onError();
-                return;
-            }
-            db.data.where('selected').equals(1).modify({ selected: 0 });
-            db.data.put( { key: file.name, data: data, filename: file.name, selected: 1 } );
-            
+
+            db.data.put( { key: filename, data: data, filename: filename } );
+
+            onProgress( { percent: 100 } );
+
+            setFileName( filename );
             setData( data );
 
             onSuccess( `Successfully parsed ${data.length} rows.` );
@@ -148,6 +182,9 @@ export default function DataUpload() {
                         </Button>
                     </Upload>
                     <Divider style={{ marginTop: '50px' }} />
+                    <p>Available datasets:</p>
+                    <DataList key={fileName} />
+                    <Divider style={{ marginTop: '-1px' }} />
                     <Row justify='center' gutter={[ 48, 0 ]}>
                         <Col span={12} style={{ textAlign: 'end' }}>
                             <Button type='ghost'>

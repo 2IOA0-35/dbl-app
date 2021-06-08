@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { GlobalContext } from './GlobalContext';
-import { Row, Col, Result } from 'antd';
+import { Row, Col, Result, Spin } from 'antd';
 import HEBVisualization from './HEBVisualization';
 import DFDVisualization from './DFDVisualization';
 import SaveImage from './SaveImage';
@@ -17,8 +17,8 @@ export default function VisContainer() {
 
     const { graph1, graph2 } = getOptions( contextID );
 
-    let [ dataset, setData, filename ] = React.useContext( DataContext );
-    console.log( filename );
+    let [ dataset, setData, filename, setFilename, loading ] = React.useContext( DataContext );
+    
     // Will render the appropriate visualization depending on the selected graph
     const renderVisualizations = ( graph ) => {
         switch ( graph ) {
@@ -37,6 +37,20 @@ export default function VisContainer() {
                 return <h1>Set a graph type in &#39;General Options&#39;</h1>;
         }
     };
+
+    if( loading )
+        return (
+            <Row
+                style={{
+                    flexGrow: '1',
+                    borderBottom: '1px solid rgba(124, 124, 124, 0.2)',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <Spin/>
+            </Row>
+        );
 
     if ( !dataset )
         return (
