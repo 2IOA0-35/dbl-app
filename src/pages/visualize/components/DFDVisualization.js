@@ -61,6 +61,8 @@ export default function DFDVisualization() {
     // Reference to the visualisation element
     const visBox = useRef();
 
+    var dragging = false;
+
     // #endregion
 
     // #region ----------------- D3 SETUP -----------------
@@ -193,6 +195,7 @@ export default function DFDVisualization() {
 
         // Dragging Handlers
         function dragstarted(event) {
+            dragging = true;
             if (!event.active) simulation.alphaTarget(0.3).restart();
             event.subject.fx = event.subject.x;
             event.subject.fy = event.subject.y;
@@ -204,6 +207,7 @@ export default function DFDVisualization() {
         }
 
         function dragended(event) {
+            dragging = false;
             if (!event.active) simulation.alphaTarget(0).alphaDecay(1 - 0.001 ^ (1 / 300));
             event.subject.fx = null;
             event.subject.fy = null;
@@ -281,16 +285,20 @@ export default function DFDVisualization() {
                     }
                 })
                 .on('mouseover', function (d, i) {
-                    setOptions(CONTEXT_ID, {
-                        ...getOptions(CONTEXT_ID),
-                        hoveredNode: i.id
-                    });
+                    if(!dragging) {
+                        setOptions(CONTEXT_ID, {
+                            ...getOptions(CONTEXT_ID),
+                            hoveredNode: i.id
+                        });
+                    }
                 })
                 .on('mouseout', function (d, i) {
-                    setOptions(CONTEXT_ID, {
-                        ...getOptions(CONTEXT_ID),
-                        hoveredNode: null
-                    });
+                    if(!dragging) {
+                        setOptions(CONTEXT_ID, {
+                            ...getOptions(CONTEXT_ID),
+                            hoveredNode: null
+                        });
+                    }
                 });
 
             let { hoveredNode, selectedNode, emailsSent, emailsReceived } = getOptions(CONTEXT_ID);
@@ -341,7 +349,7 @@ export default function DFDVisualization() {
                 .append('title')
                 .text((d) => `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}`);
 
-            if (!currentNodePresent && selectedNode !== null && emailsSent !== 0 && emailsReceived !== 0) {
+            if (!currentNodePresent && selectedNode !== null && (emailsSent !== 0 || emailsReceived !== 0)) {
                 setOptions(CONTEXT_ID, { ...getOptions(CONTEXT_ID), emailsSent: 0, emailsReceived: 0 });
             }
 
