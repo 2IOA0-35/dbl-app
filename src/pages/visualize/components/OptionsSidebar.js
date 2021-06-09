@@ -76,7 +76,7 @@ export default function OptionsSidebar() {
             <Spin spinning={loading}>
                 <Menu
                     mode='inline'
-                    defaultOpenKeys={['sub1']}
+                    defaultOpenKeys={['sub1', 'sub5']}
                     style={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}
                     selectable={0}
                 >
@@ -109,7 +109,7 @@ export default function OptionsSidebar() {
                                         Upload
                                     </Button>
                                 </Link>
-                            </Tooltip>,
+                            </Tooltip>
                         ]}
                     >
                         <DataList onSwitch={() => setDataModal( false )}/>

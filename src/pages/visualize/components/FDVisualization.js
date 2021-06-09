@@ -58,6 +58,8 @@ export default function FDVisualization() {
     // Reference to the visualisation element
     const visBox = useRef();
 
+    var dragging = false;
+
     // #endregion
 
     // #region ----------------- D3 SETUP -----------------
@@ -119,7 +121,7 @@ export default function FDVisualization() {
             .style( 'max-height', '53px' )
             .style( 'transition', 'all 250ms ease-in-out 0s' );
 
-            var legendHeader = legend
+        var legendHeader = legend
             .append( 'div' )
             .style( 'display', 'flex' )
             .style( 'justify-content', 'space-between' )
@@ -197,6 +199,7 @@ export default function FDVisualization() {
 
         // Dragging Handlers
         function dragstarted( event ) {
+            dragging = true;
             if ( !event.active ) simulation.alphaTarget( 0.3 ).restart();
             event.subject.fx = event.subject.x;
             event.subject.fy = event.subject.y;
@@ -208,6 +211,7 @@ export default function FDVisualization() {
         }
 
         function dragended( event ) {
+            dragging = false;
             if ( !event.active ) simulation.alphaTarget( 0 ).alphaDecay( 1 - 0.001 ^ ( 1 / 300 ) );
             event.subject.fx = null;
             event.subject.fy = null;
@@ -238,11 +242,9 @@ export default function FDVisualization() {
 
         // Fixes a bug where the initial size is not correct
         setTimeout( resize, 10 );
-        console.log(getOptions(VIS_ID))
+
         // Update handler for all things that depend on the nodes and links
         let update = ( nodes, links, maxDegree, getOptions, setOptions ) => {
-        console.log("2")
-
 
             const options       = getOptions( VIS_ID     );
             const globalOptions = getOptions( CONTEXT_ID );
@@ -275,85 +277,94 @@ export default function FDVisualization() {
             node.selectAll( 'circle' ).selectAll( 'title' ).remove();
 
             //on click update border and selected node
-            let {selectedNode, emailsSent, emailsReceived, position} = getOptions(CONTEXT_ID);
-
-            node.selectAll('circle').on( 'click', function ( d, i ) {
-                if ( !checked ) {
-                    checked = true;
-                    setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id, 
-                        emailsSent: i.outDegree, emailsReceived: i.inDegree, position: i.job});
-                    recentID = i.id;
-                    d3.select( this ).style( 'stroke', 'red' );
-                    
-                } else if ( checked ) {
-                    if ( recentID === i.id ) {
-                        d3.select( this ).style( 'stroke', 'white' );
-                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null,
-                            emailsSent: 0, emailsReceived: 0, position: null });
-                        recentID = '';
+            
+            node.selectAll('circle')
+                .on('click', function (d, i) {
+                    let currentOptions = getOptions(CONTEXT_ID);
+                    if (i.id === currentOptions.selectedNode) {
+                        setOptions(CONTEXT_ID, {
+                            ...currentOptions, selectedNode: null,
+                            emailsSent: 0, emailsReceived: 0, position: null
+                        });
                     } else {
-                        node.selectAll( 'circle' ).style( 'stroke', () => {
-                            return 'white';
-                        } );
-                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: i.id,
-                            emailsSent: i.outDegree, emailsReceived: i.inDegree, position: i.job});
-                        recentID = i.id;
-                        d3.select( this ).style( 'stroke', 'red' );
+                        setOptions(CONTEXT_ID, {
+                            ...currentOptions, selectedNode: i.id,
+                            emailsSent: i.outDegree, emailsReceived: i.inDegree, position: i.job
+                        });
                     }
-                }
-            } );
+                })
+                .on('mouseover', function (d, i) {
+                    if(!dragging) {
+                        setOptions(CONTEXT_ID, {
+                            ...getOptions(CONTEXT_ID),
+                            hoveredNode: i.id
+                        });
+                    }
+                })
+                .on('mouseout', function (d, i) {
+                    if(!dragging) {
+                        setOptions(CONTEXT_ID, {
+                            ...getOptions(CONTEXT_ID),
+                            hoveredNode: null
+                        });
+                    }
+                });
 
+            let { hoveredNode, selectedNode, emailsSent, emailsReceived } = getOptions(CONTEXT_ID);
+                
             // Apply attributes to all nodes
             var currentNodePresent = false; // this is to check if prev. selected node is present in current drawing.
             let legendContentText = '';
             let jobs = new Map();
 
 
-            node.selectAll( 'circle' )
-                .attr( 'fill', ( d ) => {
+            node.selectAll('circle')
+                .attr('fill', (d) => {
+                    // console.log( d.job );
                     let color = '#067f5b';
-                    if ( options.colorBy ){
-                        color = jobColors( d.job );
-                        if ( !jobs.has( d.job ) ) {
-                            jobs.set( d.job, color );
+
+                    if (options.colorBy) {
+                        color = jobColors(d.job);
+                        if (!jobs.has(d.job)) {
+                            jobs.set(d.job, color);
+                            // legendContent += `<p><span style='color: ${color};'>&#11044</span> ${d.job}</p>`;
                         }
                     }
+
                     return color;
-                } )
-                .style( 'stroke', ( d ) => {
-                    if ( recentID != d.id ) { 
-                        return 'white';
+                })
+                .style('stroke', (d) => {
+                    if (d.id === selectedNode) {
+                        return 'red';
+                    } else if (d.id === hoveredNode) {
+                        return 'black';
                     }
-                    currentNodePresent = true;
-                    return 'red';
-                } )
-                .each( function (d) {
-                    if ( recentID == d.id ) {
-                        if ( selectedNode != d.id || emailsSent != d.outDegree || emailsReceived != d.inDegree ) {
+                    return 'white';
+                })
+                .each(function (d) {
+                    if (selectedNode === d.id) {
+                        currentNodePresent = true;
+                        if (emailsSent != d.outDegree || emailsReceived != d.inDegree) {
                             // If something has changed, update the context
-                            setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), 
+                            setOptions(CONTEXT_ID, {
+                                ...getOptions(CONTEXT_ID),
                                 selectedNode: d.id,
-                                emailsSent: d.outDegree, 
-                                emailsReceived: d.inDegree 
+                                emailsSent: d.outDegree,
+                                emailsReceived: d.inDegree
                             });
                         }
-                    } else if (!currentNodePresent && selectedNode != null) {
-                        setOptions(CONTEXT_ID, {...getOptions(CONTEXT_ID), selectedNode: null});
                     }
                 })
                 .call( d3.drag().on( 'start', dragstarted ).on( 'drag', dragged ).on( 'end', dragended ) )
                 .append( 'title' )
                 .text( ( d ) => `Email: ${d.id} + \nDegree: ${d.degree} \ninDegree: ${d.inDegree} \noutDegree: ${d.outDegree} \nJob: ${d.job}` );
 
-            // if dynamicNodes set then make size dynamic
-            if ( options.dynamicNodes ) {
-                node.selectAll( 'circle' ).attr( 'r', ( d ) => ( 1 + d.degree * options.nodeScaleFactor / maxDegree ) * options.nodeSize );
-            } else {
-                // otherwise keep default
-                node.selectAll( 'circle' ).attr( 'r', options.nodeSize );
+            if (!currentNodePresent && selectedNode !== null && (emailsSent !== 0 || emailsReceived !== 0)) {
+                setOptions(CONTEXT_ID, { ...getOptions(CONTEXT_ID), emailsSent: 0, emailsReceived: 0 });
             }
 
             let jobsSorted = new Map( [ ...jobs.entries() ].sort() );
+
             for ( let [ key, value ] of jobsSorted ) {
                 legendContentText += `<p><span style='color: ${value};'>&#11044</span> ${key}</p>`;
             }
@@ -361,6 +372,14 @@ export default function FDVisualization() {
 
             if ( showLegend ) {
                 legend.style( 'max-height', ( legendContent.node().offsetHeight + 67 ) + 'px' );
+            }
+
+            // if dynamicNodes set then make size dynamic
+            if ( options.dynamicNodes ) {
+                node.selectAll( 'circle' ).attr( 'r', ( d ) => ( 1 + d.degree * options.nodeScaleFactor / maxDegree ) * options.nodeSize );
+            } else {
+                // otherwise keep default
+                node.selectAll( 'circle' ).attr( 'r', options.nodeSize );
             }
 
             // Restart the simulation by 'reheating' it with a higher alpha.
@@ -502,7 +521,7 @@ export default function FDVisualization() {
     }, [ formattedData, globalOptions, options ] );
 
     // Update when filtered data changes
-     useEffect( () => {
+    useEffect( () => {
         if ( !filteredData || !visualisation.update )
             return;
 
