@@ -12,7 +12,7 @@ export default function HEBOptions() {
 
     const [ getOptions, setOptions ] = useContext( GlobalContext );
 
-    const { edgeThickness, convertEmail, colorEdgeBy, colorNodeBy, bundlingFactor, colorRange, colorFactor } =
+    const { edgeThickness, convertEmail, colorEdgeBy, colorNodeBy, bundlingFactor, colorRange, colorFactor, removeDuplicates } =
         getOptions( visID );
 
     const edgeOptions = [ 'None', 'Sentiment', "Sender's Jobtitle", "Receiver's Jobtitle" ];
@@ -106,6 +106,22 @@ export default function HEBOptions() {
                     defaultChecked={convertEmail}
                     onChange={( event ) => {
                         setOptions( visID, { ...getOptions( visID ), convertEmail: event } );
+                    }}
+                />
+            </CustomMenuItem>
+
+            <CustomMenuItem
+                title='Remove Duplicate Edges:'
+                info='Remove duplicate edges when two or more e-mails were sent between the same employees. This might cause some detail to be lost, but will increase performance.'
+                height='2'
+            >
+                <br />
+                <Switch
+                    checkedChildren={<CheckOutlined />}
+                    unCheckedChildren={<CloseOutlined />}
+                    defaultChecked={removeDuplicates}
+                    onChange={( event ) => {
+                        setOptions( visID, { ...getOptions( visID ), removeDuplicates: event } );
                     }}
                 />
             </CustomMenuItem>

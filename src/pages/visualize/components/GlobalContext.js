@@ -48,7 +48,8 @@ export function GlobalProvider( props ) {
         colorNodeBy: 'None',
         bundlingFactor: 0.85,
         colorRange: 'Viridis',
-        colorFactor: 25
+        colorFactor: 25,
+        removeDuplicates: false,
     } );
     //Default options for the DFD controlled by the DFDOptions component
     const [ DFDOptions, setDFDOptions ] = useState( {
