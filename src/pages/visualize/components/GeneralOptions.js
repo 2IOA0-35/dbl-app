@@ -24,7 +24,7 @@ export default function GeneralOptions() {
         'Disjoint Force-Directed',
         'Force-Directed Graph',
         //'Arc Diagram',
-        //'3D force directed graph'
+        '3D Force-Directed Graph'
     ];
 
     return (

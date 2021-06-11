@@ -33,3 +33,7 @@
 .sidebar .ant-spin-nested-loading, .sidebar .ant-spin-container {
 	height: 100%;
 }
+
+.ant-menu-title-content {
+	flex: none !important;
+}

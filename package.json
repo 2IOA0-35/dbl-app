@@ -10,9 +10,11 @@
         "dexie": "^3.0.3",
         "dom-to-image": "^2.6.0",
         "moment": "^2.29.1",
+        "patch-package": "^6.4.7",
         "prop-types": "^15.7.2",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-force-graph": "^1.41.5",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.3",
@@ -28,7 +30,8 @@
         "start": "craco start",
         "build": "craco build",
         "serve": "serve -s build",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "postinstall": "patch-package"
     },
     "eslintConfig": {
         "ignorePatterns": [

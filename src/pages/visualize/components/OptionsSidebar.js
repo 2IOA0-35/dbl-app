@@ -5,6 +5,7 @@ import GeneralOptions from './GeneralOptions';
 import HEBOptions from './HEBOptions';
 import DFDOptions from './DFDOptions';
 import FDOptions from './FDOptions';
+import FD3DOptions from './FD3DOptions';
 import { SettingOutlined, SlidersOutlined, FileSearchOutlined, ReadOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Menu, Layout, Button, Modal, Table, Tooltip, Spin } from 'antd';
 import { DataContext } from '../../../context/data';
@@ -49,8 +50,8 @@ export default function OptionsSidebar() {
                 return <FDOptions />;
             //case 'Arc Diagram':
             //return <CustomMenuItem title='Not yet implemented!' height='1' />;
-            //case '3D force directed graph':
-            //return <CustomMenuItem title='Not yet implemented!' height='1' />;
+            case '3D Force-Directed Graph':
+                return <FD3DOptions />;
             case 'Manual':
                 return <UserManual />;
 
