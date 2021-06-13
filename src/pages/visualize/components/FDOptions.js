@@ -25,7 +25,7 @@ export default function FDOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Default node size:' height='2'>
+            <CustomMenuItem title='Default node size:' info='Controls the size of the circles in the visualization' height='2'>
                 <Slider
                     min={1}
                     max={20}
@@ -35,7 +35,7 @@ export default function FDOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Default edge size:' height='2'>
+            <CustomMenuItem title='Default edge size:' info='Controls the length of the edges' height='2'>
                 <Slider
                     max={200}
                     defaultValue={edgeSize}

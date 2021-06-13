@@ -30,7 +30,7 @@ export default function Timeline() {
     const [ cooldown, setCooldown ] = useState( false );
 
     // Value that ignores cooldown that is used for correct display of the slider
-    const [ value, setValue ] = useState( timeline );
+    const [ value, setValue ] = useState( timeline.add(10) );
     const [ diff , setDiff  ] = useState( previousDays );
 
     //Animation lock controls
@@ -41,6 +41,12 @@ export default function Timeline() {
     const [ sortedDates, setSortedDates ] = useState( [] );
 
     const timelineRef = useRef();
+
+    // Sets default values for the slider
+    useEffect( () => {
+        setDiff(31);
+        setValue(value.add(31, 'days'));
+    }, []);
 
     // The cooldown will activate when the timeline value is changed.
     useEffect( () => {

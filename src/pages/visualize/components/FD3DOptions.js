@@ -25,7 +25,7 @@ export default function FD3DOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem defaultValue={colorBy} title='Show link particles:' height='2'>
+            <CustomMenuItem defaultValue={colorBy} title='Show link particles:' info='The particles represent the emails sent and flow over the links from the sender to the recipient' height='2'>
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}
@@ -36,7 +36,7 @@ export default function FD3DOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem defaultValue={colorBy} title='Show directional arrows:' height='2'>
+            <CustomMenuItem defaultValue={colorBy} title='Show directional arrows:' info='The arrows point to the recipients' height='2'>
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}
@@ -47,7 +47,7 @@ export default function FD3DOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Default node size:' height='2'>
+            <CustomMenuItem title='Default node size:' info='Increases the size of the spheres' height='2'>
                 <Slider
                     min={1}
                     max={20}

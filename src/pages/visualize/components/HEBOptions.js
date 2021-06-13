@@ -31,7 +31,7 @@ export default function HEBOptions() {
                     options={edgeOptions.map( ( option ) => ( { label: option, value: option } ) )}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Color nodes based on:' height='2'>
+            <CustomMenuItem title='Color nodes based on:' info='This will change the color of the text of the nodes' height='2'>
                 <Select
                     style={{ width: '100%' }}
                     defaultValue={colorNodeBy}
