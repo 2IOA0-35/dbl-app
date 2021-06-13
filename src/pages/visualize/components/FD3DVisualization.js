@@ -99,9 +99,9 @@ export default function FD3DVisualization() {
             updateLegend(jobs);
 
             // Only update graph data if timeframe changed
-            if (graphData.dates[0].getTime() != oldDates[0] || graphData.dates[1].getTime() != oldDates[1])
+            if (graphData.dates[0].toString() != oldDates[0] || graphData.dates[1].toString() != oldDates[1])
                 graphDataAttribute = { graphData: graphData };
-            
+
             // Main Visualization Updater. Try to use functions outside setter to keep this readable
             setVisualization(
                 <ForceGraph3D
@@ -110,6 +110,7 @@ export default function FD3DVisualization() {
                     linkColor={(link) => isSelectedLink(link) ? 'rgba(255,0,0,0.5)' : `rgba(85,85,85,${options.edgeOpacity})`}
                     linkDirectionalArrowLength={options.linkArrows ? 6 : 0}
                     linkDirectionalArrowRelPos={0}
+                    linkDirectionalArrowColor={(link) => isSelectedLink(link) ? '#f00' : '#555'}
                     linkDirectionalParticles={options.linkParticles ? 1 : 0}
                     linkDirectionalParticleSpeed={0.005}
                     linkDirectionalParticleWidth={(link) => isSelectedLink(link) ? 4 : 0}
@@ -198,8 +199,8 @@ export default function FD3DVisualization() {
             }
 
             oldEdgeSize = options.edgeSize;
-            oldDates[0] = graphData.dates[0].getTime();
-            oldDates[1] = graphData.dates[1].getTime();
+            oldDates[0] = graphData.dates[0].toString();
+            oldDates[1] = graphData.dates[1].toString();
         };
 
         setUpdater({
