@@ -16,7 +16,7 @@ export default function About() {
                 cover={
                     <img
                         alt='Hierarchical Edge Bundling'
-                        style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto' }}
+                        style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto', marginTop: '5px' }}
                         src='./res/HEB.png'
                     />
                 }
@@ -43,7 +43,7 @@ export default function About() {
                 cover={
                     <img
                         alt='Hierarchical Edge Bundling'
-                        style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto' }}
+                        style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto', marginTop: '5px' }}
                         src='./res/DFG.png'
                     />
                 }

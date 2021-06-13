@@ -5,7 +5,6 @@ import './index.css';
 import OptionsSidebar from './components/OptionsSidebar';
 import VisContainer from './components/VisContainer';
 import Timeline from './components/Timeline';
-import InfoButton from './components/InfoButton';
 
 const { Content } = Layout;
 
@@ -14,7 +13,6 @@ export default function Visualize() {
     return (
         <GlobalProvider>
             <Layout className='vis-page-container'>
-                <InfoButton />
                 <OptionsSidebar />
                 <Content>
                     {/* This row contains the visualizations */}

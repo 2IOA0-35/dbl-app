@@ -25,12 +25,7 @@ export default function FD3DOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem
-                defaultValue={colorBy}
-                info='Will show particles on the links connected to the selected node. The particles represent the direction of the emails sent.'
-                title='Show link particles for selected node:'
-                height='2'
-            >
+            <CustomMenuItem defaultValue={colorBy} title='Show link particles:' info='The particles represent the emails sent and flow over the links from the sender to the recipient' height='2'>
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}
@@ -41,12 +36,7 @@ export default function FD3DOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem
-                defaultValue={colorBy}
-                info='Shows arrow heads on the links representing the direction of the emails sent.'
-                title='Show directional arrows:'
-                height='2'
-            >
+            <CustomMenuItem defaultValue={colorBy} title='Show directional arrows:' info='The arrows point to the recipients' height='2'>
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}
@@ -72,7 +62,7 @@ export default function FD3DOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Default node size:' height='2'>
+            <CustomMenuItem title='Default node size:' info='Increases the size of the spheres' height='2'>
                 <Slider
                     min={1}
                     max={20}
@@ -82,7 +72,7 @@ export default function FD3DOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Default edge size:' height='2'>
+            <CustomMenuItem title='Default edge size:' info='Controls the length of the edges' height='2'>
                 <Slider
                     max={200}
                     defaultValue={edgeSize}
