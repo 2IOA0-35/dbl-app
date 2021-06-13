@@ -74,6 +74,24 @@ export default function OptionsSidebar() {
             width={400}
             className='sidebar'
         >
+            <Modal
+                title={'Choose a Dataset'}
+                visible={showDataModal}
+                onCancel={() => setDataModal( false )}
+                bodyStyle={{ padding: 0 }}
+                destroyOnClose={true}
+                footer={[
+                    <Tooltip title='Go to the upload page' key='upload'>
+                        <Link to='dataUpload'>
+                            <Button style={{ marginRight: 'auto', display: 'block', textAlign: 'left' }}>
+                                Upload
+                            </Button>
+                        </Link>
+                    </Tooltip>
+                ]}
+            >
+                <DataList onSwitch={() => setDataModal( false )}/>
+            </Modal>
             <Spin spinning={loading}>
                 <Menu
                     mode='inline'
@@ -95,26 +113,6 @@ export default function OptionsSidebar() {
                             <Button type={!fileName ? 'primary' : null } onClick={() => setDataModal( true )}>{fileName || 'Choose Dataset'}</Button>
                         </Tooltip>
                     </Menu.Item>
-
-
-                    <Modal
-                        title={'Choose a Dataset'}
-                        visible={showDataModal}
-                        onCancel={() => setDataModal( false )}
-                        bodyStyle={{ padding: 0 }}
-                        destroyOnClose={true}
-                        footer={[
-                            <Tooltip title='Go to the upload page' key='upload'>
-                                <Link to='dataUpload'>
-                                    <Button style={{ marginRight: 'auto', display: 'block', textAlign: 'left' }}>
-                                        Upload
-                                    </Button>
-                                </Link>
-                            </Tooltip>
-                        ]}
-                    >
-                        <DataList onSwitch={() => setDataModal( false )}/>
-                    </Modal>
                     {/* These are general options that should be applicable to any graph */}
                     <SubMenu key='sub1' icon={<SettingOutlined />} title='General Options' className='color-5'>
                         <GeneralOptions colList={columnList} />
