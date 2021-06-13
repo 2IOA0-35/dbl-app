@@ -49,7 +49,7 @@ export function GlobalProvider( props ) {
         bundlingFactor: 0.85,
         colorRange: 'Viridis',
         colorFactor: 25,
-        removeDuplicates: false,
+        removeDuplicates: true
     } );
     //Default options for the DFD controlled by the DFDOptions component
     const [ DFDOptions, setDFDOptions ] = useState( {
@@ -79,7 +79,8 @@ export function GlobalProvider( props ) {
         colorBy: true,
         nodeScaleFactor: 3,
         linkParticles: true,
-        linkArrows: false
+        linkArrows: false,
+        edgeOpacity: 0.2
     } );
 
     //Gets the correct state based on the visID

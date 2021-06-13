@@ -25,7 +25,7 @@ export default function FD3DVisualization() {
     // Reference to the visualization element (Needed to call d3Force method from react-force-graph)
     const fgRef = useRef();
 
-    const [ visualization, setVisualization ] = useState(<ForceGraph3D ref={fgRef}/>);
+    const [ visualization, setVisualization ] = useState();
 
     const [ updater, setUpdater ] = useState({
         /**
@@ -61,35 +61,60 @@ export default function FD3DVisualization() {
 
         // Outside update function so it remembers all jobs
         let jobColors = d3.scaleOrdinal(d3.schemeCategory10);
+        // Old values needed to avoid unnecessary updates
         let oldDates = [];
-        let highlightNodes = new Set();
-        let highlightLinks = new Set();
+        let oldEdgeSize = options.edgeSize;
 
         // Update handler for all things that depend on the nodes and links
         let update = (graphData, maxDegree, getOptions, setOptions) => {
 
-            let { hoveredNode, selectedNode, emailsSent, emailsReceived, position } = getOptions(CONTEXT_ID);
+            let { hoveredNode, selectedNode, emailsSent, emailsReceived } = getOptions(CONTEXT_ID);
             let options = getOptions(VIS_ID);
             let jobs = new Map();
             let graphDataAttribute = {};
 
-            // Only update graph data if changed
-            if (graphData.dates[0].toUTCString() != oldDates[0] || graphData.dates[1].toUTCString() != oldDates[1]) {
+            // Sets proper values for node info panel in sidebar
+            let updateSelectedNode = (node) => {            
+                if (selectedNode != node.id || emailsSent != node.outDegree || emailsReceived != node.inDegree)
+                    setOptions(CONTEXT_ID, {
+                        ...getOptions(CONTEXT_ID),
+                        selectedNode: node.id,
+                        emailsSent: node.outDegree, 
+                        emailsReceived: node.inDegree, 
+                        position: node.job
+                    });
+            };
+
+            // Update legend
+            graphData.nodes.forEach( (node) => {
+                if(jobs.has(node.job))
+                    jobs.set(node.job, jobs.get(node.job) + 1);
+                else
+                    jobs.set(node.job,1);
+                
+                // Update selectednode because we're already looping over every node
+                if (node.id == selectedNode)
+                    updateSelectedNode(node);
+            });
+            updateLegend(jobs);
+
+            // Only update graph data if timeframe changed
+            if (graphData.dates[0].getTime() != oldDates[0] || graphData.dates[1].getTime() != oldDates[1])
                 graphDataAttribute = { graphData: graphData };
-            } 
             
             // Main Visualization Updater. Try to use functions outside setter to keep this readable
             setVisualization(
                 <ForceGraph3D
                     {...graphDataAttribute }
                     backgroundColor='rgba(0,0,0,0)'
-                    linkColor={() => '#555'}
+                    linkColor={(link) => isSelectedLink(link) ? 'rgba(255,0,0,0.5)' : `rgba(85,85,85,${options.edgeOpacity})`}
                     linkDirectionalArrowLength={options.linkArrows ? 6 : 0}
-                    linkDirectionalArrowRelPos={1}
+                    linkDirectionalArrowRelPos={0}
                     linkDirectionalParticles={options.linkParticles ? 1 : 0}
                     linkDirectionalParticleSpeed={0.005}
-                    linkDirectionalParticleWidth={4}
-                    linkWidth={1}
+                    linkDirectionalParticleWidth={(link) => isSelectedLink(link) ? 4 : 0}
+                    linkOpacity={1}
+                    linkWidth={(link) => isSelectedLink(link) ? 2 : 1}
                     nodeColor={node => nodeColorer(node)}
                     nodeLabel={node => nodeLabeler(node)}
                     nodeOpacity={1}
@@ -99,28 +124,22 @@ export default function FD3DVisualization() {
                     onNodeHover={node => handleNodeHover(node)}
                     onNodeClick={node => handleNodeClick(node)}
                 />);
-            
 
-            oldDates[0] = graphData.dates[0].toUTCString();
-            oldDates[1] = graphData.dates[1].toUTCString();
-
+            // True if link is connected to selected node
+            let isSelectedLink = (link) => link.sender == selectedNode || link.receiver == selectedNode;
+                
             // Sets node color based on graph options & handles legend update
             let nodeColorer = (node) => {
                 let color = '#067f5b';
                 
-                if (options.colorBy) {
+                if (options.colorBy)
                     color = jobColors(node.job);
-                    if (!jobs.has(node.job)) {
-                        jobs.set(node.job, color);
-                        updateLegend(jobs);
-                    }
-                }
 
                 if (node.id == hoveredNode)
                     color = '#000';
-                if (node.id == selectedNode) {
+
+                if (node.id == selectedNode)
                     color = '#f00';
-                }
 
                 return color;
             };
@@ -149,8 +168,10 @@ export default function FD3DVisualization() {
                 return (1 + node.degree * options.nodeScaleFactor * 3 / maxDegree);
             };
 
+            // Sets hoveredNode in global context
             let handleNodeHover = (node) => {
-                if (node && (node.id == hoveredNode || node.id == selectedNode) ) return;
+                if (node && (node.id == hoveredNode || node.id == selectedNode) ) 
+                    return;
 
                 setOptions(CONTEXT_ID, {
                     ...getOptions(CONTEXT_ID),
@@ -158,14 +179,8 @@ export default function FD3DVisualization() {
                 });
             };
 
+            // Sets selectedNode in global context
             let handleNodeClick = (node) => {
-            
-                // if (node.id != selectedNode) {
-                //     highlightNodes.add(node);
-                //     node.neighbors.forEach(neighbor => highlightNodes.add(neighbor));
-                //     node.links.forEach(link => highlightLinks.add(`${link.source.id}${link.target.id}`));
-                // }
-
                 setOptions(CONTEXT_ID, {
                     ...getOptions(CONTEXT_ID),
                     selectedNode: selectedNode == node.id ? null : node.id,
@@ -175,34 +190,16 @@ export default function FD3DVisualization() {
                 });
             };
 
-            let updateSelectedNode = (node) => {
-                // highlightLinks.clear();
+            // Sets edge size (Check if changed, otherwise 'ReheatSimulation' causes chaos)
+            if (oldEdgeSize != options.edgeSize) {
+                // '?' safety measure in case fgRef not defined
+                fgRef.current?.d3Force('link').distance(options.edgeSize); 
+                fgRef.current?.d3ReheatSimulation(); 
+            }
 
-                // highlightNodes.add(node);
-                // node.neighbors.forEach(neighbor => highlightNodes.add(neighbor));
-                // node.links.forEach(link => highlightLinks.add(link));
-                    
-                if (selectedNode != node.id || emailsSent != node.outDegree || emailsReceived != node.inDegree)
-                    setOptions(CONTEXT_ID, {
-                        ...getOptions(CONTEXT_ID),
-                        selectedNode: node.id,
-                        emailsSent: node.outDegree, 
-                        emailsReceived: node.inDegree, 
-                        position: node.job
-                    });
-            };
-
-            graphData.nodes.some((node) => {
-                if (node.id == selectedNode) {
-                    updateSelectedNode(node);
-                    return true;
-                }
-
-                return false;
-            });
-
-            // Sets edge distance based on graph options
-            fgRef.current?.d3Force('link').distance(options.edgeSize);
+            oldEdgeSize = options.edgeSize;
+            oldDates[0] = graphData.dates[0].getTime();
+            oldDates[1] = graphData.dates[1].getTime();
         };
 
         setUpdater({
@@ -266,15 +263,13 @@ export default function FD3DVisualization() {
             let legendContentText = '';
             let jobsSorted = new Map([...jobs.entries()].sort());
             
-            for (let [key, value] of jobsSorted) {
-                legendContentText += `<p><span style='color: ${value};'>&#11044</span> ${key}</p>`;
-            }
+            for (let [key, value] of jobsSorted)
+                legendContentText += `<p><span style='color: ${jobColors(key)};'>&#11044</span> ${key}<span style="float: right">${value}</span></p>`;
             
             legendContent.html(legendContentText);
             
-            if (showLegend) {
+            if (showLegend)
                 legend.style('max-height', (legendContent.node().offsetHeight + 67) + 'px');
-            }
         };
 
         // Resize handler that is called when the window size changes
@@ -378,7 +373,7 @@ export default function FD3DVisualization() {
 
             if ( !links.has( `${link.source}${link.target}` ) ) {
                 // make shallow copy to avoid breaking 'formattedData'
-                filtered.links.push( {...link } );
+                filtered.links.push( {...link, sender: link.source, receiver: link.target} );
                 links.set( `${link.source}${link.target}`, true );
             }
 
@@ -396,16 +391,16 @@ export default function FD3DVisualization() {
         filtered.links.forEach( ( link ) => {
             let a = {};
             let b = {};
+
             filtered.nodes.forEach( ( node ) => {
 
                 // update degree of the source
-                if ( link.source === node.id ) {
+                if ( link.source === node.id )
                     a = node;
-                }
+
                 // update degree of the target
-                if ( link.target === node.id ) {
+                if ( link.target === node.id )
                     b = node;
-                }
                 
                 filtered.maxDegree = node.degree > filtered.maxDegree ? node.degree : filtered.maxDegree;
             } );
@@ -427,7 +422,7 @@ export default function FD3DVisualization() {
             return;
     
         updater.update(filteredData, filteredData.maxDegree, getOptions, setOptions);
-    
+
     }, [ filteredData ]);
 
     return (

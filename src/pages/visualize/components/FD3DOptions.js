@@ -7,10 +7,10 @@ import { GlobalContext } from './GlobalContext';
 export default function FD3DOptions() {
     const visID = '3D Force-Directed Graph';
 
-    const [ getOptions, setOptions ] = useContext( GlobalContext );
+    const [getOptions, setOptions] = useContext(GlobalContext);
 
-    const { edgeSize, nodeSize, dynamicNodes, colorBy, nodeScaleFactor, linkParticles, linkArrows } =
-        getOptions( visID );
+    const { edgeSize, nodeSize, dynamicNodes, colorBy, nodeScaleFactor, linkParticles, linkArrows, edgeOpacity } =
+        getOptions(visID);
 
     return (
         <div>
@@ -20,30 +20,55 @@ export default function FD3DOptions() {
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
                     defaultChecked={colorBy}
-                    onChange={( event ) => {
-                        setOptions( visID, { ...getOptions( visID ), colorBy: event } );
+                    onChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), colorBy: event });
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem defaultValue={colorBy} title='Show link particles:' height='2'>
+            <CustomMenuItem
+                defaultValue={colorBy}
+                info='Will show particles on the links connected to the selected node. The particles represent the direction of the emails sent.'
+                title='Show link particles for selected node:'
+                height='2'
+            >
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
                     defaultChecked={linkParticles}
-                    onChange={( event ) => {
-                        setOptions( visID, { ...getOptions( visID ), linkParticles: event } );
+                    onChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), linkParticles: event });
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem defaultValue={colorBy} title='Show directional arrows:' height='2'>
+            <CustomMenuItem
+                defaultValue={colorBy}
+                info='Shows arrow heads on the links representing the direction of the emails sent.'
+                title='Show directional arrows:'
+                height='2'
+            >
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
                     defaultChecked={linkArrows}
-                    onChange={( event ) => {
-                        setOptions( visID, { ...getOptions( visID ), linkArrows: event } );
+                    onChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), linkArrows: event });
+                    }}
+                />
+            </CustomMenuItem>
+            <CustomMenuItem
+                title='Default edge opacity:'
+                info='Changes the opacity of edges. Setting opacity to 0 and selecting a node gives a cool effect.'
+                height='2'
+            >
+                <Slider
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    defaultValue={edgeOpacity}
+                    onAfterChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), edgeOpacity: event });
                     }}
                 />
             </CustomMenuItem>
@@ -52,8 +77,8 @@ export default function FD3DOptions() {
                     min={1}
                     max={20}
                     defaultValue={nodeSize}
-                    onAfterChange={( event ) => {
-                        setOptions( visID, { ...getOptions( visID ), nodeSize: event } );
+                    onAfterChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), nodeSize: event });
                     }}
                 />
             </CustomMenuItem>
@@ -61,8 +86,8 @@ export default function FD3DOptions() {
                 <Slider
                     max={200}
                     defaultValue={edgeSize}
-                    onAfterChange={( event ) => {
-                        setOptions( visID, { ...getOptions( visID ), edgeSize: event } );
+                    onAfterChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), edgeSize: event });
                     }}
                 />
             </CustomMenuItem>
@@ -76,8 +101,8 @@ export default function FD3DOptions() {
                     checkedChildren={<CheckOutlined />}
                     unCheckedChildren={<CloseOutlined />}
                     defaultChecked={dynamicNodes}
-                    onChange={( event ) => {
-                        setOptions( visID, { ...getOptions( visID ), dynamicNodes: event } );
+                    onChange={(event) => {
+                        setOptions(visID, { ...getOptions(visID), dynamicNodes: event });
                     }}
                 />
             </CustomMenuItem>
@@ -91,8 +116,8 @@ export default function FD3DOptions() {
                         min={1}
                         max={10}
                         defaultValue={nodeScaleFactor}
-                        onAfterChange={( event ) => {
-                            setOptions( visID, { ...getOptions( visID ), nodeScaleFactor: event } );
+                        onAfterChange={(event) => {
+                            setOptions(visID, { ...getOptions(visID), nodeScaleFactor: event });
                         }}
                     />
                 </CustomMenuItem>
