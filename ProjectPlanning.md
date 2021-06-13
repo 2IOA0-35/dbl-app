@@ -18,7 +18,7 @@ The webapp is available at [envision.riswick.net](https://envision.riswick.net),
 
 ## Languages
 
-The project will be created using React for the web frontend. For now, a server backend seems unnecessary.
+The project will be created using React for the web frontend.
 
 ## Visualisations
 
@@ -35,7 +35,7 @@ This document includes an exported list of the issues (tasks) and wishes present
 
 ## Team Agreements
 
- - We will have a scrum meeting on Monday 13:30, Wednesday 08:45 and Friday 08:45 in which everyone will try their best to be able to attend and be on time.
+ - We will have a scrum meeting on Monday 13:30, Wednesday 09:45 and Friday 08:45 in which everyone will try their best to be able to attend and be on time.
  - The scheduled working hours we have chosen are timeslot B and D (monday afternoon, wednesday morning and afternoon and friday morning). It is expected that you try to work mainly in these hours, such that multiple people are online for some interaction like questions or feedback.
  - If you are not able to work during the indicated hours, then that is ok. You are expected to make up the time you lost before the next meeting.
  - If you have any questions, you can always ask them in the Discord where people will be available during the working hours to answer them or work togeter towards a solution.
@@ -55,43 +55,44 @@ This document includes an exported list of the issues (tasks) and wishes present
  - Sprint 3: 24-05-2021  -  04-06-2021\
    **Goal**: Cleaning-up the code, creating a draft of the video and final report, implementing graph interactions and extra graphs.
 
- - Sprint 4: 07-06-2021  -  18-06-2021
+ - Sprint 4: 07-06-2021  -  18-06-2021\
+   **Goal**: Finish video, final report, software and evaluation. If there is time, add an additional visualization.
 
 
 <div style="page-break-after: always;"></div>
 
 # Wishes
 
- - **#1: Basic Website**\
+ - *(Finished)* **#1: Basic Website**\
    Improve the user experience on the website.
 
    Priority: 3,
    Size: ~4-8 hours
  - **#2: Visualisations**\
-   Implement extra visualisations in the app. This could include the force-directed graph or any other visualisations that have been researched.
+   Fix bugs on the visualization page. If there is time, add an additional visualization.
 
    Priority: 3,
-   Size: ~8-16 hours
+   Size: ~8 hours
  - *(Finished)* **#3: Make Dataset Upload Tool**\
    Create a first basic version of a data upload tool, to provide data for the visualisations.
 
    Priority: 4,
    Size: ~2-4 hours
  - **#4: Dynamic Visualisations**\
-   Implement the interaction between 2 graphs.
+   Fix bugs.
 
-   Priority: 1,
-   Size: ~8-12 hours
+   Priority: 3,
+   Size: ~4 hours
  - *(Finished)* **#5: First Draft Report**\
    Create a preliminary version of the report (which should be handed in at the end of Sprint 2).
 
    Priority: 2,
    Size: ~2-3 hours
- - **#6: First Draft Video**\
-   Create a preliminary version (or sketch) of the video (which should be handed in at the end of Sprint 4). 
+ - **#6: Video**\
+   Create the video that needs to be handed in in the first exam week.
 
-   Priority: 2,
-   Size: ~8 hours
+   Priority: 1,
+   Size: ~16 hours
  - **#7: Deliver Planning, Timesheets, Minutes**\
    Send the project planning, the timesheets and the meeting minutes to the tutor at the end of each week.
 
@@ -100,40 +101,43 @@ This document includes an exported list of the issues (tasks) and wishes present
  - *(Finished)* **#8: Create Interim Report**\
    Complete the interim report.
 
-   Priority: 1
+   Priority: 1,
    Size: ~15 hours
  - **#9: Final Report**\
-   Create a first draft of the final report.
+   Finish the final report.
 
-   Priority: 2
+   Priority: 2,
    Size: ~8-16 hours
+ - **#10: Evaluation**\
+   Evaluate the tool of group 36. Have a meeting with group 34 about our tool.
 
+   Priority: 1,
+   Size: ~4-8 hours
 
 <div style="page-break-after: always;"></div>
 
 # Planned Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
-|#9.2: Discussion and limitations|-|priority: 3, size: medium|
-|#9.3: Conclusion and future work|-|priority: 3, size: medium|
+|#2.18: Create 3D Force Directed graph|Aloys Riswick|priority: 3, size: large| 
+|#2.19: Improve HEB|Tom van Liempd, Christine Jacob|priority: 2, size: medium|      
+|#2.20: Improve DFD and FD|Kristopher Schlett, Anke Staal|priority: 2, size: medium|
+|#2.21: Improve Visualization Page|Hugo van Schalm|priority: 2, size: medium|  
+|#6.6: Film on campus (16th June)|-|priority: 2, size: large|
+|#6.7: Edit the video |-|priority: 2, size: large|
+|#10.1: Meet with group 36|-|priority: 1, size: small|
+|#10.3: Write evaluation|-|priority: 1, size: small|
 
 <div style="page-break-after: always;"></div>
 
 # Finished Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
-|#1.23: Upload multiple datasets and switch between them|Hugo van Schalm, Christine Jacob|priority: 4, size: large|   
-|#1.24: Auto set the date range depending on the selected dataset|Tom van Liempd, Anke Staal|priority: 4, size: medium|
-|#2.14: Clean-up code|Kristopher Schlett, Tom van Liempd|priority: 1, size: large|
-|#2.15: Add features to FD graphs|Christine Jacob, Kristopher Schlett|priority: 3, size: medium|
-|#2.16: Add a legend to the HEB|Kristopher Schlett, Aloys Riswick|priority: 3, size: large|
-|#4.5: Implement data sharing between graphs|Hugo van Schalm, Anke Staal|priority: 1, size: medium|
-|#4.6: Implement selecting nodes on the hierarchical graph|Tom van Liempd, Aloys Riswick|priority: 1, size: medium|
-|#4.7: Add selected items to the sidebar|Christine Jacob, Kristopher Schlett|priority: 2, size: medium|
-|#4.8: Allow hovering over nodes in the DFD graph|Hugo van Schalm, Anke Staal|priority: 2, size: medium|
-|#4.9: Use and store data in the shared data framework between visualizations|Aloys Riswick, Tom van Liempd|priority: 1, size: large|
-|#6.1: Research ideas for videos|Everyone|priority: 1, size: medium|
-|#6.2: Create a video script|Hugo van Schalm, Anke Staal|priority: 2, size: large|
-|#6.3: Give feedback on video script|Everyone|priority: 1, size: small|
-|#6.4: Improve video script|Anke Staal|priority: 2, size: small|
-|#9.1: Use case / data-set findings / application example|Aloys Riswick|priority: 2, size: large|
+|#2.17: Improve dataset switcher|Tom van Liempd|priority: 4, size: large|
+|#4.10: Fix dragging bug in DFD|Aloys Riswick, Anke Staal|priority: 3, size: large|
+|#9.1: Use case / data-set findings / application example|-|priority: 2, size: medium|
+|#9.2: Discussion and limitations|Anke Staal, Christine Jacob|priority: 2, size: medium|
+|#9.3: Conclusion and future work|Hugo van Schalm, Kristopher Schlett|priority: 2, size: medium|
+|#9.4: Process feedback & improve the report|Tom van Liempd, Hugo van Schalm|priority: 3, size: medium|
+|#10.2: Meet with group 34|Christine Jacob|priority: 2, size: small|
+|#6.5: Write individual text|Everyone|priority: 1, size: large|     
