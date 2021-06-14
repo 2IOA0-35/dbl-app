@@ -51,7 +51,7 @@ export function GlobalProvider( props ) {
         bundlingFactor: 0.85,
         colorRange: 'Viridis',
         colorFactor: 25,
-        removeDuplicates: false,
+        removeDuplicates: true
     } );
     //Default options for the DFD controlled by the DFDOptions component
     const [ DFDOptions, setDFDOptions ] = useState( {
@@ -73,6 +73,17 @@ export function GlobalProvider( props ) {
         nodeScaleFactor: 3,
         edgeScaleFactor: 5
     } );
+    //Default options for the FD3D controlled by the FD3DOptions component
+    const [ FD3DOptions, setFD3DOptions ] = useState( {
+        edgeSize: 50,
+        nodeSize: 5,
+        dynamicNodes: true,
+        colorBy: true,
+        nodeScaleFactor: 3,
+        linkParticles: true,
+        linkArrows: false,
+        edgeOpacity: 0.2
+    } );
 
     //Gets the correct state based on the visID
     const getOptions = ( visID ) => {
@@ -87,8 +98,8 @@ export function GlobalProvider( props ) {
                 return FDOptions;
             case 'Arc Diagram':
                 return {};
-            case '3D force directed graph':
-                return {};
+            case '3D Force-Directed Graph':
+                return FD3DOptions;
 
             default:
                 return {};
@@ -111,7 +122,8 @@ export function GlobalProvider( props ) {
                 break;
             case 'Arc Diagram':
                 break;
-            case '3D force directed graph':
+            case '3D Force-Directed Graph':
+                setFD3DOptions( options );
                 break;
 
             default:

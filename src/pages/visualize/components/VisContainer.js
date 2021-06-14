@@ -5,6 +5,7 @@ import HEBVisualization from './HEBVisualization';
 import DFDVisualization from './DFDVisualization';
 import SaveImage from './SaveImage';
 import FDVisualization from './FDVisualization';
+import FD3DVisualization from './FD3DVisualization';
 import { DataContext } from '../../../context/data';
 
 /**
@@ -30,8 +31,8 @@ export default function VisContainer() {
                 return <FDVisualization key={filename} />;
             case 'Arc Diagram':
                 return <h1>Not yet implemented!</h1>;
-            case '3D force directed graph':
-                return <h1>Not yet implemented!</h1>;
+            case '3D Force-Directed Graph':
+                return <FD3DVisualization key={filename} />;
 
             default:
                 return <h1>Set a graph type in &#39;General Options&#39;</h1>;

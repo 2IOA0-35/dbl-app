@@ -24,7 +24,7 @@ export default function GeneralOptions() {
         'Disjoint Force-Directed',
         'Force-Directed Graph',
         //'Arc Diagram',
-        //'3D force directed graph'
+        '3D Force-Directed Graph'
     ];
 
     return (
@@ -47,7 +47,7 @@ export default function GeneralOptions() {
                     options={dataGraphs.map( ( option ) => ( { label: option, value: option } ) )}
                 />
             </CustomMenuItem>
-            <CustomMenuItem title='Select a specific timeframe:' height='2'>
+            <CustomMenuItem title='Select a specific timeframe:' info='This will change the range of the timeline to fit to your selection' height='2'>
                 <Space>
                     <Select value={type} onChange={setType}>
                         <Option value='date'>Date</Option>

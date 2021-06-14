@@ -540,28 +540,18 @@ export default function DFDVisualization() {
                 links.set(`${link.source}${link.target}`, true);
             }
 
+            let source = formattedData.nodes.get( link.source );
+            let target = formattedData.nodes.get( link.target );
+
+            source.outDegree++;
+            source.degree++;
+            target.inDegree++;
+            target.degree++;
         });
 
         // We compute the degree of each node and link
-        filtered.links.forEach((link) => {
-            filtered.nodes.forEach((node) => {
-
-                // update degree of the source
-                if (link.source === node.id) {
-                    node.degree = node.degree + 1;
-                    node.outDegree = node.outDegree + 1;
-                }
-                // update degree of the target
-                if (link.target === node.id) {
-                    node.degree = node.degree + 1;
-                    node.inDegree = node.inDegree + 1;
-                }
-                // if email sent to one's self then subtract one degree didn't implement anythings bout in/out regarding this
-                if (link.source === link.target && link.source.id === node.id) {
-                    node.degree = node.degree - 1;
-                }
-                filtered.maxDegree = node.degree > filtered.maxDegree ? node.degree : filtered.maxDegree;
-            });
+        filtered.nodes.forEach((node) => {
+            filtered.maxDegree = node.degree > filtered.maxDegree ? node.degree : filtered.maxDegree;
         });
 
         setFilteredData(filtered);
