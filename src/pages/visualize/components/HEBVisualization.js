@@ -132,7 +132,7 @@ export default function HEBVisualization() {
             });
 
         //Mapping of jobs to colors
-        let jobColors = d3.scaleOrdinal(d3.schemeCategory10);
+        let { jobColors } = getOptions(CONTEXT_ID);
 
         //Stores all path and node elements that are rendered by their id, used in the onHover calls
         let pathElements = [];

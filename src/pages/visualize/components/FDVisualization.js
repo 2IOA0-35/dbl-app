@@ -218,7 +218,7 @@ export default function FDVisualization() {
         }
         
         // Job color scale that is used to color nodes based on jobs
-        let jobColors = d3.scaleOrdinal( d3.schemeCategory10 );
+        let { jobColors } = getOptions(CONTEXT_ID);
 
         // Resize handler that is called when the window size changes
         let resize = () => {
@@ -286,10 +286,16 @@ export default function FDVisualization() {
                             ...currentOptions, selectedNode: null,
                             emailsSent: 0, emailsReceived: 0, position: null
                         });
+                        link.selectAll('line').attr('stroke', '#999')
                     } else {
                         setOptions(CONTEXT_ID, {
                             ...currentOptions, selectedNode: i.id,
                             emailsSent: i.outDegree, emailsReceived: i.inDegree, position: i.job
+                        });
+                        link.selectAll('line').attr('stroke', function(d){
+                            if((d.source.id === i.id) || (d.target.id === i.id)){
+                                return 'red';
+                            }
                         });
                     }
                 })
@@ -335,6 +341,12 @@ export default function FDVisualization() {
                 })
                 .style('stroke', (d) => {
                     if (d.id === selectedNode) {
+                        link.selectAll('line').attr('stroke', function(ds){
+                            if((ds.source.id === selectedNode) || (ds.target.id === selectedNode)){
+                                return 'red';
+                            }
+                            return '#999';
+                        });
                         return 'red';
                     } else if (d.id === hoveredNode) {
                         return 'black';

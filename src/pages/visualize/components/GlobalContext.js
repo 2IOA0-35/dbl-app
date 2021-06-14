@@ -2,6 +2,7 @@ import React, { useState, createContext, useEffect } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { DataContext } from '../../../context/data';
+import * as d3 from 'd3';
 
 export const GlobalContext = createContext();
 
@@ -31,6 +32,7 @@ export function GlobalProvider( props ) {
             'messageType',
             'sentiment'
         ],
+        jobColors: d3.scaleOrdinal(d3.schemeCategory10), 
         playbackSpeed: 1,
         playing: false,
         selectedNode: null,
