@@ -88,7 +88,6 @@ export default function DFDVisualization() {
             .attr('stroke-width', 1.5);
 
         var zoom = d3.zoom().on('zoom', function (event) {
-            // console.log( event.transform );
             node.attr('transform', event.transform);
             link.attr('transform', event.transform);
         });
@@ -299,11 +298,9 @@ export default function DFDVisualization() {
                     }
                     link.selectAll('line').attr('stroke', function(ds){
                         if(((ds.source.id === selectedNode) || (ds.target.id === selectedNode))){
-                            console.log('yes')
                             return 'red'
                         }
-                        if((ds.source.id === i.id) || (ds.target.id === i.id)){
-                            console.log('test1')
+                        if((ds.source.id === i.id) || (ds.target.id === i.id)){//
                             return 'black';
                         }  
                         return '#999';
@@ -318,7 +315,6 @@ export default function DFDVisualization() {
                         });
                         link.selectAll('line').attr('stroke', function(ds){
                             if(((ds.source.id === selectedNode) || (ds.target.id === selectedNode))){
-                                console.log('yes')
                                 return 'red'
                             }
                             return '#999';    
@@ -327,7 +323,6 @@ export default function DFDVisualization() {
                     if(dragging){
                         link.selectAll('line').attr('stroke', function(ds){
                             if(((ds.source.id === selectedNode) || (ds.target.id === selectedNode))){
-                                console.log('yes')
                                 return 'red'
                             }
                             if((ds.source.id === i.id) || (ds.target.id === i.id)){
@@ -350,7 +345,6 @@ export default function DFDVisualization() {
             // Apply attributes to all nodes
             node.selectAll('circle')
                 .attr('fill', (d) => {
-                    // console.log( d.job );
                     let color = '#067f5b';
 
                     if (options.colorBy) {
@@ -365,7 +359,6 @@ export default function DFDVisualization() {
                 })
                 .style('stroke', (d) => {
                     if (d.id === selectedNode || d.id === hoveredNode) {
-                        console.log('id', hoveredNode);
                         link.selectAll('line').attr('stroke', function(ds){
                             if((ds.source.id === selectedNode) || (ds.target.id === selectedNode)){
                                 return 'red';
@@ -373,7 +366,6 @@ export default function DFDVisualization() {
                             if((ds.source.id === hoveredNode) || (ds.target.id === hoveredNode)){
                                 return 'black';
                             }
-                            console.log('test1')
                             return '#999';
                         });
                     }

@@ -306,6 +306,15 @@ export default function FDVisualization() {
                             hoveredNode: i.id
                         });
                     }
+                    link.selectAll('line').attr('stroke', function(ds){
+                        if(((ds.source.id === selectedNode) || (ds.target.id === selectedNode))){
+                            return 'red'
+                        }
+                        if((ds.source.id === i.id) || (ds.target.id === i.id)){//
+                            return 'black';
+                        }  
+                        return '#999';
+                    });
                 })
                 .on('mouseout', function (d, i) {
                     if(!dragging) {
@@ -313,8 +322,27 @@ export default function FDVisualization() {
                             ...getOptions(CONTEXT_ID),
                             hoveredNode: null
                         });
+                        link.selectAll('line').attr('stroke', function(ds){
+                            if(((ds.source.id === selectedNode) || (ds.target.id === selectedNode))){
+                                return 'red'
+                            }
+                            return '#999';    
+                        });
+                    }
+                    if(dragging){
+                        link.selectAll('line').attr('stroke', function(ds){
+                            if(((ds.source.id === selectedNode) || (ds.target.id === selectedNode))){
+                                return 'red'
+                            }
+                            if((ds.source.id === i.id) || (ds.target.id === i.id)){
+                                return 'black';
+                            }
+                            return '#999';
+                            
+                        });
                     }
                 });
+
 
             let { hoveredNode, selectedNode, emailsSent, emailsReceived } = getOptions(CONTEXT_ID);
                 
@@ -340,15 +368,21 @@ export default function FDVisualization() {
                     return color;
                 })
                 .style('stroke', (d) => {
-                    if (d.id === selectedNode) {
+                    if (d.id === selectedNode || d.id === hoveredNode) {
                         link.selectAll('line').attr('stroke', function(ds){
                             if((ds.source.id === selectedNode) || (ds.target.id === selectedNode)){
                                 return 'red';
                             }
+                            if((ds.source.id === hoveredNode) || (ds.target.id === hoveredNode)){
+                                return 'black';
+                            }
                             return '#999';
                         });
+                    }
+
+                    if(d.id === selectedNode ) {
                         return 'red';
-                    } else if (d.id === hoveredNode) {
+                    } else if( d.id === hoveredNode ) {
                         return 'black';
                     }
                     return 'white';

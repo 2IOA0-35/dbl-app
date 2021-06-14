@@ -60,7 +60,7 @@ export default function FD3DVisualization() {
     useEffect(() => {
 
         // Outside update function so it remembers all jobs
-        let jobColors = d3.scaleOrdinal(d3.schemeCategory10);
+        let { jobColors } = getOptions(CONTEXT_ID);
         // Old values needed to avoid unnecessary updates
         let oldDates = [];
         let oldEdgeSize = options.edgeSize;
