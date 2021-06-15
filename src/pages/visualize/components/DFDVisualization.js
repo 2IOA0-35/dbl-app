@@ -349,9 +349,10 @@ export default function DFDVisualization() {
 
                     if (options.colorBy) {
                         color = jobColors(d.job);
-                        if (!jobs.has(d.job)) {
-                            jobs.set(d.job, color);
-                            // legendContent += `<p><span style='color: ${color};'>&#11044</span> ${d.job}</p>`;
+                        if(jobs.has(d.job)) {
+                            jobs.set(d.job, jobs.get(d.job) + 1);
+                        } else {
+                            jobs.set(d.job,1);
                         }
                     }
 
@@ -402,7 +403,7 @@ export default function DFDVisualization() {
             let jobsSorted = new Map([...jobs.entries()].sort());
 
             for (let [key, value] of jobsSorted) {
-                legendContentText += `<p><span style='color: ${value};'>&#11044</span> ${key}</p>`;
+                legendContentText += `<p><span style='color: ${jobColors( key )};'>&#11044</span> ${key}<span style="float: right">${value}</span></p>`;
             }
             legendContent.html(legendContentText);
 
