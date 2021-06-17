@@ -38,7 +38,7 @@ export default function FD3DVisualization() {
         /**
          * Formatted dataset that can be used by the force-directed graph
          * @type {{
-         *     nodes: Map<string,{ id: string, job: string }>,
+         *     nodes: Map<string, { id: string, job: string }>,
          *     links: { source: string, target: string, date: moment.Moment }[]
          * }}
          */
@@ -90,7 +90,7 @@ export default function FD3DVisualization() {
                 if(jobs.has(node.job))
                     jobs.set(node.job, jobs.get(node.job) + 1);
                 else
-                    jobs.set(node.job,1);
+                    jobs.set(node.job, 1);
                 
                 // Update selectednode because we're already looping over every node
                 if (node.id == selectedNode)
@@ -106,8 +106,8 @@ export default function FD3DVisualization() {
             setVisualization(
                 <ForceGraph3D
                     {...graphDataAttribute }
-                    backgroundColor='rgba(0,0,0,0)'
-                    linkColor={(link) => isSelectedLink(link) ? 'rgba(255,0,0,0.5)' : `rgba(85,85,85,${options.edgeOpacity})`}
+                    backgroundColor='rgba(0, 0, 0, 0)'
+                    linkColor={(link) => isSelectedLink(link) ? 'rgba(255, 0, 0, 0.5)' : `rgba(85, 85, 85, ${options.edgeOpacity})`}
                     linkDirectionalArrowLength={options.linkArrows ? 6 : 0}
                     linkDirectionalArrowRelPos={0}
                     linkDirectionalArrowColor={(link) => isSelectedLink(link) ? '#f00' : '#555'}
@@ -216,6 +216,7 @@ export default function FD3DVisualization() {
             .style('position', 'absolute')
             .style('bottom', '20px')
             .style('left', '20px')
+            .style('z-index', '1000')
             .style('background-color', 'white')
             .style('border-radius', '10px')
             .style('padding', '10px 15px 0 15px')

@@ -25,7 +25,7 @@ export default function FD3DOptions() {
                     }}
                 />
             </CustomMenuItem>
-            <CustomMenuItem defaultValue={colorBy} title='Show link particles:' info='The particles represent the emails sent and flow over the links from the sender to the recipient' height='2'>
+            <CustomMenuItem defaultValue={colorBy} title='Show link particles for selected node:' info='The particles represent the emails sent and flow over the links from the sender to the recipient' height='2'>
                 <br />
                 <Switch
                     checkedChildren={<CheckOutlined />}

@@ -330,7 +330,7 @@ export default function HEBVisualization() {
                         var divider = 0;
                         
                         edge[0].data.children.mails.forEach((mail) => {
-                            if( edge[ 1 ].data.name == mail.toEmail ) {
+                            if ( edge[ 1 ].data.name == mail.toEmail ) {
                                 sentiment += mail.sentiment;
                                 divider++;
                             }
@@ -416,8 +416,7 @@ export default function HEBVisualization() {
                     //console.log(d);
                     let jobtitle = d.data.jobtitle;
                     if ((options.colorNodeBy.includes('Jobtitle') || options.colorEdgeBy.includes('Jobtitle'))) {
-                        if(jobs.has(jobtitle))
-                        {
+                        if (jobs.has(jobtitle)) {
                             jobs.set(jobtitle, jobs.get(jobtitle) + 1);
                         } else {
                             jobs.set(jobtitle,1);
@@ -478,7 +477,7 @@ export default function HEBVisualization() {
             //Update the degrees in the sidebar if necessary
             let selected = root.leaves().find( ( d ) => d.data.name == selectedNode );
 
-            if( selected && ( selected.outgoing.degree != emailsSent || selected.incoming.degree != emailsReceived ) )
+            if ( selected && ( selected.outgoing.degree != emailsSent || selected.incoming.degree != emailsReceived ) )
                 setOptions( CONTEXT_ID, {
                     ...getOptions( CONTEXT_ID ),
                     selectedNode: selected.data.name,
@@ -661,10 +660,10 @@ export default function HEBVisualization() {
             for (const d of root.leaves()) {
                 let mails = d.data?.children?.mails;
 
-                if(options.removeDuplicates)
+                if (options.removeDuplicates)
                     mails = mails?.filter( ( i ) => {
                         let exists = duplicatesMap.has( d.data.name + '-' + i.toEmail );
-                        if( !exists )
+                        if ( !exists )
                             duplicatesMap.set( d.data.name + '-' + i.toEmail, 1 );
                         else
                             duplicatesMap.set( d.data.name + '-' + i.toEmail, duplicatesMap.get( d.data.name + '-' + i.toEmail ) + 1 );
@@ -689,8 +688,8 @@ export default function HEBVisualization() {
                 for (const o of d.outgoing) {
                     o[1].incoming.push(o);
 
-                    if( options.removeDuplicates ) {
-                        if( !o[ 1 ].incoming.degree )
+                    if ( options.removeDuplicates ) {
+                        if ( !o[ 1 ].incoming.degree )
                             o[ 1 ].incoming.degree = 0;
 
                         o[ 1 ].incoming.degree += duplicatesMap.get( o[ 0 ].data.name + '-' + o[ 1 ].data.name );

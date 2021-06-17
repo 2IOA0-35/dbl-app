@@ -234,6 +234,8 @@ export default function DFDVisualization() {
         // Fixes a bug where the initial size is not correct
         setTimeout(resize, 10);
 
+        let cancelHover = false;
+
         // Update handler for all things that depend on the nodes and links
         let update = (nodes, links, maxDegree, getOptions, setOptions) => {
 
@@ -267,6 +269,8 @@ export default function DFDVisualization() {
             // (This is a kind of inefficient way of doing things, but this will probably get replaced by a pop-up when a node is clicked or something)
             node.selectAll('circle').selectAll('title').remove();
 
+            let { hoveredNode, selectedNode, emailsSent, emailsReceived } = getOptions(CONTEXT_ID);
+            
             // On click show infobox for node
             node.selectAll('circle')
                 .on('click', function (d, i) {
@@ -276,56 +280,63 @@ export default function DFDVisualization() {
                             ...currentOptions, selectedNode: null,
                             emailsSent: 0, emailsReceived: 0, position: null
                         });
-                        link.selectAll('line').attr('stroke', '#999')
+                        link.selectAll('line').attr('stroke', '#999');
                     } else {
                         setOptions(CONTEXT_ID, {
                             ...currentOptions, selectedNode: i.id,
                             emailsSent: i.outDegree, emailsReceived: i.inDegree, position: i.job
                         });
-                        link.selectAll('line').attr('stroke', function(d){
-                            if((d.source.id === i.id) || (d.target.id === i.id)){
+                        link.selectAll('line').attr('stroke', function(d) {
+                            if ((d.source.id === i.id) || (d.target.id === i.id)) {
                                 return 'red';
                             }
                         });
                     }
                 })
                 .on('mouseover', function (d, i) {
-                    if(!dragging) {
-                        setOptions(CONTEXT_ID, {
-                            ...getOptions(CONTEXT_ID),
-                            hoveredNode: i.id
-                        });
-                    }
-                    link.selectAll('line').attr('stroke', function(ds){
-                        if(((ds.source.id === selectedNode) || (ds.target.id === selectedNode))){
-                            return 'red'
-                        }
-                        if((ds.source.id === i.id) || (ds.target.id === i.id)){//
-                            return 'black';
-                        }  
-                        return '#999';
-                    });
+                    if (!dragging) {
+                        // checks if hover is cancelled within 100ms
+                        cancelHover = false;
+                        setTimeout(() => { 
+                            if (cancelHover == false) {
+                                setOptions(CONTEXT_ID, {
+                                    ...getOptions(CONTEXT_ID),
+                                    hoveredNode: i.id
+                                });
+                                link.selectAll('line').attr('stroke', function(ds) {
+                                    if (((ds.source.id === selectedNode) || (ds.target.id === selectedNode))) {
+                                        return 'red';
+                                    }
+                                    if ((ds.source.id === i.id) || (ds.target.id === i.id)) { //
+                                        return 'black';
+                                    }  
+                                    return '#999';
+                                });
+                            }; 
+                        }, 100);
+                    }   
                     
                 })
                 .on('mouseout', function (d, i) {
-                    if(!dragging) {
+                    cancelHover = true;
+                    if (!dragging && hoveredNode != null) {
                         setOptions(CONTEXT_ID, {
                             ...getOptions(CONTEXT_ID),
                             hoveredNode: null
                         });
-                        link.selectAll('line').attr('stroke', function(ds){
-                            if(((ds.source.id === selectedNode) || (ds.target.id === selectedNode))){
-                                return 'red'
+                        link.selectAll('line').attr('stroke', function(ds) {
+                            if (((ds.source.id === selectedNode) || (ds.target.id === selectedNode))) {
+                                return 'red';
                             }
                             return '#999';    
                         });
                     }
-                    if(dragging){
-                        link.selectAll('line').attr('stroke', function(ds){
-                            if(((ds.source.id === selectedNode) || (ds.target.id === selectedNode))){
-                                return 'red'
+                    if (dragging) {
+                        link.selectAll('line').attr('stroke', function(ds) {
+                            if (((ds.source.id === selectedNode) || (ds.target.id === selectedNode))) {
+                                return 'red';
                             }
-                            if((ds.source.id === i.id) || (ds.target.id === i.id)){
+                            if ((ds.source.id === i.id) || (ds.target.id === i.id)) {
                                 return 'black';
                             }
                             return '#999';
@@ -336,7 +347,6 @@ export default function DFDVisualization() {
                     
                 });
 
-            let { hoveredNode, selectedNode, emailsSent, emailsReceived } = getOptions(CONTEXT_ID);
             // Apply attributes to all nodes
             var currentNodePresent = false; // this is to check if prev. selected node is present in current drawing.
             let legendContentText = '';
@@ -349,7 +359,7 @@ export default function DFDVisualization() {
 
                     if (options.colorBy) {
                         color = jobColors(d.job);
-                        if(jobs.has(d.job)) {
+                        if (jobs.has(d.job)) {
                             jobs.set(d.job, jobs.get(d.job) + 1);
                         } else {
                             jobs.set(d.job,1);
@@ -360,20 +370,20 @@ export default function DFDVisualization() {
                 })
                 .style('stroke', (d) => {
                     if (d.id === selectedNode || d.id === hoveredNode) {
-                        link.selectAll('line').attr('stroke', function(ds){
-                            if((ds.source.id === selectedNode) || (ds.target.id === selectedNode)){
+                        link.selectAll('line').attr('stroke', function(ds) {
+                            if ((ds.source.id === selectedNode) || (ds.target.id === selectedNode)) {
                                 return 'red';
                             }
-                            if((ds.source.id === hoveredNode) || (ds.target.id === hoveredNode)){
+                            if ((ds.source.id === hoveredNode) || (ds.target.id === hoveredNode)) {
                                 return 'black';
                             }
                             return '#999';
                         });
                     }
 
-                    if(d.id === selectedNode ) {
+                    if (d.id === selectedNode ) {
                         return 'red';
-                    } else if( d.id === hoveredNode ) {
+                    } else if ( d.id === hoveredNode ) {
                         return 'black';
                     }
                     return 'white';
@@ -480,7 +490,7 @@ export default function DFDVisualization() {
     // Data filterer that will execute if a user changes options
     useEffect(() => {
         // If there is no data available, ignore update
-        // if(getOptions(CONTEXT_ID).selectedNode !== recentID){
+        // if (getOptions(CONTEXT_ID).selectedNode !== recentID){
         //     return;
         // }
         if (!formattedData)
