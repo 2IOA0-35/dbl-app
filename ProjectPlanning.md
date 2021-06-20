@@ -119,25 +119,24 @@ This document includes an exported list of the issues (tasks) and wishes present
 # Planned Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
-|#2.18: Create 3D Force Directed graph|Aloys Riswick|priority: 3, size: large| 
-|#2.19: Improve HEB|Tom van Liempd, Christine Jacob|priority: 2, size: medium|      
-|#2.20: Improve DFD and FD|Kristopher Schlett, Anke Staal|priority: 2, size: medium|
-|#2.21: Improve Visualization Page|Hugo van Schalm|priority: 2, size: medium|  
-|#6.6: Film on campus (16th June)|-|priority: 2, size: large|
-|#6.7: Edit the video |-|priority: 2, size: large|
-|#10.1: Meet with group 36|-|priority: 1, size: small|
-|#10.3: Write evaluation|-|priority: 1, size: small|
-
-<div style="page-break-after: always;"></div>
+|#6.7: Edit the video |Tom van Liempd|priority: 2, size: large|
 
 # Finished Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
 |#2.17: Improve dataset switcher|Tom van Liempd|priority: 4, size: large|
+|#2.18: Create 3D Force Directed graph|Aloys Riswick|priority: 3, size: large|
+|#2.19: Improve HEB|Tom van Liempd, Christine Jacob|priority: 2, size: medium|
+|#2.20: Improve DFD and FD|Kristopher Schlett, Anke Staal, Tom van Liempd|priority: 2, size: medium|
+|#2.21: Improve Visualization Page|Hugo van Schalm|priority: 2, size: medium|
+|#2.22: Fix hovering lag|Aloys Riswick|priority: 2, size: medium|
 |#4.10: Fix dragging bug in DFD|Aloys Riswick, Anke Staal|priority: 3, size: large|
+|#6.5: Write individual text|Everyone|priority: 1, size: large|
+|#6.6: Film on campus (16th June)|Everyone|priority: 2, size: large|
 |#9.1: Use case / data-set findings / application example|-|priority: 2, size: medium|
 |#9.2: Discussion and limitations|Anke Staal, Christine Jacob|priority: 2, size: medium|
 |#9.3: Conclusion and future work|Hugo van Schalm, Kristopher Schlett|priority: 2, size: medium|
 |#9.4: Process feedback & improve the report|Tom van Liempd, Hugo van Schalm|priority: 3, size: medium|
-|#10.2: Meet with group 34|Christine Jacob|priority: 2, size: small|
-|#6.5: Write individual text|Everyone|priority: 1, size: large|     
+|#10.1: Meet with group 36|Everyone|priority: 1, size: small|
+|#10.2: Meet with group 34|Everyone|priority: 2, size: small|
+|#10.3: Write evaluation|Hugo van Schalm, Christine Jacob|priority: 1, size: small|  
