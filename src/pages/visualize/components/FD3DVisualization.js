@@ -22,8 +22,6 @@ export default function FD3DVisualization() {
 
     // Reference to the visualization container
     const visBox = useRef();
-    // Reference to the visualization element (Needed to call d3Force method from react-force-graph)
-    const fgRef = useRef();
 
     const [ visualization, setVisualization ] = useState();
 
@@ -63,7 +61,6 @@ export default function FD3DVisualization() {
         let { jobColors } = getOptions(CONTEXT_ID);
         // Old values needed to avoid unnecessary updates
         let oldDates = [];
-        let oldEdgeSize = options.edgeSize;
 
         // Update handler for all things that depend on the nodes and links
         let update = (graphData, maxDegree, getOptions, setOptions) => {
@@ -121,7 +118,7 @@ export default function FD3DVisualization() {
                     nodeOpacity={1}
                     nodeRelSize={options.nodeSize}
                     nodeVal={node => nodeSizer(node)}
-                    ref={fgRef}
+                    ref={(ref) => edgeSizer(ref)}
                     onNodeHover={node => handleNodeHover(node)}
                     onNodeClick={node => handleNodeClick(node)}
                 />);
@@ -192,13 +189,21 @@ export default function FD3DVisualization() {
             };
 
             // Sets edge size (Check if changed, otherwise 'ReheatSimulation' causes chaos)
-            if (oldEdgeSize != options.edgeSize) {
-                // '?' safety measure in case fgRef not defined
-                fgRef.current?.d3Force('link').distance(options.edgeSize); 
-                fgRef.current?.d3ReheatSimulation(); 
-            }
+            let edgeSizer = (ref) => {
+                // Timeout needed because ref works like magic
+                setTimeout(() => {
+                    if (!ref) {
+                        return;
+                    }
 
-            oldEdgeSize = options.edgeSize;
+                    // Only update if settings changed
+                    if(ref.d3Force('link').distance()() != options.edgeSize) {
+                        ref.d3Force('link').distance(options.edgeSize); 
+                        ref.d3ReheatSimulation(); 
+                    }
+                }, 10);
+            };
+            
             oldDates[0] = graphData.dates[0].toString();
             oldDates[1] = graphData.dates[1].toString();
         };
