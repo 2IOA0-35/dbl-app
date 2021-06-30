@@ -312,7 +312,7 @@ export default function DFDVisualization() {
                                     }  
                                     return '#999';
                                 });
-                            }; 
+                            }
                         }, 100);
                     }   
                     

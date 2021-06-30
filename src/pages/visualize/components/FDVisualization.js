@@ -168,7 +168,7 @@ export default function FDVisualization() {
             let force = function() {
                 for ( var i = 0, n = nodes.length; i < n; ++i ) {
                     var curr_node = nodes[i];
-                    var radius = curr_node.degree + 5;
+                    var radius = 20;
 
                     curr_node.x = Math.max( radius, Math.min( width - radius, curr_node.x ) );
                     curr_node.y = Math.max( radius, Math.min( height - radius, curr_node.y ) );
@@ -321,7 +321,7 @@ export default function FDVisualization() {
                                     }  
                                     return '#999';
                                 });
-                            }; 
+                            }
                         }, 100);
                     }   
                     
