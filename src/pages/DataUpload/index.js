@@ -181,7 +181,8 @@ export default function DataUpload() {
                             <UploadOutlined /> Upload File
                         </Button>
                     </Upload>
-                    <Divider style={{ marginTop: '50px' }} />
+                    <p style={{ margin: '20px 0 0 10px' }}>All data will only be stored locally and not uploaded to the internet.</p>
+                    <Divider />
                     <p>Available datasets:</p>
                     <DataList key={fileName} />
                     <Divider style={{ marginTop: '-1px' }} />

@@ -14,7 +14,7 @@ const presets = [
     },
 
     //These can get removed when the project is finished before hand-in
-    {
+    /*{
         key     : 'Enron Sample',
         filename: 'Enron Sample',
         get     : async () => format( ( await import( './enronSample.json' ) ).default ),
@@ -25,7 +25,7 @@ const presets = [
         filename: 'Enron Large',
         get     : async () => format( ( await import( './enronLarge.json' ) ).default ),
         length  : 217287,
-    }
+    }*/
 ];
 
 export default presets;
