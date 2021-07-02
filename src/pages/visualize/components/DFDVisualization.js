@@ -23,11 +23,6 @@ export default function DFDVisualization() {
         update: null
     });
 
-    // Variables used for infobox display
-
-    var checked = false;
-    var recentID;
-
     // Variables used for Legend
     var showLegend = false;
 
@@ -240,7 +235,6 @@ export default function DFDVisualization() {
         let update = (nodes, links, maxDegree, getOptions, setOptions) => {
 
             const options = getOptions(VIS_ID);
-            const globalOptions = getOptions(CONTEXT_ID);
 
             // Make a shallow copy to protect against mutation, while
             // recycling old nodes to preserve position and velocity.

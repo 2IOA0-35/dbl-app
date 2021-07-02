@@ -18,6 +18,7 @@ export default function VisContainer() {
 
     const { graph1, graph2 } = getOptions( contextID );
 
+    // eslint-disable-next-line
     let [ dataset, setData, filename, setFilename, loading ] = React.useContext( DataContext );
     
     // Will render the appropriate visualization depending on the selected graph
@@ -79,7 +80,7 @@ export default function VisContainer() {
         >
             <Col style={{ position: 'relative' }} span={graph2 !== 'None' ? 12 : 24} id='graph1'>
                 {renderVisualizations( graph1 )}
-                <SaveImage id='graph1' />
+                {graph1 !== '3D Force-Directed Graph' ? <SaveImage id='graph1' /> : null}
             </Col>
             {graph2 !== 'None' && (
                 <Col
@@ -88,7 +89,7 @@ export default function VisContainer() {
                     id='graph2'
                 >
                     {renderVisualizations( graph2 )}
-                    <SaveImage id='graph2' />
+                    {graph2 !== '3D Force-Directed Graph' ? <SaveImage id='graph2' /> : null}
                 </Col>
             )}
         </Row>

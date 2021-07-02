@@ -43,11 +43,11 @@ This README contains information & set-up instructions for graders under the sec
 
 This section of the `README` is specifically intended for graders.
 
-Envision is a visualisation tool for e-mail networks. It is primarily focussed on the Enron dataset, but allows for other similarly formatted datasets to be uploaded.
+Envision is a visualization tool for e-mail networks. It is primarily focussed on the Enron dataset, but allows for other similarly formatted datasets to be uploaded.
 
-Using the dataset it can show two different types of visualisations: Disjoint Force-Directed Graphs and Hierarchical Edge Bundling.
+Using the dataset it can show two different types of visualizations: Disjoint Force-Directed Graphs and Hierarchical Edge Bundling.
 
-The application is available at [envision.riswick.net](https://envision.riswick.net), but can also be manually built using this source code.
+The application is available at [envision.riswick.net](https://envision.riswick.net), but can also be manually built using this source code. *If you have opened this website previously, then to force the website to update, press CTRL+F5. This will clear the local cached version of the site and load the newest available version on the server.*
 
 To build the application from source, [NodeJS](https://nodejs.org/) (and the included package manager `npm`) need to be installed. The project has been tested to work with the latest LTS version of NodeJS 14.x.x and npm 7.x.x (other versions will probably also work). To then install all project dependencies, navigate to the project directory in a terminal and run `npm install`. This will install all dependencies.
 

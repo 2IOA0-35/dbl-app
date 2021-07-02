@@ -7,7 +7,7 @@ import DFDOptions from './DFDOptions';
 import FDOptions from './FDOptions';
 import FD3DOptions from './FD3DOptions';
 import { SettingOutlined, SlidersOutlined, FileSearchOutlined, ReadOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import { Menu, Layout, Button, Modal, Table, Tooltip, Spin } from 'antd';
+import { Menu, Layout, Button, Modal, Tooltip, Spin } from 'antd';
 import { DataContext } from '../../../context/data';
 import './OptionsSidebar.css';
 import UserManual from './UserManual';
@@ -18,7 +18,6 @@ import { Link } from 'react-router-dom';
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
-const { Column } = Table;
 
 /**
  * Renders the sidebar with the correct sections based on the graphs that are selected.

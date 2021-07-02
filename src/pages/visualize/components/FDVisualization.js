@@ -24,9 +24,6 @@ export default function FDVisualization() {
     
     // Variables used for Legend
     var showLegend = false;
-    // Variables for node info
-    var checked = false;
-    var recentID;
 
     let [ dataset ] = React.useContext( DataContext );
 
@@ -249,7 +246,6 @@ export default function FDVisualization() {
         let update = ( nodes, links, maxDegree, getOptions, setOptions ) => {
 
             const options       = getOptions( VIS_ID     );
-            const globalOptions = getOptions( CONTEXT_ID );
 
             // Make a shallow copy to protect against mutation, while
             // recycling old nodes to preserve position and velocity.

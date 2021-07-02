@@ -1,6 +1,6 @@
 import React from 'react';
 import CustomMenuItem from './CustomMenuItem';
-import { Typography, Card } from 'antd';
+import { Typography } from 'antd';
 import PropTypes from 'prop-types';
 const { Title, Paragraph, Text } = Typography;
 import { Collapse } from 'antd';

@@ -119,7 +119,6 @@ This document includes an exported list of the issues (tasks) and wishes present
 # Planned Tasks
 |Issue|Assignee|Labels|
 |----|----|----|
-|#6.7: Edit the video |Tom van Liempd|priority: 2, size: large|
 
 # Finished Tasks
 |Issue|Assignee|Labels|
@@ -133,6 +132,7 @@ This document includes an exported list of the issues (tasks) and wishes present
 |#4.10: Fix dragging bug in DFD|Aloys Riswick, Anke Staal|priority: 3, size: large|
 |#6.5: Write individual text|Everyone|priority: 1, size: large|
 |#6.6: Film on campus (16th June)|Everyone|priority: 2, size: large|
+|#6.7: Edit the video |Tom van Liempd|priority: 2, size: large|
 |#9.1: Use case / data-set findings / application example|-|priority: 2, size: medium|
 |#9.2: Discussion and limitations|Anke Staal, Christine Jacob|priority: 2, size: medium|
 |#9.3: Conclusion and future work|Hugo van Schalm, Kristopher Schlett|priority: 2, size: medium|

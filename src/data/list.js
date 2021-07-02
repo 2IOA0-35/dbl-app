@@ -1,5 +1,5 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { Modal, Table, Tooltip, message, Popconfirm } from 'antd';
+import { Table, Tooltip, message, Popconfirm } from 'antd';
 import React from 'react';
 import db from '../db';
 import { DataContext } from '../context/data';

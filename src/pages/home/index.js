@@ -3,7 +3,6 @@ import { Layout, Card, Typography, Button, Select, message, Row, Col, Image, Pop
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { DataContext } from '../../context/data';
-import db from '../../db';
 import presets from '../../data/presets';
 
 const { Option } = Select;
