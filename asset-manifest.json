@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/dbl-app/static/css/main.0a193395.chunk.css",
-    "main.js": "/dbl-app/static/js/main.a37daf2b.chunk.js",
-    "main.js.map": "/dbl-app/static/js/main.a37daf2b.chunk.js.map",
+    "main.css": "/dbl-app/static/css/main.64be57e3.chunk.css",
+    "main.js": "/dbl-app/static/js/main.ab5497b9.chunk.js",
+    "main.js.map": "/dbl-app/static/js/main.ab5497b9.chunk.js.map",
     "runtime-main.js": "/dbl-app/static/js/runtime-main.9a26cf12.js",
     "runtime-main.js.map": "/dbl-app/static/js/runtime-main.9a26cf12.js.map",
     "static/js/2.d68105cd.chunk.js": "/dbl-app/static/js/2.d68105cd.chunk.js",
@@ -12,7 +12,7 @@
     "index.html": "/dbl-app/index.html",
     "service-worker.js": "/dbl-app/service-worker.js",
     "service-worker.js.map": "/dbl-app/service-worker.js.map",
-    "static/css/main.0a193395.chunk.css.map": "/dbl-app/static/css/main.0a193395.chunk.css.map",
+    "static/css/main.64be57e3.chunk.css.map": "/dbl-app/static/css/main.64be57e3.chunk.css.map",
     "static/js/2.d68105cd.chunk.js.LICENSE.txt": "/dbl-app/static/js/2.d68105cd.chunk.js.LICENSE.txt",
     "static/js/parser-worker.85825848.worker.js": "/dbl-app/static/js/parser-worker.85825848.worker.js",
     "static/js/parser-worker.85825848.worker.js.map": "/dbl-app/static/js/parser-worker.85825848.worker.js.map"
@@ -20,7 +20,7 @@
   "entrypoints": [
     "static/js/runtime-main.9a26cf12.js",
     "static/js/2.d68105cd.chunk.js",
-    "static/css/main.0a193395.chunk.css",
-    "static/js/main.a37daf2b.chunk.js"
+    "static/css/main.64be57e3.chunk.css",
+    "static/js/main.ab5497b9.chunk.js"
   ]
 }
