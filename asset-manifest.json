@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/static/css/main.64be57e3.chunk.css",
-    "main.js": "/static/js/main.c1764c8a.chunk.js",
-    "main.js.map": "/static/js/main.c1764c8a.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.e26187d8.js",
-    "runtime-main.js.map": "/static/js/runtime-main.e26187d8.js.map",
-    "static/js/2.53f84ea9.chunk.js": "/static/js/2.53f84ea9.chunk.js",
-    "static/js/2.53f84ea9.chunk.js.map": "/static/js/2.53f84ea9.chunk.js.map",
-    "static/js/3.f324e892.chunk.js": "/static/js/3.f324e892.chunk.js",
-    "static/js/3.f324e892.chunk.js.map": "/static/js/3.f324e892.chunk.js.map",
-    "index.html": "/index.html",
-    "service-worker.js": "/service-worker.js",
-    "service-worker.js.map": "/service-worker.js.map",
-    "static/css/main.64be57e3.chunk.css.map": "/static/css/main.64be57e3.chunk.css.map",
-    "static/js/2.53f84ea9.chunk.js.LICENSE.txt": "/static/js/2.53f84ea9.chunk.js.LICENSE.txt",
-    "static/js/parser-worker.f8582fea.worker.js": "/static/js/parser-worker.f8582fea.worker.js",
-    "static/js/parser-worker.f8582fea.worker.js.map": "/static/js/parser-worker.f8582fea.worker.js.map"
+    "main.css": "/dbl-app/static/css/main.0a193395.chunk.css",
+    "main.js": "/dbl-app/static/js/main.a37daf2b.chunk.js",
+    "main.js.map": "/dbl-app/static/js/main.a37daf2b.chunk.js.map",
+    "runtime-main.js": "/dbl-app/static/js/runtime-main.9a26cf12.js",
+    "runtime-main.js.map": "/dbl-app/static/js/runtime-main.9a26cf12.js.map",
+    "static/js/2.d68105cd.chunk.js": "/dbl-app/static/js/2.d68105cd.chunk.js",
+    "static/js/2.d68105cd.chunk.js.map": "/dbl-app/static/js/2.d68105cd.chunk.js.map",
+    "static/js/3.f324e892.chunk.js": "/dbl-app/static/js/3.f324e892.chunk.js",
+    "static/js/3.f324e892.chunk.js.map": "/dbl-app/static/js/3.f324e892.chunk.js.map",
+    "index.html": "/dbl-app/index.html",
+    "service-worker.js": "/dbl-app/service-worker.js",
+    "service-worker.js.map": "/dbl-app/service-worker.js.map",
+    "static/css/main.0a193395.chunk.css.map": "/dbl-app/static/css/main.0a193395.chunk.css.map",
+    "static/js/2.d68105cd.chunk.js.LICENSE.txt": "/dbl-app/static/js/2.d68105cd.chunk.js.LICENSE.txt",
+    "static/js/parser-worker.85825848.worker.js": "/dbl-app/static/js/parser-worker.85825848.worker.js",
+    "static/js/parser-worker.85825848.worker.js.map": "/dbl-app/static/js/parser-worker.85825848.worker.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.e26187d8.js",
-    "static/js/2.53f84ea9.chunk.js",
-    "static/css/main.64be57e3.chunk.css",
-    "static/js/main.c1764c8a.chunk.js"
+    "static/js/runtime-main.9a26cf12.js",
+    "static/js/2.d68105cd.chunk.js",
+    "static/css/main.0a193395.chunk.css",
+    "static/js/main.a37daf2b.chunk.js"
   ]
 }
