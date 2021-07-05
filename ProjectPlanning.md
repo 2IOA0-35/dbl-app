@@ -14,7 +14,7 @@
 
 # Project Description
 
-The webapp is available at [envision.riswick.net](https://envision.riswick.net), which gets updated with the latest version on a regular basis.
+The webapp is available at [envision.riswick.net](https://envision.riswick.net) (or alternatively at [2ioa0-35.github.io/dbl-app](https://2ioa0-35.github.io/dbl-app/)), which gets updated with the latest version on a regular basis.
 
 ## Languages
 

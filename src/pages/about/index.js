@@ -17,7 +17,7 @@ export default function About() {
                     <img
                         alt='Hierarchical Edge Bundling'
                         style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto', marginTop: '5px' }}
-                        src='./res/HEB.png'
+                        src={`${process.env.PUBLIC_URL}/res/HEB.png`}
                     />
                 }
                 extra={
@@ -44,7 +44,7 @@ export default function About() {
                     <img
                         alt='Hierarchical Edge Bundling'
                         style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto', marginTop: '5px' }}
-                        src='./res/DFG.png'
+                        src={`${process.env.PUBLIC_URL}/res/DFG.png`}
                     />
                 }
                 extra={

@@ -2,6 +2,7 @@
     "name": "dbl-app",
     "version": "0.1.0",
     "private": true,
+    "homepage": "https://2IOA0-35.github.io/dbl-app",
     "dependencies": {
         "@craco/craco": "^6.1.2",
         "antd": "^4.15.3",

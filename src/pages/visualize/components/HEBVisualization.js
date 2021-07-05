@@ -569,7 +569,7 @@ export default function HEBVisualization() {
                     .style('margin-bottom', '4px')
                     .html('Sentiment Value');
                 legendContent.append('img')
-                    .attr('src', `/res/${options.colorRange}.png`)
+                    .attr('src', `${process.env.PUBLIC_URL}/res/${options.colorRange}.png`)
                     .attr('height', '20px')
                     .attr('width', '100%')
                     .style('border-radius', '5px');

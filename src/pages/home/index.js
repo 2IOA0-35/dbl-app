@@ -36,12 +36,14 @@ export default function home() {
         history.push( '/vis' );
     }
 
+    console.log( 'PUBLIC_PATH', process.env.PUBLIC_URL );
+
     return (
         <Layout style={{ textAlign: 'center' }} className={'container'}>
             <Title style={{ padding: '20px', width: '100%', textAlign: 'center', margin: '20px 0' }}>
                 <Image
                     style={{ width: '500px', maxWidth: '100%' }}
-                    src='/res/envision_banner.png'
+                    src={`${process.env.PUBLIC_URL}/res/envision_banner.png`}
                     preview={false}
                     alt='Envision Logo'
                 />
@@ -120,7 +122,7 @@ export default function home() {
                             <Image
                                 width={200}
                                 style={{ filter: 'grayscale(100%)' }}
-                                src='/res/tue_logo.png'
+                                src={`${process.env.PUBLIC_URL}/res/tue_logo.png`}
                                 preview={false}
                                 alt='TU/e Logo'
                             />
